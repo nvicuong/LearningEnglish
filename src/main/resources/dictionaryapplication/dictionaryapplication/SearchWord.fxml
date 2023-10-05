@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="510.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.SearchWordController">
+   <children>
+      <Label layoutX="46.0" layoutY="38.0" text="Words">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Line endX="-20.99999237060547" endY="0.19998931884765625" layoutX="123.0" layoutY="65.0" startX="-79.0" startY="0.20000076293945312" />
+      <TableView layoutX="487.0" layoutY="66.0" prefHeight="402.0" prefWidth="374.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Word" />
+          <TableColumn prefWidth="75.0" text="POS" />
+            <TableColumn prefWidth="219.20001220703125" text="Definition" />
+        </columns>
+      </TableView>
+      <Label layoutX="487.0" layoutY="38.0" prefHeight="27.0" prefWidth="126.0" text="History">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TextField fx:id="autoTextField" layoutX="46.0" layoutY="151.0" prefHeight="31.0" prefWidth="288.0" promptText="search" style="-fx-background-color: transparent;" />
+      <Line endX="207.99996948242188" endY="0.199981689453125" layoutX="126.0" layoutY="182.0" startX="-79.0" startY="0.20000076293945312" stroke="#00ff1e" />
+      <Button layoutX="349.0" layoutY="154.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="113.0" style="-fx-background-color: #F4F4F4;" text="SEARCH WORDS">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="103.0" layoutY="321.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="288.0" style="-fx-background-color: #8AC249;" text="+ Add New" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+      </Button>
+      <Button layoutX="102.0" layoutY="380.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="288.0" style="-fx-background-color: #FF8570;" text="- Remove" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>
