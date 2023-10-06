@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="510.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.ShowWord">
+<AnchorPane prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.ShowWord">
    <children>
       <TextField fx:id="autoTextField" layoutX="52.0" layoutY="57.0" prefHeight="40.0" prefWidth="771.0" style="-fx-background-color: transparent;">
          <font>

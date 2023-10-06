@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.BookMarkController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.BookMarkController">
    <children>
       <TextField fx:id="searchInBankTextField" layoutX="52.0" layoutY="202.0" prefHeight="31.0" prefWidth="394.0" promptText="search in Word Bank" style="-fx-background-radius: 20;" />
       <Button fx:id="addNewButton" layoutX="113.0" layoutY="331.0" mnemonicParsing="false" onMouseClicked="#changeToAddWord" prefHeight="31.0" prefWidth="288.0" style="-fx-background-color: #8AC249;" text="+ Add New" textFill="WHITE">

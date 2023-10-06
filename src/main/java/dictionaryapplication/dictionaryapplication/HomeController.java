@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +18,7 @@ public class HomeController extends CommonController implements Initializable {
 
     private Parent logInParent;
     private LogInController logInController;
+
 
     private SideBarController sideBarController;
 
@@ -45,11 +47,15 @@ public class HomeController extends CommonController implements Initializable {
     @FXML
     private Label translateButton;
 
+    public SideBarController getSideBarController() {
+        return sideBarController;
+    }
+
     public void init(SideBarController sideBarController) {
         this.sideBarController = sideBarController;
     }
     @FXML
-    void changeToLogin(ActionEvent event) throws IOException {
+    void changeToLogin(MouseEvent event) throws IOException {
         loadPage(logInParent);
     }
 
@@ -64,6 +70,7 @@ public class HomeController extends CommonController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
             logInParent = loader.load();
             logInController = loader.getController();
+            logInController.init(this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

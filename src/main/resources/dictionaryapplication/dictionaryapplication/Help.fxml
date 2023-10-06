@@ -6,7 +6,7 @@
 
 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #145882;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.HelpController">
    <children>
-      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="SEARCH">
+      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="THẰNG NÀO CÓ TIỀN">
          <font>
             <Font size="19.0" />
          </font>
