@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="458.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.LogInController">
+   <children>
+      <ImageView fitHeight="510.0" fitWidth="467.0" layoutX="42.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/login.jpg" />
+         </image>
+      </ImageView>
+      <HBox layoutX="557.0" layoutY="267.0" prefHeight="34.0" prefWidth="268.0">
+         <children>
+            <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/account.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="learnTextField" prefHeight="34.0" prefWidth="237.0" promptText="Username" style="-fx-background-color: transparent;" />
+         </children></HBox>
+      <Line endX="117.800048828125" endY="0.399993896484375" layoutX="708.0" layoutY="301.0" startX="-115.39996337890625" />
+      <HBox layoutX="557.0" layoutY="326.0" prefHeight="34.0" prefWidth="268.0">
+         <children>
+            <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/padlock.png" />
+               </image>
+            </ImageView>
+            <PasswordField prefHeight="36.0" prefWidth="235.0" promptText="Password" style="-fx-background-color: transparent;" />
+         </children>
+      </HBox>
+      <Line endX="117.800048828125" endY="0.399993896484375" layoutX="706.0" layoutY="360.0" startX="-115.39996337890625" />
+      <Button layoutX="559.0" layoutY="383.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="268.0" style="-fx-background-color: #00CBFF;" text="LOG IN" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="558.0" layoutY="431.0" text="First time to dictionary?" />
+      <Label layoutX="731.0" layoutY="431.0" text="Create account" textFill="#00caff">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="186.0" fitWidth="248.0" layoutX="600.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/logoUET.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -19,6 +19,11 @@ public class DictionaryApplication extends Application {
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
+
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+            CommonController.loggout(stage);
+        });
     }
 
     public static void main(String[] args) {

@@ -22,7 +22,7 @@
       <Pane layoutX="274.0" layoutY="28.0" prefHeight="27.0" prefWidth="283.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
             <Label contentDisplay="CENTER" layoutX="33.0" prefHeight="27.0" prefWidth="92.0" text="Not logged in" />
-            <Button layoutX="125.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #57B5D6;" text="Log in" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="125.0" mnemonicParsing="false" onAction="#changeToLogin" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #57B5D6;" text="Log in" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -33,7 +33,7 @@
                      </color>
                   </DropShadow>
                </effect></Button>
-            <Button layoutX="215.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #D6407B;" text="Log out" textFill="WHITE">
+            <Button fx:id="logoutButton" layoutX="215.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #D6407B;" text="Log out" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -64,7 +64,12 @@
               </content>
             </TitledPane>
             <Label text="Get started:" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" prefHeight="20.0" prefWidth="160.0" style="-fx-background-color: #96B845; -fx-background-radius: 10;" text="SEARCH YOUR DICTIONARY" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="searchNewWordButton" alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" prefHeight="12.0" prefWidth="160.0" style="-fx-background-color: #96B845; -fx-background-radius: 10;" text="SEARCH NEW WORD" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Label>
+            <Label fx:id="searchInBankButton" alignment="CENTER" contentDisplay="CENTER" layoutY="37.0" prefHeight="12.0" prefWidth="160.0" style="-fx-background-color: #96B845; -fx-background-radius: 10;" text="SEARCH IN YOUR BANK " textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>
@@ -79,19 +84,19 @@
                </content>
             </TitledPane>
             <Label text="Next step:" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" prefHeight="12.0" prefWidth="160.0" style="-fx-background-color: #1FD4CC; -fx-background-radius: 10;" text="Add your own words" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="addWordButton" alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" prefHeight="12.0" prefWidth="160.0" style="-fx-background-color: #1FD4CC; -fx-background-radius: 10;" text="Add your own words" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="37.0" prefHeight="12.0" prefWidth="160.0" style="-fx-background-color: #1FD4CC; -fx-background-radius: 10;" text="Remove your words" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="removeWordButton" alignment="CENTER" contentDisplay="CENTER" layoutY="37.0" prefHeight="12.0" prefWidth="160.0" style="-fx-background-color: #1FD4CC; -fx-background-radius: 10;" text="Remove your words" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="358.0" layoutY="419.0" prefHeight="20.0" prefWidth="160.0" style="-fx-background-color: #EE8AF8; -fx-background-radius: 10;" text="Click to learn a new word" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="learnNewWordButton" alignment="CENTER" contentDisplay="CENTER" layoutX="358.0" layoutY="419.0" prefHeight="20.0" prefWidth="160.0" style="-fx-background-color: #EE8AF8; -fx-background-radius: 10;" text="Click to learn a new word" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold" size="11.0" />
          </font>
@@ -104,7 +109,7 @@
                </content>
             </TitledPane>
             <Label text="More:" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" prefHeight="20.0" prefWidth="160.0" style="-fx-background-color: #424E7F; -fx-background-radius: 10;" text="Translate a text" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="translateButton" alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" prefHeight="20.0" prefWidth="160.0" style="-fx-background-color: #424E7F; -fx-background-radius: 10;" text="Translate a text" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="11.0" />
                </font>

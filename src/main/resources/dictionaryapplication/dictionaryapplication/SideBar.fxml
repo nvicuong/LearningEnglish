@@ -21,7 +21,7 @@
                   <Pane layoutX="244.0" layoutY="14.0" prefHeight="16.0" prefWidth="1000.0" style="-fx-background-color: #032d4d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <HBox layoutX="278.0" layoutY="16.0" prefHeight="74.0" prefWidth="463.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="16.0">
                      <children>
-                        <Button onAction="#home" prefHeight="74.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="HOME">
+                        <Button fx:id="homeUpButton" onMouseClicked="#changeToHome" prefHeight="74.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="HOME">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -33,7 +33,7 @@
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button layoutX="10.0" layoutY="10.0" onAction="#search" prefHeight="77.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="SEARCH">
+                        <Button fx:id="searchUpButton" layoutX="10.0" layoutY="10.0" onMouseClicked="#changeToMainSearch" prefHeight="77.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="SEARCH">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -45,7 +45,7 @@
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button layoutX="146.0" layoutY="10.0" onAction="#bookmark" prefHeight="77.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="BOOKMARK">
+                        <Button fx:id="bookMarkUpButton" layoutX="146.0" layoutY="10.0" onMouseClicked="#changeToBookmark" prefHeight="77.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="BOOKMARK">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -57,7 +57,7 @@
                               <Font size="13.0" />
                            </font>
                         </Button>
-                        <Button layoutX="282.0" layoutY="10.0" onAction="#help" prefHeight="77.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="HELP">
+                        <Button fx:id="helpUpbutton" layoutX="282.0" layoutY="10.0" onMouseClicked="#changeToHelp" prefHeight="77.0" prefWidth="115.0" style="-fx-background-color: transparent;" styleClass="menuItem" text="HELP">
                            <graphic>
                               <ImageView fitHeight="22.0" fitWidth="22.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -82,8 +82,8 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="autoTextField" layoutX="138.0" layoutY="37.0" prefHeight="31.0" prefWidth="394.0" promptText="search" style="-fx-background-radius: 20;" />
-                  <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="504.0" layoutY="39.0" nodeOrientation="INHERIT" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                  <TextField fx:id="searchTextField" layoutX="138.0" layoutY="37.0" prefHeight="31.0" prefWidth="394.0" promptText="search" style="-fx-background-radius: 20;" />
+                  <ImageView fx:id="searchImageView" fitHeight="22.0" fitWidth="22.0" layoutX="504.0" layoutY="39.0" nodeOrientation="INHERIT" opacity="0.3" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../image/search.png" />
                      </image>
@@ -96,7 +96,7 @@
                <children>
                   <VBox layoutX="38.0" layoutY="49.0" prefHeight="461.0" prefWidth="134.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="49.0">
                      <children>
-                        <Button alignment="BASELINE_LEFT" onAction="#home" prefHeight="70.0" prefWidth="134.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="HOME" textFill="WHITE">
+                        <Button fx:id="homeLeftButton" alignment="BASELINE_LEFT" onMouseClicked="#changeToHome" prefHeight="70.0" prefWidth="134.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="HOME" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -108,7 +108,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" onAction="#search" prefHeight="70.0" prefWidth="176.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="SEARCH" textFill="WHITE">
+                        <Button fx:id="searchLeftButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" onMouseClicked="#changeToMainSearch" prefHeight="70.0" prefWidth="176.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="SEARCH" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -120,7 +120,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="48.0" onAction="#bookmark" prefHeight="70.0" prefWidth="176.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="BOOKMARK" textFill="WHITE">
+                        <Button fx:id="bookMarkLeftButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="48.0" onMouseClicked="#changeToBookmark" prefHeight="70.0" prefWidth="176.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="BOOKMARK" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -132,7 +132,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button alignment="BASELINE_LEFT" layoutX="10.0" layoutY="87.0" onAction="#help" prefHeight="70.0" prefWidth="176.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="HELP" textFill="WHITE">
+                        <Button fx:id="helpLeftButton" alignment="BASELINE_LEFT" layoutX="10.0" layoutY="87.0" onMouseClicked="#changeToHelp" prefHeight="70.0" prefWidth="176.0" style="-fx-background-color: transparent;" styleClass="sideBarItem" text="HELP" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -150,7 +150,7 @@
             </AnchorPane>
          </left>
          <center>
-            <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>

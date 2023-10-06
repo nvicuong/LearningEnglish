@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,8 +11,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.SearchController">
    <children>
-      <TextField fx:id="autoTextField" layoutX="83.0" layoutY="43.0" prefHeight="26.0" prefWidth="347.0" promptText="search" style="-fx-background-radius: 20;" visible="false" />
-      <TextField fx:id="learnTextField" layoutX="372.0" layoutY="81.0" visible="false" />
       <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="401.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../image/search.png" />
@@ -21,7 +18,7 @@
       </ImageView>
       <Pane layoutX="253.0" layoutY="141.0" prefHeight="139.0" prefWidth="118.0">
          <children>
-            <Button fx:id="searchWordButton" layoutY="42.0" mnemonicParsing="false" onAction="#changeToSearchWord" prefHeight="55.0" prefWidth="118.0" style="-fx-background-color: #B85C82; -fx-background-radius: 10;" text="WORD" textFill="#f4f4f4">
+            <Button fx:id="searchWordButton" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#changeToSearchWord" prefHeight="55.0" prefWidth="118.0" style="-fx-background-color: #B85C82; -fx-background-radius: 10;" text="WORD" textFill="#f4f4f4">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -35,7 +32,7 @@
       </Pane>
       <Pane layoutX="522.0" layoutY="141.0" prefHeight="139.0" prefWidth="118.0">
          <children>
-            <Button fx:id="searchTextButton" layoutY="42.0" mnemonicParsing="false" onAction="#changeToTranslateText" prefHeight="55.0" prefWidth="118.0" style="-fx-background-color: #732BF5; -fx-background-radius: 10;" text="TEXT" textFill="#f4f4f4">
+            <Button fx:id="searchTextButton" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#changeToTranslateText" prefHeight="55.0" prefWidth="118.0" style="-fx-background-color: #732BF5; -fx-background-radius: 10;" text="TEXT" textFill="#f4f4f4">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
