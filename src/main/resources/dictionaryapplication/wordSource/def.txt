@@ -1,0 +1,6 @@
+@       -> New word
+/.../   -> Pronunciation
+*       -> Part of speech
+-       -> Definition
+=...+   -> Phrasal verb + def
+!       -> RefWord
