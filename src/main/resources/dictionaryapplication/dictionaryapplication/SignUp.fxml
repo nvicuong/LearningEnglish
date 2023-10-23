@@ -14,11 +14,6 @@
 
 <AnchorPane prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionaryapplication.dictionaryapplication.SignUpController">
    <children>
-      <ImageView fitHeight="510.0" fitWidth="557.0" layoutX="42.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../image/sigup1.jpg" />
-         </image>
-      </ImageView>
       <HBox layoutX="533.0" layoutY="132.0" prefHeight="34.0" prefWidth="268.0">
          <children>
             <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">

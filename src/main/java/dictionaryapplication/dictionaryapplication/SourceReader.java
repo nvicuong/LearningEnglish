@@ -1,134 +1,90 @@
 package dictionaryapplication.dictionaryapplication;
 
 import java.io.InputStream;
-import java.util.Scanner;
+import java.util.*;
 
-import dictionaryapplication.dictionaryapplication.data.*;
+import model.Word;
 
-class Cache {
-    public static Word lastWord = null;
-    public static WordContent lastContent = null;
-    public static RefWord lastRefWord = null;
-
-    public static void updateRefWord() {
-        if (lastRefWord != null) {
-            lastWord.addContent(lastRefWord);
-            lastRefWord = null;
-        }
-    }
-
-    public static void updateContent() {
-        if (lastContent != null) {
-            lastWord.addContent(lastContent);
-            lastContent = null;
-        }
-    }
-
-    public static void updateWord() {
-        updateContent();
-        updateRefWord();
-        if (lastWord != null) {
-            Dictionary.addWord(lastWord);
-            lastWord = null;
-        }
-    }
-}
 
 public class SourceReader {
-    public static void start() {
-        InputStream inputStream = SourceReader.class.getResourceAsStream("/dictionaryapplication/wordSource/anh-viet.txt");
+    public static String[] newWord;
+    public static List<Word> wordDAOS;
+
+    public static void readFile() {
+        InputStream inputStream = SourceReader.class.getResourceAsStream("/data/wordContent.txt");
+        newWord = new String[120000];
         if (inputStream == null) {
             System.err.println("File not found.");
             return;
         }
 
         Scanner scanner = new Scanner(inputStream);
+        int count = 0;
         while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
+            String s = scanner.nextLine();
+            if (s.isEmpty()) {
+                continue;
+            }
+            newWord[count] = s.replaceAll("\\(", "").replaceAll("\\)", "").replaceFirst("'", "");
+            count++;
+        }
+        wordDAOS = new ArrayList<>(count);
+    }
 
-            try {
-                if (line.startsWith("\uFEFF@") || line.startsWith("@")) {
-                    Cache.updateWord();
+    public static void start() {
+        readFile();
+        int index = 0;
+        while (newWord[index] != null) {
+            String[] arr = newWord[index].split("', '");
+            Word wordDAO = new Word(arr[0], arr[1], arr[2], arr[3].substring(0, arr[3].length() - 1));
+            wordDAOS.add(wordDAO);
+            index++;
+        }
+        Collections.sort(wordDAOS);
+        newWord = null;
 
-                    int posL = line.indexOf(" /");
-                    int posR = line.indexOf('/', posL + 2);
-                    if (posL == -1 || posR == -1) {
-                        String spell = line.substring(1);
-                        Cache.lastWord = new Word(spell, "");
-                    } else {
-                        String spell = line.substring(1, posL);
-                        String pronun = line.substring(posL+1, posR+1);
+    }
 
-                        Cache.lastWord = new Word(spell, pronun);
+    public static int binarySearchWordList(String s) {
+        int l = 0, r = wordDAOS.size() - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
 
-                        while (true) {
-                            posL = line.indexOf(" (", posR);
-                            if (posL == -1) break; posL++;
+            // kiểm tra xem x có ở chính giữa không
+            if (wordDAOS.get(m).getSpelling().indexOf(s) == 0)
+            {
+                return m;
+            }
 
-                            posR = line.indexOf(')', posL);
-                            spell = line.substring(posL + 1, posR);
-
-                            posL = line.indexOf(" /", posR);
-                            if (posL == -1) {
-                                Cache.lastWord.addSynonym(spell, "");
-                            } else {
-                                posR = line.indexOf('/', posL + 2);
-
-                                pronun = line.substring(posL+1, posR + 1);
-                                Cache.lastWord.addSynonym(spell, pronun);
-                            }
-                        }
-                    }
-                }
-                else if (line.startsWith("*")) {
-                    Cache.updateContent();
-
-                    String name = line.substring(2);
-                    Cache.lastContent = new WordPOS(name);
-                }
-                else if (line.startsWith("!")) {
-                    Cache.updateRefWord();
-
-                    String phrase = line.substring(1);
-                    Cache.lastRefWord = new RefWord(phrase);
-                }
-                else if (line.startsWith("-")) {
-                    String desc = line.substring(1);
-                    WordContent val = new WordDef(desc);
-                    if (Cache.lastRefWord != null) {
-                        Cache.lastRefWord.addContent(val);
-                    } else {
-                        Cache.updateContent();
-                        Cache.lastContent = val;
-                    }
-                }
-                else if (line.startsWith("=")) {
-                    int pos = line.indexOf('+');
-                    WordContent val;
-
-                    if (pos == -1 || pos == line.length()-1) {
-                        String phrase = line.substring(1);
-                        val = new WordPhrase(phrase, "");
-                    } else {
-                        String phrase = line.substring(1, pos);
-                        String desc = line.substring(pos + 2);
-                        val = new WordPhrase(phrase, desc);
-                    }
-                    if (Cache.lastRefWord != null) {
-                        Cache.lastRefWord.addContent(val);
-                    } else {
-                        Cache.updateContent();
-                        Cache.lastContent = val;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                break;
+            // Nếu x lớn hơn, bỏ qua nửa bên trái
+            if (wordDAOS.get(m).getSpelling().compareTo(s) < 0) {
+                l = m + 1;
+            }
+            // Nếu x nhỏ hơn, bỏ qua nửa bên phải
+            else {
+                r = m - 1;
             }
         }
 
-        // Close the Scanner
-        scanner.close();
+        // phần tử không tồn tại
+        return -1;
+    }
+
+    public static List<String> searchWordList(String s) {
+        List<String> arr = new ArrayList<>();
+        int index = binarySearchWordList(s);
+        if (index >= 0) {
+            int up = index, down = index;
+            while (up >= 0 && index - up < 10 && wordDAOS.get(up).getSpelling().contains(s)) {
+                arr.add(wordDAOS.get(up).getSpelling());
+                up--;
+            }
+            while (down < wordDAOS.size() && down - index < 10 && wordDAOS.get(down).getSpelling().contains(s)) {
+                arr.add(wordDAOS.get(down).getSpelling());
+                down++;
+            }
+        }
+        return arr;
     }
 }
 
