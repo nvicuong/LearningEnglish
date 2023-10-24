@@ -3,6 +3,7 @@ package dictionaryapplication.dictionaryapplication;
 import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.DefaultAsyncHttpClient;
 
+
 import java.io.IOException;
 
 public class ApiController {
@@ -13,7 +14,7 @@ public class ApiController {
                 .setHeader("Accept-Encoding", "application/gzip")
                 .setHeader("X-RapidAPI-Key", "a3e6901cb7msh6d0dcabab249273p1cc558jsna9898d03c02b")
                 .setHeader("X-RapidAPI-Host", "google-translate1.p.rapidapi.com")
-                .setBody("q=Hello World!&target=ja&source=en")
+                .setBody("q=Hello World!&target=vi&source=en")
                 .execute()
                 .toCompletableFuture()
                 .thenAccept(System.out::println)
