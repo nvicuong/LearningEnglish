@@ -77,7 +77,7 @@ public class LogInController extends CommonController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        autoCompletionBinding = TextFields.bindAutoCompletion(userNameTextField, possibleSuggestions);
+//        autoCompletionBinding = TextFields.bindAutoCompletion(userNameTextField, possibleSuggestions);
         userNameTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {

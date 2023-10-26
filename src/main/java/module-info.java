@@ -8,7 +8,7 @@ module dictionaryapplication.dictionaryapplication {
     requires java.sql;
     requires async.http.client;
     requires voicerss.tts;
-    requires AudioPlayer;
+//    requires AudioPlayer;
     requires java.desktop;
     requires java.management;
     requires java.instrument;
