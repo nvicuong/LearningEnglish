@@ -1,1 +1,1 @@
-{"data":{"translations":[{"translatedText":"In the future, only hard work and diligence will make up for it"}]}}
+{"message":"You have exceeded the MONTHLY quota for Characters on your current plan, BASIC. Upgrade your plan at https:\/\/rapidapi.com\/googlecloud\/api\/google-translate1"}
