@@ -4,7 +4,7 @@ import model.Word;
 
 public class Help {
     public static Word formatWord(Word word) {
-        String spelling = word.getSpelling();
+        String spelling = word.getSpelling().replaceAll("\\^", "'");
         String pronunciation = word.getPronunciation().replaceAll("\\^", "'");
         String synonym = word.getSynonym().replaceAll("\\^", "'");
         String[] arr = word.getContent().replaceAll("\\^", "'").split("\\|");
