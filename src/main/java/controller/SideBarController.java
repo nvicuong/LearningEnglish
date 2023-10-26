@@ -198,8 +198,18 @@ public class SideBarController extends CommonController implements Initializable
         });
         searchListView.setItems(items);
 
+        searchListView.setOnMouseClicked(event -> {
+            if (searchListView.getSelectionModel().getSelectedItem() != null) {
+                try {
+                    searchWord(searchListView.getSelectionModel().getSelectedItem());
+                } catch (SQLException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            });
 
-        searchTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+            searchTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER && !searchListView.getItems().isEmpty()) {
