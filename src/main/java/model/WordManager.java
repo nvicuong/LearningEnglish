@@ -42,12 +42,10 @@ public class WordManager {
                 continue;
             } else if (arr.length == 4) {
                 Word newword = new Word(arr[0], arr[1], arr[2], arr[3]);
-                System.out.println(newword);
                 word.add(newword);
             }
             else {
                 Word word1 = new Word(arr[0], arr[1], arr[2], "");
-                System.out.println(word1);
                 word.add(word1);
             }
             index++;

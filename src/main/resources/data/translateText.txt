@@ -1,1 +1,1 @@
-{"data":{"translations":[{"translatedText":"whoever has money"}]}}
+{"data":{"translations":[{"translatedText":"In the future, only hard work and diligence will make up for it"}]}}
