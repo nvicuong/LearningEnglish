@@ -41,7 +41,14 @@ public class SearchTextController extends CommonController implements Initializa
     @FXML
     void translateTextEnToVi(MouseEvent event) throws IOException {
         String text = inputTextArea.getText();
-        translateAPI.translateText(text);
+        translateAPI.translateTextEntoVi(text);
+        loadOutputText();
+    }
+
+    @FXML
+    void translateTextVitoEn(MouseEvent event) throws IOException {
+        String text = inputTextArea.getText();
+        translateAPI.translateTextViToEn(text);
         loadOutputText();
     }
 

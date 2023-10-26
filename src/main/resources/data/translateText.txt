@@ -1,1 +1,1 @@
-{"data":{"translations":[{"translatedText":"Quảng ngu quá"}]}}
+{"data":{"translations":[{"translatedText":"whoever has money"}]}}

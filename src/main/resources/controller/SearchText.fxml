@@ -38,7 +38,7 @@
             <Image url="@../image/back.png" />
          </image>
       </ImageView>
-      <Button fx:id="vieToEngButton" layoutX="540.0" layoutY="255.0" mnemonicParsing="false" style="-fx-background-color: #10B1CF;" text="VIETNAMESE - ENGLISH" textFill="WHITE">
+      <Button fx:id="vieToEngButton" layoutX="540.0" layoutY="255.0" mnemonicParsing="false" onMouseClicked="#translateTextVitoEn" style="-fx-background-color: #10B1CF;" text="VIETNAMESE - ENGLISH" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
