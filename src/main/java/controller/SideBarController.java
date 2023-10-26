@@ -29,10 +29,8 @@ import java.util.*;
 
 public class SideBarController extends CommonController implements Initializable {
 
+
     private WordManager wordManager;
-
-
-
 
     private HistoryManager historyManager;
     private Parent homeParent;
@@ -46,6 +44,7 @@ public class SideBarController extends CommonController implements Initializable
     private Parent helpParent;
 
     private Parent showWordParent;
+
 
     private HomeController homeController;
 
@@ -62,6 +61,8 @@ public class SideBarController extends CommonController implements Initializable
 
     @FXML
     private ListView<String> searchListView;
+
+
 
     ObservableList<String> items = FXCollections.observableArrayList();
 
@@ -105,6 +106,12 @@ public class SideBarController extends CommonController implements Initializable
     @FXML
     private AnchorPane slider;
 
+    public WordManager getWordManager() {
+        return wordManager;
+    }
+    public HomeController getHomeController() {
+        return homeController;
+    }
 
     public BorderPane getBorderPane() {
         return borderPane;
@@ -164,6 +171,7 @@ public class SideBarController extends CommonController implements Initializable
         if (index >= 0) {
             Word word = wordManager.getEngWordIndex(index);
             historyManager.addWordToHistory(word);
+            homeController.updateHistoryList();
             showWordController.setContent(word);
             searchListView.setVisible(false);
             changeToShowWord();
@@ -355,6 +363,8 @@ public class SideBarController extends CommonController implements Initializable
 
         try {
             loadPage(homeParent);
+            homeController.updateHistoryList();
+            homeController.updateBookmarkList();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

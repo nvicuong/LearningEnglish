@@ -53,6 +53,12 @@ public class WordManager {
         return word;
     }
 
+    public Word getRandomWord() {
+        Random random = new Random();
+        int number = random.nextInt(wordList.size() - 1);
+        return wordList.get(number);
+    }
+
     private List<Word>  loadEngWord() throws IOException {
         InputStream inputStream = HistoryManager.class.getResourceAsStream("/data/wordEn.txt");
         String[] newWord = new String[120000];

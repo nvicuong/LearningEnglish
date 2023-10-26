@@ -1,32 +1,39 @@
 package model;
 
-import controller.ShowWordController;
-import help.Help;
-import javafx.scene.Parent;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BookMarkManager {
 
 
     private List<Word> wordBank;
+    private List<String> wordBankSpelling;
     private final String BOOKMARK_PATH = "src\\\\main\\\\resources\\\\data\\\\wordBank.txt";
 
     public BookMarkManager() {
         wordBank = readWordBank();
+        wordBankSpelling = new ArrayList<>();
+        updateWordBankSpelling();
     }
+
 
     public List<Word> getWordBank() {
         return wordBank;
     }
 
+    public List<String> getWordBankSpelling() {
+        return wordBankSpelling;
+    }
 
+    public void updateWordBankSpelling() {
+        wordBankSpelling.clear();
+        for (Word word : wordBank) {
+            wordBankSpelling.add(word.getSpelling());
+        }
+    }
 
     public void saveWordBank() throws IOException {
         File file = new File(BOOKMARK_PATH);
@@ -43,6 +50,7 @@ public class BookMarkManager {
             return word1.equals(word);
         });
         wordBank.add(0, word);
+        updateWordBankSpelling();
     }
 
     public List<Word> readWordBank() {

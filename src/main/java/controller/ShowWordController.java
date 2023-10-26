@@ -49,6 +49,7 @@ public class ShowWordController extends CommonController implements Initializabl
     void saveWord(MouseEvent event) throws IOException {
         bookMarkController.getBookMarkManager().addWordToBank(Help.unformatWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText())));
         bookMarkController.updateWord();
+        bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
     }
 
     @Override

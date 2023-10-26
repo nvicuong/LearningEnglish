@@ -5,12 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeController extends CommonController implements Initializable {
@@ -46,6 +46,22 @@ public class HomeController extends CommonController implements Initializable {
     @FXML
     private Label translateButton;
 
+    @FXML
+    private ListView<String> historyListView;
+
+    @FXML
+    private ScrollPane historyScrollPane;
+
+    @FXML
+    private ListView<String> bookmarkListView;
+
+    @FXML
+    private ScrollPane bookmarkScrollPane;
+
+    @FXML
+    private TitledPane historyTitledPane;
+
+
     public SideBarController getSideBarController() {
         return sideBarController;
     }
@@ -78,12 +94,26 @@ public class HomeController extends CommonController implements Initializable {
         sideBarController.getSearchController().changeToTranslateText(event);
     }
 
-
+    @FXML
+    void learnANewWord(MouseEvent event) throws IOException, SQLException {
+        sideBarController.searchWord(sideBarController.getWordManager().getRandomWord().getSpelling());
+    }
 
     @Override
     public void loadPage(Parent parent) throws IOException {
         sideBarController.getBorderPane().setCenter(parent);
     }
+
+    public void updateHistoryList() {
+        historyListView.getItems().clear();
+        historyListView.getItems().addAll(sideBarController.getHistoryManager().getHistorySpelling());
+    }
+
+    public void updateBookmarkList() {
+        bookmarkListView.getItems().clear();
+        bookmarkListView.getItems().addAll(sideBarController.getBookMarkController().getBookMarkManager().getWordBankSpelling());
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -95,6 +125,14 @@ public class HomeController extends CommonController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
+        historyListView = new ListView<>();
+        historyScrollPane.setContent(historyListView);
+
+        bookmarkListView = new ListView<>();
+        bookmarkScrollPane.setContent(bookmarkListView);
+
 
         addWordButton.setCursor(Cursor.HAND);
         learnNewWordButton.setCursor(Cursor.HAND);

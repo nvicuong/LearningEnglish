@@ -58,6 +58,7 @@ public class SearchWordController extends CommonController implements Initializa
     void removeAllWord(MouseEvent event) {
         historyManager.getHistoryWord().clear();
         updateWord();
+        searchController.getSideBarController().getHomeController().updateHistoryList();
     }
 
     public void updateWord() {

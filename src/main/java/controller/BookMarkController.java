@@ -18,6 +18,7 @@ import model.Word;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class BookMarkController extends CommonController implements Initializable {
@@ -129,6 +130,8 @@ public class BookMarkController extends CommonController implements Initializabl
         if (alert.showAndWait().get() == ButtonType.OK) {
             bookMarkManager.getWordBank().clear();
             updateWord();
+            bookMarkManager.updateWordBankSpelling();
+            sideBarController.getHomeController().updateBookmarkList();
         }
     }
 
@@ -145,6 +148,8 @@ public class BookMarkController extends CommonController implements Initializabl
             return word1.equals(word);
         });
         updateWord();
+        bookMarkManager.updateWordBankSpelling();
+        sideBarController.getHomeController().updateBookmarkList();
     }
 
     @Override
@@ -208,6 +213,20 @@ public class BookMarkController extends CommonController implements Initializabl
                     setText(null);
                 } else {
                     setText(item.substring(0, Math.min(item.length(), 50)));
+                }
+            }
+        });
+
+        //click 2 phát thì chuyển sang searh luôn
+        wordBankTableView.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 2) {
+                Word word = wordBankTableView.getSelectionModel().getSelectedItem();
+                if (word != null) {
+                    try {
+                        sideBarController.changeToShowWord(word);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });

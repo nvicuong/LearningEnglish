@@ -12,16 +12,30 @@ import java.util.*;
 public class HistoryManager {
 
     private List<Word> historyWord;
+
+    private List<String> historySpelling;
     private final String HISTORYWORD_PATH = "src\\\\main\\\\resources\\\\data\\\\historyWord.txt";
 
     public HistoryManager() {
+        historySpelling = new ArrayList<>();
         historyWord = readHistory();
+        updateHistorySpelling();
     }
 
     public List<Word> getHistoryWord() {
         return historyWord;
     }
+    public List<String> getHistorySpelling() {
+        updateHistorySpelling();
+        return historySpelling;
+    }
 
+    public void updateHistorySpelling() {
+        historySpelling.clear();
+        for (Word word : historyWord) {
+            historySpelling.add(word.getSpelling());
+        }
+    }
 
 
     public void saveWordToHistory() throws IOException {
@@ -39,6 +53,7 @@ public class HistoryManager {
             return word1.equals(word);
         });
         historyWord.add(0, word);
+        updateHistorySpelling();
     }
 
     public List<Word> readHistory() {

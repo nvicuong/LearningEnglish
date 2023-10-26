@@ -61,6 +61,7 @@ public class AddWordController extends CommonController implements Initializable
             Word word = Help.unformatWord(new Word(wordTextField.getText().toLowerCase(), pronunciationTextField.getText(), definitionTextArea.getText(), ""));
             bookMarkController.getBookMarkManager().addWordToBank(word);
             bookMarkController.updateWord();
+            bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
             showNotification("NOTIFICATION", "Add word successfully!");
         }
     }
