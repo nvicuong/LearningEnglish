@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 public class Word implements Comparable<Word>{
     private String spelling;
@@ -55,12 +56,7 @@ public class Word implements Comparable<Word>{
 
     @Override
     public String toString() {
-        return "WordDAO{" +
-                "spelling='" + spelling + '\'' +
-                ", pronunciation='" + pronunciation + '\'' +
-                ", content='" + content + '\'' +
-                ", synonym='" + synonym + '\'' +
-                '}';
+        return spelling + "? " + pronunciation + "? " + content + "? " + synonym;
     }
 
     /**
@@ -75,5 +71,19 @@ public class Word implements Comparable<Word>{
     @Override
     public int compareTo(Word o) {
         return Comparator.comparing(Word::getSpelling).compare(this, o);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Word word = (Word) o;
+        return Objects.equals(spelling, word.spelling);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(spelling, pronunciation, content, synonym);
     }
 }

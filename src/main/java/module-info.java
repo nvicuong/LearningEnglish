@@ -7,7 +7,14 @@ module dictionaryapplication.dictionaryapplication {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
     requires async.http.client;
+    requires voicerss.tts;
+//    requires AudioPlayer;
+    requires java.desktop;
+    requires java.management;
+    requires java.instrument;
 
-    opens dictionaryapplication.dictionaryapplication to javafx.fxml;
-    exports dictionaryapplication.dictionaryapplication;
+    opens controller to javafx.fxml;
+    exports controller;
+    exports model;
+    opens model to javafx.fxml;
 }

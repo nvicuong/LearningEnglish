@@ -1,6 +1,6 @@
 package database;
 
-import dictionaryapplication.dictionaryapplication.SourceReader;
+import model.HistoryManager;
 import model.Word;
 
 import java.io.BufferedReader;
@@ -62,7 +62,7 @@ public class ExecuteSQLFile {
     }
 
     public static void start(String index) throws SQLException {
-        InputStream inputStream = SourceReader.class.getResourceAsStream("/data/" + index + ".txt");
+        InputStream inputStream = HistoryManager.class.getResourceAsStream("/data/" + index + ".txt");
         if (inputStream == null) {
             System.err.println("File not found.");
             return;
