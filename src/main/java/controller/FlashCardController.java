@@ -98,12 +98,11 @@ public class FlashCardController implements Initializable {
 
 
     public void setContent(Word word) {
-        Word formatedWord = Help.formatWord(word);
-        spellingLabel.setText(formatedWord.getSpelling());
-        pronunciationLabel.setText(formatedWord.getPronunciation());
-        synonymLabel.setText(formatedWord.getSynonym());
-        contentTextArea.setText(formatedWord.getContent());
-        spellingViewButton.setText(formatedWord.getSpelling());
+        spellingLabel.setText(word.getSpelling());
+        pronunciationLabel.setText(word.getPronunciation());
+        synonymLabel.setText(word.getSynonym());
+        contentTextArea.setText(word.getContent());
+        spellingViewButton.setText(word.getSpelling());
         positionInListLabel.setText(String.valueOf(index + 1) + "/" + String.valueOf(wordList.size()));
     }
 

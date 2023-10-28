@@ -58,7 +58,7 @@ public class AddWordController extends CommonController implements Initializable
         if (wordTextField.getText().isEmpty() || wordTextField.getText().isBlank() || definitionTextArea.getText().isEmpty() || definitionTextArea.getText().isBlank()) {
             showNotification("WARNING", "word field and definition field must be not blank!");
         } else {
-            Word word = Help.unformatWord(new Word(wordTextField.getText().toLowerCase(), pronunciationTextField.getText(), definitionTextArea.getText(), ""));
+            Word word = new Word(wordTextField.getText(), pronunciationTextField.getText(), definitionTextArea.getText(), "");
             bookMarkController.getBookMarkManager().addWordToBank(word);
             bookMarkController.updateWord();
             bookMarkController.getSideBarController().getHomeController().updateBookmarkList();

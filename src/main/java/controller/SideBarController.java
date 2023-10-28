@@ -296,11 +296,15 @@ public class SideBarController extends CommonController implements Initializable
 
         try {
             wordManager = new WordManager();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        historyManager = new HistoryManager();
+        try {
+            historyManager = new HistoryManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         //search
         searchListView.setVisible(false);

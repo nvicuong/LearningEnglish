@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class Word implements Comparable<Word>{
+public class Word implements Comparable<Word>, Serializable {
     private String spelling;
     private String pronunciation;
     private String content;

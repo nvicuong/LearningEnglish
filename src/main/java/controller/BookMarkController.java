@@ -164,7 +164,11 @@ public class BookMarkController extends CommonController implements Initializabl
         }
 
 
-        bookMarkManager = new BookMarkManager();
+        try {
+            bookMarkManager = new BookMarkManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FlashCard.fxml"));
             flashCardParent = loader.load();
