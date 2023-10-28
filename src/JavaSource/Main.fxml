@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JavaSource.Main">
+   <children>
+      <ButtonBar layoutX="149.0" layoutY="122.0" prefHeight="40.0" prefWidth="200.0" />
+      <ImageView fx:id="myImageView" fitHeight="510.0" fitWidth="866.0" layoutX="-10.0" layoutY="-18.0">
+         <image>
+            <Image url="@../image/background.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
