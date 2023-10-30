@@ -20,6 +20,9 @@ public class Controller {
 
 
     @FXML
+    private Pane interView;
+
+    @FXML
     private Pane base;
 
     @FXML
@@ -55,6 +58,7 @@ public class Controller {
     @FXML
     private Text winStatus;
 
+    private boolean wordStatus = false;
     private int mistakes;
     private int correct;
     private Words word = new Words();
@@ -63,11 +67,15 @@ public class Controller {
     private List<String> myLetters;
     private List<String> answer;
 
-    public Controller() throws FileNotFoundException {
+    ArrayList<ArrayList<Integer>> pos = new ArrayList<>(26);
+
+    public Controller() throws FileNotFoundException
+    {
     }
 
 
     public void initialize() {
+        interView.setVisible(true);
         base.setVisible(false);
         base1.setVisible(false);
         base2.setVisible(false);
@@ -82,7 +90,7 @@ public class Controller {
         for (int i = 0; i < myWord.length(); i++) {
             list.add(myWord.charAt(i));
         }
-        //Collections.shuffle(list);
+        Collections.shuffle(list);
         System.out.println(list);
         myWord = myWord.toUpperCase();
         myLetters = Arrays.asList(myWord.split(""));
@@ -106,12 +114,19 @@ public class Controller {
     public void onClick(MouseEvent event) {
         String letter = ((Button)event.getSource()).getText();
         ((Button) event.getSource()).setDisable(true);
+        for (int i = 0; i < 26; i++) {
+            pos.add(new ArrayList<>());
+        }
+
         if(myLetters.contains(letter)){
-            correct++;
-            int letterIndex = myLetters.indexOf(letter);
-            answer.set(letterIndex*2, letter);
-            String res = String.join("", answer);
-            text.setText(res);
+            int letterIndex;
+            while ((letterIndex = myLetters.indexOf(letter)) != -1) {
+                correct++;
+                myLetters.set(letterIndex, ".");
+                answer.set(letterIndex * 2, letter);
+                String res = String.join("", answer);
+                text.setText(res);
+            }
             if(correct==myWord.length()){
                 winStatus.setText("You Win!");
                 buttons.setDisable(true);
@@ -137,10 +152,24 @@ public class Controller {
 
     @FXML
     public void newGame(){
-        for(int i=0; i<26; i++){
+        wordStatus = false;
+        for(int i=0; i<27; i++){
             buttons.getChildren().get(i).setDisable(false);
         }
         initialize();
+    }
+
+
+    @FXML
+    public void randomChange(MouseEvent event) {
+        wordStatus = true;
+        System.out.println("xoa het tu khong co trong myWord");
+        for(int i=0; i<27; i++){
+            buttons.getChildren().get(i).setDisable(true);
+        }
+        for(int i=0; i < myWord.length(); i++){
+            buttons.getChildren().get(myWord.charAt(i) - 'A').setDisable(false);
+        }
     }
 
 
@@ -150,6 +179,5 @@ public class Controller {
     public void displayImage() {
         myImageView.setImage(myImage);
     }
-
 
 }

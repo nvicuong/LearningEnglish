@@ -14,11 +14,15 @@
 
 <Pane prefHeight="510.0" prefWidth="866.0" style="-fx-background-color: Black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hangmanjavafx.Controller">
     <children>
-        <ImageView fitHeight="510.0" fitWidth="872.0" layoutX="1.0">
-            <image>
-                <Image url="@../../../data/background.jpg" />
-            </image>
-        </ImageView>
+      <Pane fx:id="interView" prefHeight="200.0" prefWidth="200.0">
+         <children>
+              <ImageView fitHeight="510.0" fitWidth="872.0">
+                  <image>
+                      <Image url="@../../../data/background.jpg" />
+                  </image>
+              </ImageView>
+         </children>
+      </Pane>
         <Pane fx:id="base" layoutX="498.0" layoutY="181.0" prefHeight="104.0" prefWidth="37.0">
             <children>
                 <Line endX="49.354736328125" endY="74.06736755371094" startX="15.0" startY="13.999984741210938" strokeWidth="5.0" style="-fx-stroke: black;" />
@@ -181,9 +185,9 @@
                 </Button>
             </children>
         </FlowPane>
-        <Text fx:id="text" fill="#40b9ff" layoutX="36.0" layoutY="138.0" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="338.1285705566406">
+        <Text fx:id="text" fill="#18242b" layoutX="36.0" layoutY="138.0" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="338.1285705566406">
             <font>
-                <Font size="50.0" />
+                <Font size="36.0" />
             </font>
         </Text>
         <Text fx:id="winStatus" fill="#f55b5b" layoutX="302.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="251.4000244140625">
@@ -196,8 +200,8 @@
                 <Font size="36.0" />
             </font>
         </Text>
-        <Button focusTraversable="false" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#newGame" style="-fx-background-color: #59D0F6#59D0F6;" text="New Game" />
-        <Button layoutX="105.0" layoutY="16.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Change Order" />
+        <Button focusTraversable="false" layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#newGame" style="-fx-background-color: #59D0F6#59D0F6;" text="New Game" />
+        <Button layoutX="105.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#randomChange" prefHeight="25.0" prefWidth="121.0" style="-fx-background-color: red;" text="Change Order" textAlignment="CENTER" textFill="WHITE" />
         <Line endX="574.9000244140625" endY="113.5" layoutX="205.0" layoutY="191.0" startX="183.0" startY="113.9453125" />
         <Line endX="213.20001220703125" endY="111.79998779296875" layoutX="175.0" layoutY="193.0" startX="213.20001220703125" startY="-180.20001220703125" />
         <Line endX="616.800048828125" endY="-167.40000915527344" layoutX="165.0" layoutY="181.0" startX="225.5999755859375" startY="-167.40000915527344" />
