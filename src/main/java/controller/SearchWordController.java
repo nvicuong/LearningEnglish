@@ -78,7 +78,11 @@ public class SearchWordController extends CommonController implements Initializa
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //khởi tạo bảng
-        historyManager = new HistoryManager();
+        try {
+            historyManager = new HistoryManager();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         historyWordList = FXCollections.observableArrayList(historyManager.getHistoryWord());
         spellingCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("spelling"));
         pronunciationCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("pronunciation"));

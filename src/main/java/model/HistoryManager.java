@@ -2,10 +2,7 @@ package model;
 
 import help.Help;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 
@@ -14,17 +11,19 @@ public class HistoryManager {
     private List<Word> historyWord;
 
     private List<String> historySpelling;
-    private final String HISTORYWORD_PATH = "src\\\\main\\\\resources\\\\data\\\\historyWord.txt";
+    private final String HISTORYWORD_PATH = "src\\\\main\\\\resources\\\\data\\\\wordHistory.dat";
 
-    public HistoryManager() {
+    public HistoryManager() throws IOException {
         historySpelling = new ArrayList<>();
-        historyWord = readHistory();
+        historyWord = new ArrayList<>();
+        readHistory();
         updateHistorySpelling();
     }
 
     public List<Word> getHistoryWord() {
         return historyWord;
     }
+
     public List<String> getHistorySpelling() {
         updateHistorySpelling();
         return historySpelling;
@@ -39,13 +38,18 @@ public class HistoryManager {
 
 
     public void saveWordToHistory() throws IOException {
-        File file = new File(HISTORYWORD_PATH);
-        FileWriter writer = new FileWriter(file, false);
-        for (Word word : historyWord) {
-            writer.write(word.toString());
-            writer.write('\n');
+        try {
+            FileOutputStream fileInputStream = new FileOutputStream(HISTORYWORD_PATH);
+            ObjectOutputStream os = new ObjectOutputStream(fileInputStream);
+            if (!historyWord.isEmpty()) {
+                for (Word word : historyWord) {
+                    os.writeObject(word);
+                }
+            }
+            os.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        writer.close();
     }
 
     public void addWordToHistory(Word word) throws IOException {
@@ -56,21 +60,19 @@ public class HistoryManager {
         updateHistorySpelling();
     }
 
-    public List<Word> readHistory() {
-        InputStream inputStream = HistoryManager.class.getResourceAsStream("/data/historyWord.txt");
-        Scanner scanner = new Scanner(inputStream);
-        List<Word> words = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String s = scanner.nextLine();
-            String[] arr = s.split("\\? ");
-            if (arr.length == 4) {
-                words.add(new Word(arr[0], arr[1], arr[2], arr[3]));
+    public void readHistory() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(HISTORYWORD_PATH);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        Word w = null;
+        try {
+            while ((w = (Word) objectInputStream.readObject()) != null) {
+                historyWord.add(w);
             }
-            else {
-                words.add(new Word(arr[0], arr[1], arr[2], ""));
-            }
+        } catch (EOFException e) {
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return words;
+        objectInputStream.close();
     }
 }
 

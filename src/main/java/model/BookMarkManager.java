@@ -1,9 +1,6 @@
 package model;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class BookMarkManager {
@@ -11,11 +8,12 @@ public class BookMarkManager {
 
     private List<Word> wordBank;
     private List<String> wordBankSpelling;
-    private final String BOOKMARK_PATH = "src\\\\main\\\\resources\\\\data\\\\wordBank.txt";
+    private final String BOOKMARK_PATH = "src\\\\main\\\\resources\\\\data\\\\wordBank.dat";
 
-    public BookMarkManager() {
-        wordBank = readWordBank();
+    public BookMarkManager() throws IOException {
+        wordBank = new ArrayList<>();
         wordBankSpelling = new ArrayList<>();
+        readWordBank();
         updateWordBankSpelling();
     }
 
@@ -36,13 +34,18 @@ public class BookMarkManager {
     }
 
     public void saveWordBank() throws IOException {
-        File file = new File(BOOKMARK_PATH);
-        FileWriter writer = new FileWriter(file, false);
-        for (Word word : wordBank) {
-            writer.write(word.toString());
-            writer.write('\n');
+        try {
+            FileOutputStream fileInputStream = new FileOutputStream(BOOKMARK_PATH);
+            ObjectOutputStream os = new ObjectOutputStream(fileInputStream);
+            if (!wordBank.isEmpty()) {
+                for (Word word : wordBank) {
+                    os.writeObject(word);
+                }
+            }
+            os.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        writer.close();
     }
 
     public void addWordToBank(Word word) throws IOException {
@@ -53,21 +56,18 @@ public class BookMarkManager {
         updateWordBankSpelling();
     }
 
-    public List<Word> readWordBank() {
-        InputStream inputStream = HistoryManager.class.getResourceAsStream("/data/wordBank.txt");
-        assert inputStream != null;
-        Scanner scanner = new Scanner(inputStream);
-        List<Word> words = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String s = scanner.nextLine();
-            String[] arr = s.split("\\? ");
-            if (arr.length == 4) {
-                words.add(new Word(arr[0], arr[1], arr[2], arr[3]));
+    public void readWordBank() throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(BOOKMARK_PATH);
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        Word w = null;
+        try {
+            while ((w = (Word) objectInputStream.readObject()) != null) {
+                wordBank.add(w);
             }
-            else {
-                words.add(new Word(arr[0], arr[1], arr[2], ""));
-            }
+        } catch (EOFException e) {
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return words;
+        objectInputStream.close();
     }
 }

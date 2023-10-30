@@ -47,7 +47,7 @@ public class ShowWordController extends CommonController implements Initializabl
 
     @FXML
     void saveWord(MouseEvent event) throws IOException {
-        bookMarkController.getBookMarkManager().addWordToBank(Help.unformatWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText())));
+        bookMarkController.getBookMarkManager().addWordToBank(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
         bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
     }
@@ -58,11 +58,10 @@ public class ShowWordController extends CommonController implements Initializabl
     }
 
     public void setContent(Word word) {
-        Word formatedWord = Help.formatWord(word);
-        spellingLabel.setText(formatedWord.getSpelling());
-        pronunciationLabel.setText(formatedWord.getPronunciation());
-        synonymLabel.setText(formatedWord.getSynonym());
-        contentTextArea.setText(formatedWord.getContent());
+        spellingLabel.setText(word.getSpelling());
+        pronunciationLabel.setText(word.getPronunciation());
+        synonymLabel.setText(word.getSynonym());
+        contentTextArea.setText(word.getContent());
     }
 
     public void init(BookMarkController bookMarkController) {
