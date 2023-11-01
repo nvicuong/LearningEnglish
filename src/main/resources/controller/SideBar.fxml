@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +18,7 @@
    <children>
       <BorderPane fx:id="borderPane" layoutX="238.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane prefHeight="90.0" prefWidth="1000.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="90.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
                   <Pane layoutX="244.0" layoutY="14.0" prefHeight="16.0" prefWidth="1000.0" style="-fx-background-color: #032d4d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <HBox layoutX="278.0" layoutY="16.0" prefHeight="74.0" prefWidth="463.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="16.0">
@@ -147,6 +148,11 @@
                         </Button>
                      </children>
                   </VBox>
+                  <ToggleButton fx:id="modeButton" layoutX="27.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="menuItem" text="DARKMODE" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </ToggleButton>
                </children>
             </AnchorPane>
          </left>

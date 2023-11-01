@@ -12,6 +12,7 @@ module dictionaryapplication.dictionaryapplication {
     requires java.desktop;
     requires java.management;
     requires java.instrument;
+    requires atlantafx.base;
 
     opens controller to javafx.fxml;
     exports controller;

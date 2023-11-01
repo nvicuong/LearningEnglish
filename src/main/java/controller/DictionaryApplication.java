@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import atlantafx.base.theme.*;
 
 import java.io.IOException;
 
@@ -16,7 +17,6 @@ public class DictionaryApplication extends Application {
     Parent sideBarParent;
     @Override
     public void start(Stage stage) throws Exception {
-
 
         FXMLLoader fxmlLoader = new FXMLLoader(DictionaryApplication.class.getResource("SideBar.fxml"));
         sideBarParent = fxmlLoader.load();

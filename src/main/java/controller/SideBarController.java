@@ -1,6 +1,10 @@
 package controller;
 
+import atlantafx.base.theme.NordDark;
+import atlantafx.base.theme.NordLight;
+import atlantafx.base.theme.PrimerLight;
 import javafx.animation.TranslateTransition;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -10,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.effect.Light;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -65,6 +70,9 @@ public class SideBarController extends CommonController implements Initializable
 
 
     ObservableList<String> items = FXCollections.observableArrayList();
+
+    @FXML
+    private ToggleButton modeButton;
 
     @FXML
     private BorderPane borderPane;
@@ -293,7 +301,18 @@ public class SideBarController extends CommonController implements Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        modeButton.setSelected(false);
+        Application.setUserAgentStylesheet(null);
+        modeButton.setText("DARKMODE");
+        modeButton.setOnAction(event -> {
+            if (modeButton.isSelected()) {
+                modeButton.setText("LIGHTMODE");
+                Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+            } else {
+                modeButton.setText("DARKMODE");
+                Application.setUserAgentStylesheet(null);
+            }
+        });
         try {
             wordManager = new WordManager();
         } catch (IOException | ClassNotFoundException e) {
@@ -386,6 +405,7 @@ public class SideBarController extends CommonController implements Initializable
         helpLeftButton.setCursor(Cursor.HAND);
         helpUpbutton.setCursor(Cursor.HAND);
         searchImageView.setCursor(Cursor.HAND);
+        modeButton.setCursor(Cursor.HAND);
         searchTextField.setCursor(Cursor.TEXT);
 
     }
