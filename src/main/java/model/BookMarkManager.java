@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.*;
 
 public class BookMarkManager {
-
-
     private List<Word> wordBank;
     private List<String> wordBankSpelling;
     private final String BOOKMARK_PATH = "src\\\\main\\\\resources\\\\data\\\\wordBank.dat";
@@ -69,5 +67,12 @@ public class BookMarkManager {
             throw new RuntimeException(e);
         }
         objectInputStream.close();
+    }
+
+    public Word getRandomWord() {
+        if (wordBank.isEmpty()) {
+            return new Word("Condungcainit", "", "tham lam", "");
+        }
+        return wordBank.get((int)(Math.random()* wordBank.size()));
     }
 }
