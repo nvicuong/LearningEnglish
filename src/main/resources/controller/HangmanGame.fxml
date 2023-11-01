@@ -48,6 +48,16 @@
             </ImageView>
             <Button fx:id="replayButton" layoutX="295.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#replay" prefHeight="67.0" prefWidth="138.0" style="-fx-background-color: #EA3FF7;" text="Replay" textFill="WHITE" />
               <FlowPane fx:id="flowPaneOrigin" hgap="7.0" layoutX="36.0" layoutY="300.0" prefHeight="116.0" prefWidth="328.0" vgap="7.0" />
+            <Button fx:id="correctButton" layoutX="295.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#changeToNextWord" prefHeight="67.0" prefWidth="138.0" style="-fx-background-color: #EA3680;" text="Correct! Next" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Text fx:id="correctAnswerText" fill="#f74141" layoutX="271.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct answer:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
         <Pane fx:id="base" layoutX="498.0" layoutY="181.0" prefHeight="104.0" prefWidth="37.0">

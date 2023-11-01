@@ -26,6 +26,12 @@ public class HangmanGameController implements Initializable {
     private BookMarkController bookMarkController;
 
     @FXML
+    private Text correctAnswerText;
+
+    @FXML
+    private Button correctButton;
+
+    @FXML
     private Button replayButton;
 
     @FXML
@@ -95,7 +101,6 @@ public class HangmanGameController implements Initializable {
         } else {
             index--;
         }
-        System.out.println(index);
         checkIsEmpty();
     }
 
@@ -139,8 +144,12 @@ public class HangmanGameController implements Initializable {
     }
 
     public void setContent(Word word) {
+        res = "";
+        correctAnswerText.setVisible(false);
+        correctButton.setVisible(false);
         replayButton.setVisible(false);
         myWord = word.getSpelling();
+        System.out.println(myWord);
         list.clear();
         String[] lines = word.getContent().split("\n");
         definitionText.setText(lines[0]);
@@ -185,7 +194,6 @@ public class HangmanGameController implements Initializable {
     }
 
     private void setButtonList() {
-        System.out.println(list);
         flowPaneOrigin.getChildren().clear();
         flowPaneTarget.getChildren().clear();
         for (int i = 0; i < list.size(); i++) {
@@ -203,8 +211,13 @@ public class HangmanGameController implements Initializable {
 
     public void checkWin() {
         if (res.equals(myWord)) {
-            System.out.println("ngon");
+            if (nextButton.isVisible()) {
+                correctButton.setVisible(true);
+            } else {
+                replayButton.setVisible(true);
+            }
         }
+
     }
 
     public void checkIsEmpty() {
@@ -236,6 +249,8 @@ public class HangmanGameController implements Initializable {
             man.setVisible(true);
             flowPaneOrigin.setDisable(true);
             replayButton.setVisible(true);
+            correctAnswerText.setText("Correct answer: " + myWord);
+            correctAnswerText.setVisible(true);
         }
     }
 
@@ -263,6 +278,7 @@ public class HangmanGameController implements Initializable {
         previousButton.setCursor(Cursor.HAND);
         makeSoundImageView.setCursor(Cursor.HAND);
         replayButton.setCursor(Cursor.HAND);
+        correctButton.setCursor(Cursor.HAND);
 
     }
 }
