@@ -7,7 +7,7 @@ import java.util.*;
 
 public class WordManager {
     private final List<Word> wordList;
-    private final String WORD_PATH = "src\\\\main\\\\resources\\\\data\\\\word.dat";
+    private final String WORD_PATH = "src/main/resources/data/word.dat";
 
     public WordManager() throws IOException, ClassNotFoundException {
         wordList = new ArrayList<>();

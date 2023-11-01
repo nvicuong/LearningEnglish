@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowWordController">
+<AnchorPane prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowWordController">
    <children>
       <Line endX="671.2000732421875" endY="7.62939453125E-6" layoutX="152.0" layoutY="95.0" startX="-100.0" />
       <Label layoutX="52.0" layoutY="128.0" text="Pronunciation:" textFill="#ff9500">
@@ -56,5 +56,13 @@
             <Image url="@../image/makeSound.png" />
          </image>
       </ImageView>
+      <Button fx:id="saveButton1" layoutX="617.0" layoutY="41.0" mnemonicParsing="false" onMouseClicked="#nextWord" prefHeight="31.0" prefWidth="107.0" style="-fx-background-color: #24A0ED;" text="NEXT WORD" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

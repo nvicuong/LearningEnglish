@@ -16,6 +16,7 @@ import model.Word;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ShowWordController extends CommonController implements Initializable {
@@ -43,6 +44,11 @@ public class ShowWordController extends CommonController implements Initializabl
     @FXML
     void makeSoundWord(MouseEvent event) throws Exception {
         VoiceRssAPI.speakWord(spellingLabel.getText());
+    }
+
+    @FXML
+    void nextWord(MouseEvent event) throws SQLException, IOException {
+        bookMarkController.getSideBarController().getHomeController().learnANewWord(event);
     }
 
     @FXML

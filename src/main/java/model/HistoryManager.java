@@ -11,7 +11,7 @@ public class HistoryManager {
     private List<Word> historyWord;
 
     private List<String> historySpelling;
-    private final String HISTORYWORD_PATH = "src\\\\main\\\\resources\\\\data\\\\wordHistory.dat";
+    private final String HISTORYWORD_PATH = "src/main/resources/data/wordHistory.dat";
 
     public HistoryManager() throws IOException {
         historySpelling = new ArrayList<>();

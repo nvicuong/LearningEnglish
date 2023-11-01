@@ -8,7 +8,7 @@ public class BookMarkManager {
 
     private List<Word> wordBank;
     private List<String> wordBankSpelling;
-    private final String BOOKMARK_PATH = "src\\\\main\\\\resources\\\\data\\\\wordBank.dat";
+    private final String BOOKMARK_PATH = "src/main/resources/data/wordBank.dat";
 
     public BookMarkManager() throws IOException {
         wordBank = new ArrayList<>();
