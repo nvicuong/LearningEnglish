@@ -2,22 +2,16 @@ package com.example.hangmanjavafx;
 
 
 import javafx.fxml.FXML;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Controller {
-
 
     @FXML
     private Pane interView;
@@ -32,7 +26,7 @@ public class Controller {
     private Pane base2;
 
     @FXML
-    private FlowPane buttons;
+    private FlowPane flowPaneOrigin;
 
     @FXML
     private Pane man;
@@ -40,8 +34,6 @@ public class Controller {
     @FXML
     private Pane foot;
 
-    @FXML
-    private Text realWord;
 
     @FXML
     private Pane foot1;
@@ -52,29 +44,69 @@ public class Controller {
     @FXML
     private Pane head;
 
-    @FXML
-    private Text text;
-
-    @FXML
-    private Text winStatus;
-
     private boolean wordStatus = false;
     private int mistakes;
-    private int correct;
     private Words word = new Words();
     private String myWord;
     private List<Character> list = new ArrayList<>();
-    private List<String> myLetters;
-    private List<String> answer;
 
+    private String res;
     ArrayList<ArrayList<Integer>> pos = new ArrayList<>(26);
+    @FXML
+    FlowPane flowPaneTarget = new FlowPane();
 
-    public Controller() throws FileNotFoundException
-    {
+
+    private void transisionTo(Button button, int x) {
+        button.setOnMouseClicked(event -> {
+            System.out.println(res);
+            if (flowPaneOrigin.getChildren().contains(button)) {
+                flowPaneTarget.getChildren().add(button);
+                res += button.getText().toLowerCase();
+                if (myWord.indexOf(res) != 0) {
+                    button.setStyle("-fx-background-color: #EB3324; -fx-text-fill: #FFFFFF;");
+                    checkMistake();
+                } else {
+                    checkWin();
+                    button.setStyle("-fx-background-color: #3580BB; -fx-text-fill: #FFFFFF;");
+                }
+                flowPaneOrigin.getChildren().remove(button);
+                Button newButton = new Button();
+                newButton.setMinWidth(40);
+                newButton.setMinHeight(40);
+                newButton.setVisible(false);
+                flowPaneOrigin.getChildren().add(x, newButton);
+            } else {
+                if (flowPaneTarget.getChildren().indexOf(button) == flowPaneTarget.getChildren().size() - 1) {
+                    flowPaneOrigin.getChildren().remove(x);
+                    flowPaneOrigin.getChildren().add(x, button);
+                    button.setStyle("-fx-background-color: #3580BB; -fx-text-fill: #FFFFFF;");
+                    flowPaneTarget.getChildren().remove(button);
+                    if (!res.isEmpty()) {
+                        res = res.substring(0, res.length() - 1);
+                    }
+                }
+            }
+        });
+    }
+
+    private void setButtonList() {
+        System.out.println(list);
+        for (int i = 0; i < list.size(); i++) {
+            char ch = list.get(i);
+            Button button = new Button(String.valueOf(ch).toUpperCase());
+            button.setMinWidth(40);
+            button.setMinHeight(40);
+            button.setLayoutX(50);
+            button.setLayoutY(50);
+            button.setStyle("-fx-background-color: #3580BB; -fx-text-fill: #FFFFFF;");
+            transisionTo(button, i);
+            flowPaneOrigin.getChildren().add(button);
+        }
     }
 
 
     public void initialize() {
+        res = "";
         interView.setVisible(true);
         base.setVisible(false);
         base1.setVisible(false);
@@ -84,100 +116,42 @@ public class Controller {
         foot1.setVisible(false);
         hand.setVisible(false);
         man.setVisible(false);
-        mistakes=0;
-        correct=0;
+        mistakes = 0;
+        flowPaneTarget.setLayoutX(50);
+        flowPaneTarget.setLayoutY(50);
+
         myWord = word.getRandomWord();
         for (int i = 0; i < myWord.length(); i++) {
             list.add(myWord.charAt(i));
         }
+        flowPaneOrigin.setAlignment(Pos.CENTER);
+        System.out.println(myWord);
         Collections.shuffle(list);
-        System.out.println(list);
-        myWord = myWord.toUpperCase();
-        myLetters = Arrays.asList(myWord.split(""));
-        System.out.println(myLetters);
-        answer = Arrays.asList(new String[myLetters.size()*2]);
-        for(int i=0; i< myLetters.size()*2; i++){
-            if(i%2==0){
-                answer.set(i, "_");
-            }else{
-                answer.set(i, " ");
-            }
-        }
-        String res = String.join("", answer);
-        text.setText(res);
-        winStatus.setText("");
-        realWord.setText("");
-        buttons.setDisable(false);
+        setButtonList();
+
     }
 
-    @FXML
-    public void onClick(MouseEvent event) {
-        String letter = ((Button)event.getSource()).getText();
-        ((Button) event.getSource()).setDisable(true);
-        for (int i = 0; i < 26; i++) {
-            pos.add(new ArrayList<>());
+    public void checkWin() {
+        if (res.equals(myWord)) {
+            System.out.println("ngon");
         }
+    }
 
-        if(myLetters.contains(letter)){
-            int letterIndex;
-            while ((letterIndex = myLetters.indexOf(letter)) != -1) {
-                correct++;
-                myLetters.set(letterIndex, ".");
-                answer.set(letterIndex * 2, letter);
-                String res = String.join("", answer);
-                text.setText(res);
-            }
-            if(correct==myWord.length()){
-                winStatus.setText("You Win!");
-                buttons.setDisable(true);
-            }
-        }else{
+    public void checkMistake() {
             mistakes++;
-            if(mistakes == 1) base.setVisible(true);
-            else if (mistakes ==2) base1.setVisible(true);
-            else if (mistakes ==3) base2.setVisible(true);
-            else if (mistakes ==4) head.setVisible(true);
-            else if (mistakes ==5) foot.setVisible(true);
-            else if (mistakes ==6) foot1.setVisible(true);
-            else if (mistakes ==7) hand.setVisible(true);
-            else if (mistakes ==8){
+            if (mistakes == 1) base.setVisible(true);
+            else if (mistakes == 2) base1.setVisible(true);
+            else if (mistakes == 3) base2.setVisible(true);
+            else if (mistakes == 4) head.setVisible(true);
+            else if (mistakes == 5) foot.setVisible(true);
+            else if (mistakes == 6) foot1.setVisible(true);
+            else if (mistakes == 7) hand.setVisible(true);
+            else if (mistakes == 8) {
                 hand.setVisible(false);
                 man.setVisible(true);
-                winStatus.setText("You Lose!");
-                realWord.setText("The actual word was " + myWord);
-                buttons.setDisable(true);
-            }
+                flowPaneOrigin.setDisable(true);
         }
     }
 
-    @FXML
-    public void newGame(){
-        wordStatus = false;
-        for(int i=0; i<27; i++){
-            buttons.getChildren().get(i).setDisable(false);
-        }
-        initialize();
-    }
-
-
-    @FXML
-    public void randomChange(MouseEvent event) {
-        wordStatus = true;
-        System.out.println("xoa het tu khong co trong myWord");
-        for(int i=0; i<27; i++){
-            buttons.getChildren().get(i).setDisable(true);
-        }
-        for(int i=0; i < myWord.length(); i++){
-            buttons.getChildren().get(myWord.charAt(i) - 'A').setDisable(false);
-        }
-    }
-
-
-    @FXML
-    ImageView myImageView;
-    Image myImage = new Image(String.valueOf(getClass().getResource("/data/background.jpg")));
-    public void displayImage() {
-        myImageView.setImage(myImage);
-    }
 
 }
