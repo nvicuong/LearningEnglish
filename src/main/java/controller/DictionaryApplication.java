@@ -23,16 +23,23 @@ public class DictionaryApplication extends Application {
                 "src/main/java/games/gener.cpp", "-o", "gener").start();
         compileProcess.waitFor();
 
-        int SIZE = 12, SHRT = 6, LONG = 2;
+        int SIZE = 12, SHRT = 8, LONG = 4;
 
         Process runProcess = new ProcessBuilder("./gener",
                 String.valueOf(SIZE), String.valueOf(SHRT), String.valueOf(LONG)).start();
         InputStream inputStream = runProcess.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            System.out.println("C++ Program Output: " + line);
+        for (int i = 0; i < SIZE + SHRT + LONG; i++) {
+            String line = bufferedReader.readLine();
+            System.out.print("C++ Program Output: ");
+            for (char c : line.toCharArray()) {
+                System.out.print(c);
+                if (i >= SHRT + LONG) {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
         }
 
         runProcess.waitFor();

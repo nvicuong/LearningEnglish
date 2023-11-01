@@ -21,10 +21,8 @@ namespace {
 #define x first
 #define y second
 
-const int MAX_ERRORS = 30;
+const int MAX_ERRORS = 100;
 int SIZE, SHRT, LONG, WORDNUM;
-
-const int MAX_ERRORS = 30;
 
 vector<pair<pii, pii>> old, res_pairs;
 
@@ -43,7 +41,13 @@ pii fill_word(vector<str> &matrix, const str &word) {
             if (angle == 3) return matrix[start.y+j][start.x+j];
             return '?';
         }();
-        if (c != '.' && c != word[j]) return end;
+        if (c != '.') {
+            if (c == word[j]) {
+                cnt++;
+            } else {
+                return end;
+            }
+        }
     }
 
     end.y = start.y + (angle == 1 ? 0 : leng-1);
@@ -72,7 +76,7 @@ int fill_matrix(vector<str> &matrix, const vector<str> &wordlist) {
             if (angle == -1) remains--;
             else {
                 res[angle]++;
-                res[0]++;
+                res[0] += cnt;
                 break;
             }
         }
@@ -86,7 +90,7 @@ int fill_matrix(vector<str> &matrix, const vector<str> &wordlist) {
     return point;
 }
 
-int main() {
+int main(int argc, char** argv) {
     cin.tie(nullptr) -> sync_with_stdio(false);
 
     SIZE = stoi(argv[1]);
@@ -113,7 +117,7 @@ int main() {
     int point = 0;
 
     vector<str> matrix(SIZE);
-    for (int tries = 0; tries < 500000 || best.empty(); tries++) {
+    for (int tries = 0; tries < 100000 || point == 0; tries++) {
         shuffle(all(long_wordlist), rng);
         shuffle(all(shrt_wordlist), rng);
 
@@ -132,13 +136,19 @@ int main() {
         }
     }
 
-    for (int i = 0; i < WORDNUM; i++) {
+    if (point == 0) {
+        cout << "No crossword matrix found.\n";
+        return 0;
+    }
+
+    rpt (i, 0, WORDNUM) {
         cout << resp[i] << ' ';
         cout << res_pairs[i].x.y << ' ';
         cout << res_pairs[i].x.x << ' ';
         cout << res_pairs[i].y.y << ' ';
         cout << res_pairs[i].y.x << '\n';
     }
+
     rpt (i, 0, SIZE) {
         for (char &c : best[i]) {
             if (c != '.') continue;
