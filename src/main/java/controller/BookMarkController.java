@@ -106,12 +106,14 @@ public class BookMarkController extends CommonController implements Initializabl
     @FXML
     void changeToCrosswordGame(MouseEvent event) throws IOException {
         loadPage(crosswordParent);
-        Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask(12, 7, 5);
-        new Thread(task).start();
+        if (crosswordGameController.getMatrixFlowPane().getChildren().isEmpty()) {
+            Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask(12, 7, 5);
+            new Thread(task).start();
 
-        task.setOnSucceeded(e -> {
-            crosswordGameController.loadMatrix();
-        });
+            task.setOnSucceeded(e -> {
+                crosswordGameController.loadMatrix();
+            });
+        }
 
     }
 
@@ -276,7 +278,6 @@ public class BookMarkController extends CommonController implements Initializabl
                 }
             }
         });
-
 
 
         addNewButton.setCursor(Cursor.HAND);

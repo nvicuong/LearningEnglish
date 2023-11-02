@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class CrosswordGameController implements Initializable {
+    public FlowPane getMatrixFlowPane() {
+        return matrixFlowPane;
+    }
+
     @FXML
     private FlowPane matrixFlowPane;
 
@@ -23,7 +27,15 @@ public class CrosswordGameController implements Initializable {
                 button.setMinWidth(35);
                 button.setMinHeight(35);
                 button.setText(String.valueOf(c).toUpperCase());
-                button.setStyle("-fx-background-color: transparent; -fx-font-size: 15px;");
+//                button.setStyle("-fx-background-color: transparent; -fx-font-size: 15px;");
+                button.setStyle("-fx-font-size: 15px;");
+                button.setOnDragDetected(event -> {
+                    System.out.println("drag " +  button.getText());
+                });
+
+                button.setOnMouseDragExited(event -> {
+                    System.out.println("dropped " + button.getText());
+                });
                 matrixFlowPane.getChildren().add(button);
             }
         }
