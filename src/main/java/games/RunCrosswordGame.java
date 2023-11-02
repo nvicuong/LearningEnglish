@@ -67,7 +67,6 @@ public class RunCrosswordGame {
 
         for (int i = 0; i < SIZE + SHRT + LONG; i++) {
             String line = bufferedReader.readLine();
-//            System.out.println(line);
             if (i < SHRT + LONG) {
                 String[] lineArr = line.split(" ");
                 wordList.put(lineArr[0], new Pair(new Point(Integer.parseInt(lineArr[1]), Integer.parseInt(lineArr[2])), new Point(Integer.parseInt(lineArr[3]), Integer.parseInt(lineArr[4]))));
@@ -76,7 +75,6 @@ public class RunCrosswordGame {
                     addToMatrix(i - SHRT - LONG, c);
                 }
             }
-            System.out.println();
         }
 
         runProcess.waitFor();

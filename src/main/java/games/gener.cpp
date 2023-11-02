@@ -155,12 +155,6 @@ int main(int argc, char** argv)
         }
         shrtnote.close();
     }
-
-    ofstream outfile;
-    outfile.open("src/main/java/games/target.txt");
-
-    if (outfile.is_open())
-    {
         vector<str> best;
         vector<str> resp;
         int point = 0;
@@ -210,9 +204,6 @@ int main(int argc, char** argv)
             }
             cout << best[i] << '\n';
         }
-        std::cout << "thanh cong";
-        outfile.close();
-    }
     else
     {
         std::cout << "Unable to open file"; // Thông báo nếu không mở được tệp tin
