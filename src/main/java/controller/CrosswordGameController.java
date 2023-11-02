@@ -15,19 +15,16 @@ public class CrosswordGameController implements Initializable {
     private FlowPane matrixFlowPane;
 
     public void loadMatrix() {
-        int count = 1;
-        System.out.println(matrixFlowPane.getHgap());
-        matrixFlowPane.setPrefWrapLength(12 * (30 + matrixFlowPane.getHgap()) + 20);
+        matrixFlowPane.getChildren().clear();
+        matrixFlowPane.setPrefWidth(RunCrosswordGame.getRunCrosswordGame().getMatrix().size() * (35 + matrixFlowPane.getVgap()) + 25);
         for (ArrayList<Character> arr : RunCrosswordGame.getRunCrosswordGame().getMatrix()) {
             for (Character c : arr) {
-                System.out.println(count);
-                count++;
                 Button button = new Button();
-                button.setMinWidth(30);
-                button.setMinHeight(30);
-                button.setText(String.valueOf(c));
+                button.setMinWidth(35);
+                button.setMinHeight(35);
+                button.setText(String.valueOf(c).toUpperCase());
+                button.setStyle("-fx-background-color: transparent; -fx-font-size: 15px;");
                 matrixFlowPane.getChildren().add(button);
-                System.out.println("tin chuan em nhe");
             }
         }
     }

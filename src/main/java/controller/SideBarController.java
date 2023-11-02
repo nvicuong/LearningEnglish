@@ -181,12 +181,21 @@ public class SideBarController extends CommonController implements Initializable
     @Override
     public void loadPage(Parent root) throws IOException {
         borderPane.setCenter(root);
+        checkSlide();
     }
 
 
     /**
      * Side Bar Transiting.
      */
+
+    public void checkSlide() {
+        if (slider.getTranslateX() == 0) {
+            borderPane.getCenter().setTranslateX(0);
+        } else {
+            borderPane.getCenter().setTranslateX(-100);
+        }
+    }
 
     public void searchBarViewControl() {
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -271,22 +280,38 @@ public class SideBarController extends CommonController implements Initializable
         menu.setOnMouseClicked(event -> {
             if (slider.getTranslateX() == -176) {
                 TranslateTransition slide = new TranslateTransition();
-                slide.setDuration(Duration.seconds(0.4));
-                slide.setNode(slider);
-                slide.setToX(0);
-                slide.play();
+                TranslateTransition slide1 = new TranslateTransition();
 
+                slide.setDuration(Duration.seconds(0.4));
+                slide1.setDuration(Duration.seconds(0.4));
+                slide.setNode(slider);
+                slide1.setNode(borderPane.getCenter());
+                slide.setToX(0);
+                slide1.setToX(0);
+                slide.play();
+                slide1.play();
+                borderPane.getCenter().setTranslateX(-80);
                 slider.setTranslateX(-176);
 
             } else {
                 TranslateTransition slide = new TranslateTransition();
-                slide.setDuration(Duration.seconds(0.4));
+                TranslateTransition slide1 = new TranslateTransition();
+
+
                 slide.setNode(slider);
+                slide1.setNode(borderPane.getCenter());
+
+                slide.setDuration(Duration.seconds(0.4));
+                slide1.setDuration(Duration.seconds(0.4));
 
                 slide.setToX(-176);
+                slide1.setToX(-80);
+
                 slide.play();
+                slide1.play();
 
                 slider.setTranslateX(0);
+                borderPane.getCenter().setTranslateX(0);
             }
         });
     }

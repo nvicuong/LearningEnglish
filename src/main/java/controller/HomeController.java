@@ -104,7 +104,7 @@ public class HomeController extends CommonController implements Initializable {
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        sideBarController.getBorderPane().setCenter(parent);
+        sideBarController.loadPage(parent);
     }
 
     public void updateHistoryList() throws IOException {

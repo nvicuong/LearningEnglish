@@ -18,7 +18,7 @@
    <children>
       <BorderPane fx:id="borderPane" layoutX="238.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane prefHeight="90.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="upAnchorPane" prefHeight="90.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
                <children>
                   <Pane layoutX="244.0" layoutY="14.0" prefHeight="16.0" prefWidth="1000.0" style="-fx-background-color: #032d4d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <HBox layoutX="278.0" layoutY="16.0" prefHeight="74.0" prefWidth="463.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="16.0">
@@ -156,9 +156,6 @@
                </children>
             </AnchorPane>
          </left>
-         <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </center>
       </BorderPane>
       <ListView fx:id="searchListView" layoutX="138.0" layoutY="68.0" prefHeight="200.0" prefWidth="394.0" />
    </children>

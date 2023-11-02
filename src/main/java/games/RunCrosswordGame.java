@@ -52,9 +52,8 @@ public class RunCrosswordGame {
     }
 
     public void createThread(int SIZE, int SHRT, int LONG) {
-        clearWordList();
-        clearMatrix(SIZE);
         new Thread(createTask(SIZE, SHRT, LONG)).start();
+
     }
 
     private void runCppFile(int SIZE, int SHRT, int LONG) throws IOException, InterruptedException {
@@ -87,6 +86,8 @@ public class RunCrosswordGame {
             @Override
             protected Void call() throws Exception {
                 // Thực hiện các tác vụ đồng bộ tại đây
+                clearWordList();
+                clearMatrix(SIZE);
                 runCppFile(SIZE, SHRT, LONG);
                 return null;
             }

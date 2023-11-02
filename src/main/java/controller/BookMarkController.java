@@ -1,9 +1,11 @@
 package controller;
 
+import games.RunCrosswordGame;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -93,7 +95,7 @@ public class BookMarkController extends CommonController implements Initializabl
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        sideBarController.getBorderPane().setCenter(parent);
+        sideBarController.loadPage(parent);
     }
 
     @FXML
@@ -104,7 +106,13 @@ public class BookMarkController extends CommonController implements Initializabl
     @FXML
     void changeToCrosswordGame(MouseEvent event) throws IOException {
         loadPage(crosswordParent);
-        crosswordGameController.loadMatrix();
+        Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask(12, 7, 5);
+        new Thread(task).start();
+
+        task.setOnSucceeded(e -> {
+            crosswordGameController.loadMatrix();
+        });
+
     }
 
     @FXML

@@ -63,7 +63,7 @@ public class ShowWordController extends CommonController implements Initializabl
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        bookMarkController.getSideBarController().getBorderPane().setCenter(parent);
+        bookMarkController.getSideBarController().loadPage(parent);
     }
 
     public void setContent(Word word) {

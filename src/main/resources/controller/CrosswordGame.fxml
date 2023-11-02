@@ -3,8 +3,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CrosswordGameController">
+<AnchorPane prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CrosswordGameController">
    <children>
-      <FlowPane fx:id="matrixFlowPane" layoutX="107.0" layoutY="100.0" prefHeight="290.0" prefWidth="360.0" />
+      <FlowPane fx:id="matrixFlowPane" layoutX="189.0" prefHeight="290.0" prefWidth="360.0" />
    </children>
 </AnchorPane>

@@ -67,7 +67,7 @@ public class LogInController extends CommonController implements Initializable {
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        homeController.getSideBarController().getBorderPane().setCenter(parent);
+        homeController.getSideBarController().loadPage(parent);
     }
 
     @FXML
