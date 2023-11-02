@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class BookMarkController extends CommonController implements Initializable {
 
+    private Parent crosswordParent;
+    private CrosswordGameController crosswordGameController;
     private Parent addWordParent;
     private Parent hangmanGameParent;
     private HangmanGameController hangmanGameController;
@@ -30,6 +32,9 @@ public class BookMarkController extends CommonController implements Initializabl
     private FlashCardController flashCardController;
     private AddWordController addWordController;
     private SideBarController sideBarController;
+
+    @FXML
+    private Button crosswordButton;
 
 
     @FXML
@@ -94,6 +99,12 @@ public class BookMarkController extends CommonController implements Initializabl
     @FXML
     public void changeToAddWord(MouseEvent event) throws IOException {
         loadPage(addWordParent);
+    }
+
+    @FXML
+    void changeToCrosswordGame(MouseEvent event) throws IOException {
+        loadPage(crosswordParent);
+        crosswordGameController.loadMatrix();
     }
 
     @FXML
@@ -180,11 +191,19 @@ public class BookMarkController extends CommonController implements Initializabl
             throw new RuntimeException(e);
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanGame.fxml"));
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanGame.fxml"));
             hangmanGameParent = loader.load();
             hangmanGameController = loader.getController();
             hangmanGameController.init(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CrosswordGame.fxml"));
+            crosswordParent = loader.load();
+            crosswordGameController = loader.getController();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
