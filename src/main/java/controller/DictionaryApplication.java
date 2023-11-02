@@ -35,7 +35,7 @@ public class DictionaryApplication extends Application {
         stage.getIcons().add(icon);
         stage.setScene(scene);
         stage.show();
-        RunCrosswordGame.getRunCrosswordGame().createThread(12, 5, 7);
+        RunCrosswordGame.getRunCrosswordGame().createThread(12, 7, 5);
 
         stage.setOnCloseRequest(event -> {
             event.consume();

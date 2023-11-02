@@ -60,15 +60,19 @@ public class RunCrosswordGame {
     private void runCppFile(int SIZE, int SHRT, int LONG) throws IOException, InterruptedException {
         Process compileProcess = new ProcessBuilder("g++",
                 "src/main/java/games/gener.cpp", "-o", "gener.exe").start();
-        compileProcess.waitFor();
+        if (compileProcess.waitFor() != 0) {
+            System.err.println("Failed to compile gener.cpp");
+            return;
+        }
 
-        Process runProcess = new ProcessBuilder("gener.exe",
+        Process runProcess = new ProcessBuilder("./gener.exe",
                 String.valueOf(SIZE), String.valueOf(SHRT), String.valueOf(LONG)).start();
         InputStream inputStream = runProcess.getInputStream();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         for (int i = 0; i < SIZE + SHRT + LONG; i++) {
             String line = bufferedReader.readLine();
+            System.out.println(line);
             if (i < SHRT + LONG) {
                 String[] lineArr = line.split(" ");
                 wordList.put(lineArr[0], new Pair(new Point(Integer.parseInt(lineArr[1]), Integer.parseInt(lineArr[2])), new Point(Integer.parseInt(lineArr[3]), Integer.parseInt(lineArr[4]))));

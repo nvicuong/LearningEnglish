@@ -10,7 +10,7 @@ using pii = pair<int, int>;
 
 template<class A, class B> bool chmax(A &a, const B b)
 {
-    return a<b&&(a=b,1);
+    return a < b && (a = b, 1);
 }
 
 namespace
@@ -36,20 +36,46 @@ vector<pair<pii, pii>> old, res_pairs;
 
 pii fill_word(vector<str> &matrix, const str &word)
 {
-    pii start, end = {-1, -1};
+    pii start, end;
     int leng = word.size();
 
-    int angle = rand(1, 3), cnt = 0;
-    start.y = rand(0, angle == 1 ? SIZE - 1 : SIZE - leng);
-    start.x = rand(0, angle == 2 ? SIZE - 1 : SIZE - leng);
+    int angle = rand(1, 4), cnt = 0;
+    if (angle == 1) {
+        start.x = rand(0, SIZE - leng);
+        start.y = rand(0, SIZE - 1);
+        end.x   = start.x + leng - 1;
+        end.y   = start.y;
+    }
+    if (angle == 2) {
+        start.x = rand(0, SIZE - 1);
+        start.y = rand(0, SIZE - leng);
+        end.x   = start.x;
+        end.y   = start.y + leng - 1;
+    }
+    if (angle == 3) {
+        start.x = rand(0, SIZE - leng);
+        start.y = rand(0, SIZE - leng);
+        end.x   = start.x + leng - 1;
+        end.y   = start.y + leng - 1;
+    }
+    if (angle == 4) {
+        start.x = rand(0, SIZE - leng);
+        start.y = rand(leng - 1, SIZE - 1);
+        end.x   = start.x + leng - 1;
+        end.y   = start.y - leng + 1;
+    }
+
+    assert(0 <= min({start.x, start.y, end.x, end.y}));
+    assert(max({start.x, start.y, end.x, end.y}) < SIZE);
 
     rpt (j, 0, leng)
     {
         char c = [&]() -> char
         {
-            if (angle == 1) return matrix[start.y][start.x+j];
-            if (angle == 2) return matrix[start.y+j][start.x];
-            if (angle == 3) return matrix[start.y+j][start.x+j];
+            if (angle == 1) return matrix[start.y][start.x + j];
+            if (angle == 2) return matrix[start.y + j][start.x];
+            if (angle == 3) return matrix[start.y + j][start.x + j];
+            if (angle == 4) return matrix[start.y - j][start.x + j];
             return '?';
         }();
         if (c != '.')
@@ -60,19 +86,20 @@ pii fill_word(vector<str> &matrix, const str &word)
             }
             else
             {
-                return end;
+                return { -1, -1};
             }
         }
     }
 
-    end.y = start.y + (angle == 1 ? 0 : leng-1);
-    end.x = start.x + (angle == 2 ? 0 : leng-1);
+    end.y = start.y + (angle == 1 ? 0 : leng - 1);
+    end.x = start.x + (angle == 2 ? 0 : leng - 1);
 
     rpt (j, 0, leng)
     {
-        if (angle == 1) matrix[start.y][start.x+j]   = word[j];
-        if (angle == 2) matrix[start.y+j][start.x]   = word[j];
-        if (angle == 3) matrix[start.y+j][start.x+j] = word[j];
+        if (angle == 1) matrix[start.y][start.x + j]   = word[j];
+        if (angle == 2) matrix[start.y + j][start.x]   = word[j];
+        if (angle == 3) matrix[start.y + j][start.x + j] = word[j];
+        if (angle == 4) matrix[start.y - j][start.x + j] = word[j];
     }
 
     old.emplace_back(start, end);
@@ -81,7 +108,7 @@ pii fill_word(vector<str> &matrix, const str &word)
 
 int fill_matrix(vector<str> &matrix, const vector<str> &wordlist)
 {
-    vector<int> res(4, 0);
+    vector<int> res(5, 0);
     old.clear();
 
     for (int i = 0; i < WORDNUM; i++)
@@ -106,7 +133,7 @@ int fill_matrix(vector<str> &matrix, const vector<str> &wordlist)
 
     int point = 1;
     point *= res[0] * res[0] * res[0];
-    point *= res[1] * res[2] * res[3];
+    point *= res[1] * res[2] * res[3] * res[4];
     return point;
 }
 
@@ -131,6 +158,7 @@ int main(int argc, char** argv)
     if (!longnote.is_open())
     {
         cout << "Không thể mở tệp long.txt" << endl;
+        return 0;
     }
     else
     {
@@ -145,6 +173,7 @@ int main(int argc, char** argv)
     if (!shrtnote.is_open())
     {
         cout << "Không thể mở tệp short.txt" << endl;
+        return 0;
     }
     else
     {
@@ -155,53 +184,53 @@ int main(int argc, char** argv)
         }
         shrtnote.close();
     }
-        vector<str> best;
-        vector<str> resp;
-        int point = 0;
+    vector<str> best;
+    vector<str> resp;
+    int point = -1;
 
-        vector<str> matrix(SIZE);
-        for (int tries = 0; tries < 10000 || point == 0; tries++)
+    vector<str> matrix(SIZE);
+    for (int tries = 0; tries < 10000 || point == -1; tries++)
+    {
+        shuffle(all(long_wordlist), rng);
+        shuffle(all(shrt_wordlist), rng);
+
+        vector<str> wordlist;
+        rpt (i, 0, LONG) wordlist.push_back(long_wordlist[i]);
+        rpt (i, 0, SHRT) wordlist.push_back(shrt_wordlist[i]);
+        shuffle(all(wordlist), rng);
+
+        fill(all(matrix), str(SIZE, '.'));
+        int cnt = fill_matrix(matrix, wordlist);
+
+        if (chmax(point, cnt))
         {
-            shuffle(all(long_wordlist), rng);
-            shuffle(all(shrt_wordlist), rng);
-
-            vector<str> wordlist;
-            rpt (i, 0, LONG) wordlist.push_back(long_wordlist[i]);
-            rpt (i, 0, SHRT) wordlist.push_back(shrt_wordlist[i]);
-            shuffle(all(wordlist), rng);
-
-            fill(all(matrix), str(SIZE, '.'));
-            int cnt = fill_matrix(matrix, wordlist);
-
-            if (chmax(point, cnt))
-            {
-                best = matrix;
-                resp = wordlist;
-                res_pairs = old;
-            }
+            best = matrix;
+            resp = wordlist;
+            res_pairs = old;
         }
-        if (point == 0)
+    }
+    if (point == -1)
+    {
+        cout << "No crossword matrix found.\n";
+        return 0;
+    }
+
+    rpt (i, 0, WORDNUM)
+    {
+        cout << resp[i] << ' ';
+        cout << res_pairs[i].x.y << ' ';
+        cout << res_pairs[i].x.x << ' ';
+        cout << res_pairs[i].y.y << ' ';
+        cout << res_pairs[i].y.x << '\n';
+    }
+
+    rpt (i, 0, SIZE)
+    {
+        for (char &c : best[i])
         {
-            cout << "No crossword matrix found.\n";
-            return 0;
+            if (c != '.') continue;
+            c = rand('a', 'z');
         }
-
-        rpt (i, 0, WORDNUM)
-        {
-            cout << resp[i] << ' ';
-            cout << res_pairs[i].x.y << ' ';
-            cout << res_pairs[i].x.x << ' ';
-            cout << res_pairs[i].y.y << ' ';
-            cout << res_pairs[i].y.x << '\n';
-        }
-
-        rpt (i, 0, SIZE)
-        {
-            for (char &c : best[i])
-            {
-                if (c != '.') continue;
-                c = rand('a', 'z');
-            }
-            cout << best[i] << '\n';
-        }
+        cout << best[i] << '\n';
+    }
 }
