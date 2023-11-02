@@ -47,13 +47,13 @@ public class ShowWordController extends CommonController implements Initializabl
     }
 
     @FXML
-    void nextWord(MouseEvent event) throws SQLException, IOException {
+    void nextWord(MouseEvent event) throws SQLException, IOException, ClassNotFoundException {
         bookMarkController.getSideBarController().getHomeController().learnANewWord(event);
     }
 
     @FXML
     void saveWord(MouseEvent event) throws IOException {
-        bookMarkController.getBookMarkManager().addWordToBank(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
+        BookMarkManager.getBookMarkManager().addWordToBank(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
         bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
     }

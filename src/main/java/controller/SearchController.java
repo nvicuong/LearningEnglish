@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+import model.HistoryManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -55,7 +56,6 @@ public class SearchController extends CommonController implements Initializable 
 
     public void init(SideBarController sideBarController) {
         this.sideBarController = sideBarController;
-        searchWordController.init(sideBarController.getHistoryManager());
     }
 
     @Override

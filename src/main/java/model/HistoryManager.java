@@ -1,6 +1,7 @@
 package model;
 
 import help.Help;
+import javafx.concurrent.Task;
 
 import java.io.*;
 import java.util.*;
@@ -8,15 +9,24 @@ import java.util.*;
 
 public class HistoryManager {
 
+    private static HistoryManager historyManager;
+
     private List<Word> historyWord;
 
     private List<String> historySpelling;
     private final String HISTORYWORD_PATH = "src/main/resources/data/wordHistory.dat";
 
-    public HistoryManager() throws IOException {
+    public static HistoryManager getHistoryManager() throws IOException {
+        if (historyManager == null) {
+            historyManager = new HistoryManager();
+        }
+        return historyManager;
+    }
+
+    private HistoryManager() throws IOException {
         historySpelling = new ArrayList<>();
         historyWord = new ArrayList<>();
-        readHistory();
+        new Thread(createTask()).start();
         updateHistorySpelling();
     }
 
@@ -60,7 +70,7 @@ public class HistoryManager {
         updateHistorySpelling();
     }
 
-    public void readHistory() throws IOException {
+    public void readHistory() throws IOException, EOFException {
         FileInputStream fileInputStream = new FileInputStream(HISTORYWORD_PATH);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         Word w = null;
@@ -68,11 +78,22 @@ public class HistoryManager {
             while ((w = (Word) objectInputStream.readObject()) != null) {
                 historyWord.add(w);
             }
-        } catch (EOFException e) {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         objectInputStream.close();
+    }
+
+    public Task<Void> createTask() {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Thực hiện các tác vụ đồng bộ tại đây
+                readHistory();
+                System.out.println("ngon");
+                return null;
+            }
+        };
     }
 }
 

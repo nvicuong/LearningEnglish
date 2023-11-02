@@ -29,7 +29,7 @@ ll rand(ll a, ll b)
 #define x first
 #define y second
 
-const int MAX_ERRORS = 100;
+const int MAX_ERRORS = 20;
 int SIZE, SHRT, LONG, WORDNUM;
 
 vector<pair<pii, pii>> old, res_pairs;
@@ -194,11 +194,11 @@ int main(int argc, char** argv)
 
         rpt (i, 0, WORDNUM)
         {
-            outfile << resp[i] << ' ';
-            outfile << res_pairs[i].x.y << ' ';
-            outfile << res_pairs[i].x.x << ' ';
-            outfile << res_pairs[i].y.y << ' ';
-            outfile << res_pairs[i].y.x << '\n';
+            cout << resp[i] << ' ';
+            cout << res_pairs[i].x.y << ' ';
+            cout << res_pairs[i].x.x << ' ';
+            cout << res_pairs[i].y.y << ' ';
+            cout << res_pairs[i].y.x << '\n';
         }
 
         rpt (i, 0, SIZE)
@@ -208,7 +208,7 @@ int main(int argc, char** argv)
                 if (c != '.') continue;
                 c = rand('a', 'z');
             }
-            outfile << best[i] << '\n';
+            cout << best[i] << '\n';
         }
         std::cout << "thanh cong";
         outfile.close();

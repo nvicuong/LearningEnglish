@@ -22,11 +22,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class BookMarkController extends CommonController implements Initializable {
-
-    public BookMarkManager getBookMarkManager() {
-        return bookMarkManager;
-    }
-    private BookMarkManager bookMarkManager;
     private Parent addWordParent;
     private Parent flashCardParent;
     private FlashCardController flashCardController;
@@ -83,9 +78,9 @@ public class BookMarkController extends CommonController implements Initializabl
         this.sideBarController = sideBarController;
     }
 
-    public void updateWord() {
+    public void updateWord() throws IOException {
         wordBankList.clear();
-        wordBankList.addAll(bookMarkManager.getWordBank());
+        wordBankList.addAll(BookMarkManager.getBookMarkManager().getWordBank());
     }
 
     @Override
@@ -101,7 +96,7 @@ public class BookMarkController extends CommonController implements Initializabl
     @FXML
     void changeToFlashCard(MouseEvent event) throws IOException {
         loadPage(flashCardParent);
-        flashCardController.start(bookMarkManager.getWordBank());
+        flashCardController.start(BookMarkManager.getBookMarkManager().getWordBank());
     }
 
     @FXML
@@ -122,21 +117,21 @@ public class BookMarkController extends CommonController implements Initializabl
     }
 
     @FXML
-    void removeAllWord(MouseEvent event) {
+    void removeAllWord(MouseEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("WARNING");
         alert.setHeaderText("Remove all");
         alert.setContentText("Are you sure to delete all?");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            bookMarkManager.getWordBank().clear();
+            BookMarkManager.getBookMarkManager().getWordBank().clear();
             updateWord();
-            bookMarkManager.updateWordBankSpelling();
+            BookMarkManager.getBookMarkManager().updateWordBankSpelling();
             sideBarController.getHomeController().updateBookmarkList();
         }
     }
 
     @FXML
-    public void removeWord(MouseEvent event) {
+    public void removeWord(MouseEvent event) throws IOException {
         int index = wordBankTableView.getSelectionModel().getSelectedIndex();
 
         if (index <= -1) {
@@ -144,11 +139,11 @@ public class BookMarkController extends CommonController implements Initializabl
         }
 
         Word word = new Word(spellingCollumn.getCellData(index), pronunciationCollumn.getCellData(index), contentCollumn.getCellData(index), synonymCollumn.getCellData(index));
-        bookMarkManager.getWordBank().removeIf(word1 -> {
+        BookMarkManager.getBookMarkManager().getWordBank().removeIf(word1 -> {
             return word1.equals(word);
         });
         updateWord();
-        bookMarkManager.updateWordBankSpelling();
+        BookMarkManager.getBookMarkManager().updateWordBankSpelling();
         sideBarController.getHomeController().updateBookmarkList();
     }
 
@@ -163,12 +158,6 @@ public class BookMarkController extends CommonController implements Initializabl
             throw new RuntimeException(e);
         }
 
-
-        try {
-            bookMarkManager = new BookMarkManager();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FlashCard.fxml"));
             flashCardParent = loader.load();
@@ -179,7 +168,11 @@ public class BookMarkController extends CommonController implements Initializabl
         }
 
         //khởi tạo bảng
-        wordBankList = FXCollections.observableArrayList(bookMarkManager.getWordBank());
+        try {
+            wordBankList = FXCollections.observableArrayList(BookMarkManager.getBookMarkManager().getWordBank());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         spellingCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("spelling"));
         pronunciationCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("pronunciation"));
         contentCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("content"));

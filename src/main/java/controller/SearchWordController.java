@@ -25,8 +25,6 @@ public class SearchWordController extends CommonController implements Initializa
 
     private SearchController searchController;
 
-    private HistoryManager historyManager;
-
     @FXML
     private ImageView back;
 
@@ -55,23 +53,20 @@ public class SearchWordController extends CommonController implements Initializa
     private TextField searchWordTextField;
 
     @FXML
-    void removeAllWord(MouseEvent event) {
-        historyManager.getHistoryWord().clear();
+    void removeAllWord(MouseEvent event) throws IOException {
+        HistoryManager.getHistoryManager().getHistoryWord().clear();
         updateWord();
         searchController.getSideBarController().getHomeController().updateHistoryList();
     }
 
-    public void updateWord() {
+    public void updateWord() throws IOException {
         historyWordList.clear();
-        historyWordList.addAll(historyManager.getHistoryWord());
+        historyWordList.addAll(HistoryManager.getHistoryManager().getHistoryWord());
     }
 
 
     public void init(SearchController searchController) {
         this.searchController = searchController;
-    }
-    public void init(HistoryManager historyManager) {
-        this.historyManager = historyManager;
     }
 
     @Override
@@ -79,11 +74,10 @@ public class SearchWordController extends CommonController implements Initializa
 
         //khởi tạo bảng
         try {
-            historyManager = new HistoryManager();
+            historyWordList = FXCollections.observableArrayList(HistoryManager.getHistoryManager().getHistoryWord());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        historyWordList = FXCollections.observableArrayList(historyManager.getHistoryWord());
         spellingCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("spelling"));
         pronunciationCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("pronunciation"));
         contentCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("content"));
@@ -119,7 +113,7 @@ public class SearchWordController extends CommonController implements Initializa
                 if (word != null) {
                     try {
                         searchController.getSideBarController().searchWord(word.getSpelling());
-                    } catch (SQLException | IOException e) {
+                    } catch (SQLException | IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 }

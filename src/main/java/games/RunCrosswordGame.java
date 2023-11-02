@@ -1,44 +1,104 @@
 package games;
+
+import javafx.concurrent.Task;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class RunCrosswordGame {
-    public static boolean start(int size, int longWord, int shorWord) {
-        try {
-            // Đường dẫn đến chương trình C++ đã biên dịch
+    private static RunCrosswordGame runCrosswordGame;
 
-            String compileCommand = "g++ -o program src/main/java/games/gener.cpp";
-            Process compileProcess = Runtime.getRuntime().exec(compileCommand);
-            compileProcess.waitFor();
+    private ArrayList<ArrayList<Character>> matrix;
 
-            // Chạy chương trình C++ đã biên dịch
-            String runCommand = "./program " + size + " " + longWord + " " + shorWord;
-            Process runProcess = Runtime.getRuntime().exec(runCommand);
-
-            /*String currentDir = System.getProperty("user.dir");
-            String command = currentDir + "\\src\\test.exe";
-            // Thay thế "path/to/your/cpp/program.exe" bằng đường dẫn thực tế của chương trình C++ đã biên dịch
-
-            // Tạo một quy trình và thực hiện lệnh hệ thống
-            Process process = Runtime.getRuntime().exec(command);*/
-
-            // Đọc dữ liệu đầu ra từ quy trình
-            BufferedReader reader = new BufferedReader(new InputStreamReader(runProcess.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            // Đợi quy trình hoàn thành
-            runProcess.waitFor();
-            return true;
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return false;
+    private void init(int SIZE) {
+        for (int i = 0; i < SIZE; i++) {
+            matrix.add(new ArrayList<>());
         }
     }
 
-    public static void main(String[] args) {
-        start(13, 7, 6);
+    private void addToMatrix(int x, char c) {
+//        System.out.println(x + " " + c);
+        matrix.get(x).add(c);
+    }
+
+    private void printMatrix() {
+        for (ArrayList<Character> a : matrix) {
+            for (char i : a) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+        }
+        System.out.println(matrix.get(1).get(5));
+    }
+
+    private void clearMatrix() {
+        matrix = new ArrayList<>();
+    }
+
+    private HashMap<String, Pair> wordList;
+
+    public static RunCrosswordGame getRunCrosswordGame() {
+        if (runCrosswordGame == null) {
+            runCrosswordGame = new RunCrosswordGame();
+        }
+        return runCrosswordGame;
+    }
+
+    public void createThread(int SIZE, int SHRT, int LONG) {
+        wordList = new HashMap<>();
+        matrix = new ArrayList<>();
+        init(12);
+        new Thread(createTask(SIZE, SHRT, LONG)).start();
+    }
+
+    private void runCppFile(int SIZE, int SHRT, int LONG) throws IOException, InterruptedException {
+        Process compileProcess = new ProcessBuilder("g++",
+                "src/main/java/games/gener.cpp", "-o", "gener.exe").start();
+        compileProcess.waitFor();
+
+        Process runProcess = new ProcessBuilder("gener.exe",
+                String.valueOf(SIZE), String.valueOf(SHRT), String.valueOf(LONG)).start();
+        InputStream inputStream = runProcess.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+        for (int i = 0; i < SIZE + SHRT + LONG; i++) {
+            String line = bufferedReader.readLine();
+//            System.out.println(line);
+            if (i < SHRT + LONG) {
+                String[] lineArr = line.split(" ");
+                wordList.put(lineArr[0], new Pair(new Point(Integer.parseInt(lineArr[1]), Integer.parseInt(lineArr[2])), new Point(Integer.parseInt(lineArr[3]), Integer.parseInt(lineArr[4]))));
+            } else {
+                for (char c : line.toCharArray()) {
+                    addToMatrix(i - SHRT - LONG, c);
+                }
+            }
+            System.out.println();
+        }
+
+        runProcess.waitFor();
+    }
+
+    public Task<Void> createTask(int SIZE, int SHRT, int LONG) {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Thực hiện các tác vụ đồng bộ tại đây
+                runCppFile(SIZE, SHRT, LONG);
+                return null;
+            }
+        };
+    }
+
+    public ArrayList<ArrayList<Character>> getMatrix() {
+        return matrix;
+    }
+
+    public HashMap<String, Pair> getWordList() {
+        System.out.println(wordList);
+        return wordList;
     }
 }
