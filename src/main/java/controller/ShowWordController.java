@@ -16,11 +16,15 @@ import model.Word;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ShowWordController extends CommonController implements Initializable {
 
     private BookMarkController bookMarkController;
+
+    @FXML
+    private Button nextWordButton;
 
     @FXML
     private TextArea contentTextArea;
@@ -46,15 +50,20 @@ public class ShowWordController extends CommonController implements Initializabl
     }
 
     @FXML
+    void nextWord(MouseEvent event) throws SQLException, IOException, ClassNotFoundException {
+        bookMarkController.getSideBarController().getHomeController().learnANewWord(event);
+    }
+
+    @FXML
     void saveWord(MouseEvent event) throws IOException {
-        bookMarkController.getBookMarkManager().addWordToBank(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
+        BookMarkManager.getBookMarkManager().addWordToBank(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
         bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
     }
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        bookMarkController.getSideBarController().getBorderPane().setCenter(parent);
+        bookMarkController.getSideBarController().loadPage(parent);
     }
 
     public void setContent(Word word) {
@@ -77,5 +86,6 @@ public class ShowWordController extends CommonController implements Initializabl
 
         makeSoundImageView.setCursor(Cursor.HAND);
         saveButton.setCursor(Cursor.HAND);
+        nextWordButton.setCursor(Cursor.HAND);
     }
 }

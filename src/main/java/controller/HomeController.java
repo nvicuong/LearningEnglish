@@ -7,6 +7,9 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import model.BookMarkManager;
+import model.HistoryManager;
+import model.WordManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -95,23 +98,23 @@ public class HomeController extends CommonController implements Initializable {
     }
 
     @FXML
-    void learnANewWord(MouseEvent event) throws IOException, SQLException {
-        sideBarController.searchWord(sideBarController.getWordManager().getRandomWord().getSpelling());
+    void learnANewWord(MouseEvent event) throws IOException, SQLException, ClassNotFoundException {
+        sideBarController.searchWord(WordManager.getWordManager().getRandomWord().getSpelling());
     }
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        sideBarController.getBorderPane().setCenter(parent);
+        sideBarController.loadPage(parent);
     }
 
-    public void updateHistoryList() {
+    public void updateHistoryList() throws IOException {
         historyListView.getItems().clear();
-        historyListView.getItems().addAll(sideBarController.getHistoryManager().getHistorySpelling());
+        historyListView.getItems().addAll(HistoryManager.getHistoryManager().getHistorySpelling());
     }
 
-    public void updateBookmarkList() {
+    public void updateBookmarkList() throws IOException {
         bookmarkListView.getItems().clear();
-        bookmarkListView.getItems().addAll(sideBarController.getBookMarkController().getBookMarkManager().getWordBankSpelling());
+        bookmarkListView.getItems().addAll(BookMarkManager.getBookMarkManager().getWordBankSpelling());
     }
 
 

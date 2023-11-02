@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
+import model.BookMarkManager;
 import model.Word;
 
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class AddWordController extends CommonController implements Initializable
             showNotification("WARNING", "word field and definition field must be not blank!");
         } else {
             Word word = new Word(wordTextField.getText(), pronunciationTextField.getText(), definitionTextArea.getText(), "");
-            bookMarkController.getBookMarkManager().addWordToBank(word);
+            BookMarkManager.getBookMarkManager().addWordToBank(word);
             bookMarkController.updateWord();
             bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
             showNotification("NOTIFICATION", "Add word successfully!");
@@ -80,7 +81,7 @@ public class AddWordController extends CommonController implements Initializable
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        bookMarkController.getSideBarController().getBorderPane().setCenter(parent);
+        bookMarkController.getSideBarController().loadPage(parent);
     }
 
     @Override
