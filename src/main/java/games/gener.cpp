@@ -182,7 +182,7 @@ int main(int argc, char** argv)
         }
         if (point == 0)
         {
-            outfile << "No crossword matrix found.\n";
+            std::cout << "No crossword matrix found.\n";
             return 0;
         }
 
@@ -204,8 +204,5 @@ int main(int argc, char** argv)
             }
             cout << best[i] << '\n';
         }
-    else
-    {
-        std::cout << "Unable to open file"; // Thông báo nếu không mở được tệp tin
-    }
+
 }
