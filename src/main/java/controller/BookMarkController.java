@@ -101,8 +101,6 @@ public class BookMarkController extends CommonController implements Initializabl
     }
 
     @FXML
-<<<<<<< Updated upstream
-=======
     void changeToCrosswordGame(MouseEvent event) throws IOException {
         loadPage(crosswordParent);
         if (crosswordGameController.getMatrixFlowPane().getChildren().isEmpty()) {
@@ -117,7 +115,6 @@ public class BookMarkController extends CommonController implements Initializabl
     }
 
     @FXML
->>>>>>> Stashed changes
     void changeToFlashCard(MouseEvent event) throws IOException {
         loadPage(flashCardParent);
         flashCardController.start(bookMarkManager.getWordBank());
