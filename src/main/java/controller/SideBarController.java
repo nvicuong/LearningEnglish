@@ -1,6 +1,10 @@
 package controller;
 
+import atlantafx.base.theme.NordDark;
+import atlantafx.base.theme.NordLight;
+import atlantafx.base.theme.PrimerLight;
 import javafx.animation.TranslateTransition;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -10,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.effect.Light;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -28,11 +33,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SideBarController extends CommonController implements Initializable {
-
-
-    private WordManager wordManager;
-
-    private HistoryManager historyManager;
     private Parent homeParent;
     private Parent searchMainParent;
 
@@ -65,6 +65,9 @@ public class SideBarController extends CommonController implements Initializable
 
 
     ObservableList<String> items = FXCollections.observableArrayList();
+
+    @FXML
+    private ToggleButton modeButton;
 
     @FXML
     private BorderPane borderPane;
@@ -106,18 +109,12 @@ public class SideBarController extends CommonController implements Initializable
     @FXML
     private AnchorPane slider;
 
-    public WordManager getWordManager() {
-        return wordManager;
-    }
     public HomeController getHomeController() {
         return homeController;
     }
 
     public BorderPane getBorderPane() {
         return borderPane;
-    }
-    public HistoryManager getHistoryManager() {
-        return historyManager;
     }
 
     public SearchController getSearchController() {
@@ -149,7 +146,7 @@ public class SideBarController extends CommonController implements Initializable
     }
 
     @FXML
-    void searchWordButton(MouseEvent event) throws IOException, SQLException {
+    void searchWordButton(MouseEvent event) throws IOException, SQLException, ClassNotFoundException {
         if (searchListView.getSelectionModel().getSelectedItem() == null) {
             searchWord(searchTextField.getText());
         } else {
@@ -166,11 +163,11 @@ public class SideBarController extends CommonController implements Initializable
         loadPage(showWordParent);
     }
 
-    public void searchWord(String s) throws SQLException, IOException {
-        int index = wordManager.binarySearchWordOnly(s);
+    public void searchWord(String s) throws SQLException, IOException, ClassNotFoundException {
+    int index = WordManager.getWordManager().binarySearchWordOnly(s);
         if (index >= 0) {
-            Word word = wordManager.getEngWordIndex(index);
-            historyManager.addWordToHistory(word);
+            Word word = WordManager.getWordManager().getEngWordIndex(index);
+            HistoryManager.getHistoryManager().addWordToHistory(word);
             homeController.updateHistoryList();
             showWordController.setContent(word);
             searchListView.setVisible(false);
@@ -195,7 +192,12 @@ public class SideBarController extends CommonController implements Initializable
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             items.clear();
             searchListView.setVisible(!newValue.isEmpty());
-            List<String> s = wordManager.searchWordList(newValue);
+            List<String> s = null;
+            try {
+                s = WordManager.getWordManager().searchWordList(newValue);
+            } catch (IOException | ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
             items.addAll(s);
             int size = searchListView.getItems().size();
             if (size < 10) {
@@ -210,7 +212,7 @@ public class SideBarController extends CommonController implements Initializable
             if (searchListView.getSelectionModel().getSelectedItem() != null) {
                 try {
                     searchWord(searchListView.getSelectionModel().getSelectedItem());
-                } catch (SQLException | IOException e) {
+                } catch (SQLException | IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -223,7 +225,7 @@ public class SideBarController extends CommonController implements Initializable
                 if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER && !searchListView.getItems().isEmpty()) {
                     try {
                         searchWord(searchTextField.getText());
-                    } catch (SQLException | IOException e) {
+                    } catch (SQLException | IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 } else if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER) {
@@ -242,13 +244,13 @@ public class SideBarController extends CommonController implements Initializable
                     if (searchListView.getSelectionModel().getSelectedItem() == null) {
                         try {
                             searchWord(searchTextField.getText());
-                        } catch (SQLException | IOException e) {
+                        } catch (SQLException | IOException | ClassNotFoundException e) {
                             throw new RuntimeException(e);
                         }
                     } else {
                         try {
                             searchWord(searchListView.getSelectionModel().getSelectedItem());
-                        } catch (SQLException | IOException e) {
+                        } catch (SQLException | IOException | ClassNotFoundException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -293,18 +295,18 @@ public class SideBarController extends CommonController implements Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        try {
-            wordManager = new WordManager();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            historyManager = new HistoryManager();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        modeButton.setSelected(false);
+        Application.setUserAgentStylesheet(null);
+        modeButton.setText("DARKMODE");
+        modeButton.setOnAction(event -> {
+            if (modeButton.isSelected()) {
+                modeButton.setText("LIGHTMODE");
+                Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+            } else {
+                modeButton.setText("DARKMODE");
+                Application.setUserAgentStylesheet(null);
+            }
+        });
 
         //search
         searchListView.setVisible(false);
@@ -386,6 +388,7 @@ public class SideBarController extends CommonController implements Initializable
         helpLeftButton.setCursor(Cursor.HAND);
         helpUpbutton.setCursor(Cursor.HAND);
         searchImageView.setCursor(Cursor.HAND);
+        modeButton.setCursor(Cursor.HAND);
         searchTextField.setCursor(Cursor.TEXT);
 
     }

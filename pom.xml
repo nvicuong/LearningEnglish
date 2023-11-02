@@ -71,6 +71,11 @@
       <artifactId>flexmark-ext-media-tags</artifactId>
       <version>0.42.14</version>
     </dependency>
+    <dependency>
+      <groupId>io.github.mkpaz</groupId>
+      <artifactId>atlantafx-base</artifactId>
+      <version>2.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>

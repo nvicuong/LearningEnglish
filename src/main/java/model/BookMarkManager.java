@@ -1,19 +1,28 @@
 package model;
 
+import javafx.concurrent.Task;
+
 import java.io.*;
 import java.util.*;
 
 public class BookMarkManager {
 
-
+    private static BookMarkManager bookMarkManager;
     private List<Word> wordBank;
     private List<String> wordBankSpelling;
     private final String BOOKMARK_PATH = "src/main/resources/data/wordBank.dat";
 
-    public BookMarkManager() throws IOException {
+    public static BookMarkManager getBookMarkManager() throws IOException {
+        if (bookMarkManager == null) {
+            bookMarkManager = new BookMarkManager();
+        }
+        return bookMarkManager;
+    }
+
+    private BookMarkManager() throws IOException {
         wordBank = new ArrayList<>();
         wordBankSpelling = new ArrayList<>();
-        readWordBank();
+        new Thread(createTask()).start();
         updateWordBankSpelling();
     }
 
@@ -69,5 +78,16 @@ public class BookMarkManager {
             throw new RuntimeException(e);
         }
         objectInputStream.close();
+    }
+
+    public Task<Void> createTask() {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Thực hiện các tác vụ đồng bộ tại đây
+                readWordBank();
+                return null;
+            }
+        };
     }
 }

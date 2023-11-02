@@ -23,15 +23,18 @@ import java.util.ResourceBundle;
 
 public class BookMarkController extends CommonController implements Initializable {
 
-    public BookMarkManager getBookMarkManager() {
-        return bookMarkManager;
-    }
-    private BookMarkManager bookMarkManager;
+    private Parent crosswordParent;
+    private CrosswordGameController crosswordGameController;
     private Parent addWordParent;
+    private Parent hangmanGameParent;
+    private HangmanGameController hangmanGameController;
     private Parent flashCardParent;
     private FlashCardController flashCardController;
     private AddWordController addWordController;
     private SideBarController sideBarController;
+
+    @FXML
+    private Button crosswordButton;
 
 
     @FXML
@@ -68,7 +71,7 @@ public class BookMarkController extends CommonController implements Initializabl
     private Button flashCardButton;
 
     @FXML
-    private Button gameButton;
+    private Button hangmanGameButton;
 
     @FXML
     private Button removeAllButton;
@@ -83,9 +86,9 @@ public class BookMarkController extends CommonController implements Initializabl
         this.sideBarController = sideBarController;
     }
 
-    public void updateWord() {
+    public void updateWord() throws IOException {
         wordBankList.clear();
-        wordBankList.addAll(bookMarkManager.getWordBank());
+        wordBankList.addAll(BookMarkManager.getBookMarkManager().getWordBank());
     }
 
     @Override
@@ -99,9 +102,25 @@ public class BookMarkController extends CommonController implements Initializabl
     }
 
     @FXML
+    void changeToCrosswordGame(MouseEvent event) throws IOException {
+        loadPage(crosswordParent);
+        crosswordGameController.loadMatrix();
+    }
+
+    @FXML
     void changeToFlashCard(MouseEvent event) throws IOException {
         loadPage(flashCardParent);
-        flashCardController.start(bookMarkManager.getWordBank());
+        flashCardController.start(BookMarkManager.getBookMarkManager().getWordBank());
+    }
+
+    @FXML
+    void changeToHangmanGame(MouseEvent event) throws IOException {
+        if (BookMarkManager.getBookMarkManager().getWordBank().isEmpty()) {
+            showNotification("Word Bank is empty", "save more word to play game");
+            return;
+        }
+        loadPage(hangmanGameParent);
+        hangmanGameController.start(BookMarkManager.getBookMarkManager().getWordBank());
     }
 
     @FXML
@@ -122,21 +141,21 @@ public class BookMarkController extends CommonController implements Initializabl
     }
 
     @FXML
-    void removeAllWord(MouseEvent event) {
+    void removeAllWord(MouseEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("WARNING");
         alert.setHeaderText("Remove all");
         alert.setContentText("Are you sure to delete all?");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            bookMarkManager.getWordBank().clear();
+            BookMarkManager.getBookMarkManager().getWordBank().clear();
             updateWord();
-            bookMarkManager.updateWordBankSpelling();
+            BookMarkManager.getBookMarkManager().updateWordBankSpelling();
             sideBarController.getHomeController().updateBookmarkList();
         }
     }
 
     @FXML
-    public void removeWord(MouseEvent event) {
+    public void removeWord(MouseEvent event) throws IOException {
         int index = wordBankTableView.getSelectionModel().getSelectedIndex();
 
         if (index <= -1) {
@@ -144,11 +163,11 @@ public class BookMarkController extends CommonController implements Initializabl
         }
 
         Word word = new Word(spellingCollumn.getCellData(index), pronunciationCollumn.getCellData(index), contentCollumn.getCellData(index), synonymCollumn.getCellData(index));
-        bookMarkManager.getWordBank().removeIf(word1 -> {
+        BookMarkManager.getBookMarkManager().getWordBank().removeIf(word1 -> {
             return word1.equals(word);
         });
         updateWord();
-        bookMarkManager.updateWordBankSpelling();
+        BookMarkManager.getBookMarkManager().updateWordBankSpelling();
         sideBarController.getHomeController().updateBookmarkList();
     }
 
@@ -163,12 +182,6 @@ public class BookMarkController extends CommonController implements Initializabl
             throw new RuntimeException(e);
         }
 
-
-        try {
-            bookMarkManager = new BookMarkManager();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FlashCard.fxml"));
             flashCardParent = loader.load();
@@ -178,8 +191,29 @@ public class BookMarkController extends CommonController implements Initializabl
             throw new RuntimeException(e);
         }
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanGame.fxml"));
+            hangmanGameParent = loader.load();
+            hangmanGameController = loader.getController();
+            hangmanGameController.init(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CrosswordGame.fxml"));
+            crosswordParent = loader.load();
+            crosswordGameController = loader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         //khởi tạo bảng
-        wordBankList = FXCollections.observableArrayList(bookMarkManager.getWordBank());
+        try {
+            wordBankList = FXCollections.observableArrayList(BookMarkManager.getBookMarkManager().getWordBank());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         spellingCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("spelling"));
         pronunciationCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("pronunciation"));
         contentCollumn.setCellValueFactory(new PropertyValueFactory<Word, String>("content"));
@@ -240,7 +274,7 @@ public class BookMarkController extends CommonController implements Initializabl
         addNewButton.setCursor(Cursor.HAND);
         removeButton.setCursor(Cursor.HAND);
         searchImageView.setCursor(Cursor.HAND);
-        gameButton.setCursor(Cursor.HAND);
+        hangmanGameButton.setCursor(Cursor.HAND);
         flashCardButton.setCursor(Cursor.HAND);
         viewWordButton.setCursor(Cursor.HAND);
         removeAllButton.setCursor(Cursor.HAND);

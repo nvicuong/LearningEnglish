@@ -1,19 +1,29 @@
 package model;
 
 import help.Help;
+import javafx.concurrent.Task;
 
 import java.io.*;
 import java.util.*;
 
 public class WordManager {
+
+    private static WordManager wordManager;
     private final List<Word> wordList;
     private final String WORD_PATH = "src/main/resources/data/word.dat";
 
-    public WordManager() throws IOException, ClassNotFoundException {
-        wordList = new ArrayList<>();
-        readWord();
+    public static WordManager getWordManager() throws IOException, ClassNotFoundException {
+        if (wordManager == null) {
+            wordManager = new WordManager();
+        }
+        return wordManager;
     }
-    
+
+    private WordManager() throws IOException, ClassNotFoundException {
+        wordList = new ArrayList<>();
+        new Thread(createTask()).start();
+    }
+
     public Word getRandomWord() {
         Random random = new Random();
         int number = random.nextInt(wordList.size() - 1);
@@ -68,8 +78,12 @@ public class WordManager {
         try {
             FileOutputStream fileInputStream = new FileOutputStream(WORD_PATH);
             ObjectOutputStream os = new ObjectOutputStream(fileInputStream);
+            int count = 0;
             for (Word word : wordList) {
-                os.writeObject(word);
+                System.out.println(count);
+                Word formatWord = Help.formatWord(word);
+                os.writeObject(formatWord);
+                count++;
             }
             os.close();
         } catch (IOException e) {
@@ -80,13 +94,25 @@ public class WordManager {
     public void readWord() throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = new FileInputStream(WORD_PATH);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        Word w = null;
+        Word w;
         try {
             while ((w = (Word) objectInputStream.readObject()) != null) {
                 wordList.add(w);
             }
-        } catch (EOFException e) {
+        } catch (EOFException ignored) {
+
         }
         objectInputStream.close();
+    }
+
+    public Task<Void> createTask() {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Thực hiện các tác vụ đồng bộ tại đây
+                readWord();
+                return null;
+            }
+        };
     }
 }

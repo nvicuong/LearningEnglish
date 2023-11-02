@@ -64,7 +64,12 @@
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>
       </Button>
-      <Button fx:id="gameButton" layoutX="200.0" layoutY="290.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF6C15;" text="Game" textFill="WHITE">
+      <Button fx:id="hangmanGameButton" layoutX="200.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#changeToHangmanGame" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF6C15;" text="Hangman" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+      </Button>
+      <Button fx:id="crosswordButton" layoutX="40.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#changeToCrosswordGame" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF6C15;" text="Crossword" textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>

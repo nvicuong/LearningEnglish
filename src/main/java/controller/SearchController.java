@@ -55,7 +55,6 @@ public class SearchController extends CommonController implements Initializable 
 
     public void init(SideBarController sideBarController) {
         this.sideBarController = sideBarController;
-        searchWordController.init(sideBarController.getHistoryManager());
     }
 
     @Override
