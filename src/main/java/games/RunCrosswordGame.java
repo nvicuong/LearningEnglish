@@ -42,7 +42,7 @@ public class RunCrosswordGame {
         wordList = new HashMap<>();
     }
 
-    private HashMap<String, Pair> wordList;
+    private HashMap<Pair, String> wordList;
 
     public static RunCrosswordGame getRunCrosswordGame() {
         if (runCrosswordGame == null) {
@@ -71,10 +71,12 @@ public class RunCrosswordGame {
 
         for (int i = 0; i < SIZE + SHRT + LONG; i++) {
             String line = bufferedReader.readLine();
-            System.out.println(line);
             if (i < SHRT + LONG) {
+                System.out.println(line);
                 String[] lineArr = line.split(" ");
-                wordList.put(lineArr[0], new Pair(new Point(Integer.parseInt(lineArr[1]), Integer.parseInt(lineArr[2])), new Point(Integer.parseInt(lineArr[3]), Integer.parseInt(lineArr[4]))));
+                Pair pair = new Pair(new Point(Integer.parseInt(lineArr[1]), Integer.parseInt(lineArr[2])), new Point(Integer.parseInt(lineArr[3]), Integer.parseInt(lineArr[4])));
+                wordList.put(pair, lineArr[0]);
+
             } else {
                 for (char c : line.toCharArray()) {
                     addToMatrix(i - SHRT - LONG, c);
@@ -102,7 +104,7 @@ public class RunCrosswordGame {
         return matrix;
     }
 
-    public HashMap<String, Pair> getWordList() {
+    public HashMap<Pair, String> getWordList() {
         return wordList;
     }
 }

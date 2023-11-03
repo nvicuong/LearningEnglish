@@ -3,7 +3,7 @@ package games;
 import java.util.Objects;
 
 public class Pair {
-    Point start, target;
+    private Point start, target;
 
     public Pair(Point start, Point target) {
         this.start = start;
@@ -25,9 +25,14 @@ public class Pair {
 
     @Override
     public String toString() {
-        return "Pair{" +
-                "start=" + start +
-                ", target=" + target +
-                '}';
+        return start.toString() + target.toString();
+    }
+
+    public Point getStart() {
+        return start;
+    }
+
+    public Point getTarget() {
+        return target;
     }
 }

@@ -91,9 +91,6 @@ pii fill_word(vector<str> &matrix, const str &word)
         }
     }
 
-    end.y = start.y + (angle == 1 ? 0 : leng - 1);
-    end.x = start.x + (angle == 2 ? 0 : leng - 1);
-
     rpt (j, 0, leng)
     {
         if (angle == 1) matrix[start.y][start.x + j]   = word[j];

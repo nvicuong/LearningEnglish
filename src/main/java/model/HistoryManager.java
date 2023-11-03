@@ -26,7 +26,7 @@ public class HistoryManager {
     private HistoryManager() throws IOException {
         historySpelling = new ArrayList<>();
         historyWord = new ArrayList<>();
-        new Thread(createTask()).start();
+        readHistory();
         updateHistorySpelling();
     }
 
@@ -78,21 +78,11 @@ public class HistoryManager {
             while ((w = (Word) objectInputStream.readObject()) != null) {
                 historyWord.add(w);
             }
+        } catch (EOFException ignored) {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         objectInputStream.close();
-    }
-
-    public Task<Void> createTask() {
-        return new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                // Thực hiện các tác vụ đồng bộ tại đây
-                readHistory();
-                return null;
-            }
-        };
     }
 }
 

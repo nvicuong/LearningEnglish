@@ -1,7 +1,5 @@
 package model;
 
-import javafx.concurrent.Task;
-
 import java.io.*;
 import java.util.*;
 
@@ -22,7 +20,7 @@ public class BookMarkManager {
     private BookMarkManager() throws IOException {
         wordBank = new ArrayList<>();
         wordBankSpelling = new ArrayList<>();
-        new Thread(createTask()).start();
+        readWordBank();
         updateWordBankSpelling();
     }
 
@@ -73,21 +71,10 @@ public class BookMarkManager {
             while ((w = (Word) objectInputStream.readObject()) != null) {
                 wordBank.add(w);
             }
-        } catch (EOFException e) {
+        } catch (EOFException ignored) {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         objectInputStream.close();
-    }
-
-    public Task<Void> createTask() {
-        return new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                // Thực hiện các tác vụ đồng bộ tại đây
-                readWordBank();
-                return null;
-            }
-        };
     }
 }
