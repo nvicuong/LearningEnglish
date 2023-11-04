@@ -3,17 +3,25 @@ package controller;
 import games.Pair;
 import games.Point;
 import games.RunCrosswordGame;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.net.URL;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CrosswordGameController implements Initializable {
@@ -28,7 +36,16 @@ public class CrosswordGameController implements Initializable {
     private FlowPane matrixFlowPane;
 
     @FXML
+    private ListView<String> wordListView;
+
+    @FXML
+    private Button replayButton;
+
+    @FXML
     private Button hintButton;
+
+    @FXML
+    private Button nextLevelButton;
 
     @FXML
     private Line crossLine;
@@ -37,12 +54,27 @@ public class CrosswordGameController implements Initializable {
 
     private Set<Pair> pairSet;
 
+    private LocalTime time;
+    @FXML
+    private Label timerLabel;
+    private DateTimeFormatter formatter;
+    private boolean isTimeUp;
+
+    private Timeline timeline;
+
     public void loadMatrix() {
-        matrixFlowPane.setLayoutX(300);
-        matrixFlowPane.setLayoutY(50);
-        hintButton.setLayoutX(800);
+        replayButton.setVisible(false);
+        nextLevelButton.setVisible(false);
+        updateWordListView();
+        wordListView.setPrefHeight(wordListView.getItems().size() * 25);
+        wordListView.setMaxWidth(200);
+        rootAnchorPane.getChildren().clear();
+        rootAnchorPane.getChildren().addAll(matrixFlowPane, hintButton, nextLevelButton, wordListView, crossLine, timerLabel, replayButton);
         matrixFlowPane.getChildren().clear();
         matrixFlowPane.setPrefWidth(RunCrosswordGame.getRunCrosswordGame().getMatrix().size() * (35.2 + matrixFlowPane.getVgap()) + 25);
+        matrixFlowPane.setLayoutX((1402 - matrixFlowPane.getPrefWrapLength()) / 2);
+        matrixFlowPane.setLayoutY(100);
+        matrixFlowPane.setDisable(false);
         for (ArrayList<Character> arr : RunCrosswordGame.getRunCrosswordGame().getMatrix()) {
             for (Character c : arr) {
                 Button button = new Button();
@@ -81,18 +113,54 @@ public class CrosswordGameController implements Initializable {
                 });
 
                 button.setOnMouseReleased(event -> {
-                    endX = (int) ((crossLine.getEndX() + 113) / 35.2);
-                    endY = (int) ((crossLine.getEndY() - 0.6) / 35.2);
+                    double posEndX = Math.round((crossLine.getEndX()) * 10.0) / 10.0;
+                    double posEndY = Math.round((crossLine.getEndY()) * 10.0) / 10.0;
+                    endX = (int) ((Math.round((posEndX - 337.9) * 10.0) / 10.0) / 35.2);
+                    endY = (int) ((Math.round((posEndY - 50.5) * 10.0) / 10.0) / 35.2);
+                    System.out.println(crossLine.getEndX() + " " + crossLine.getEndY());
+                    System.out.println(posEndX + " " + posEndY);
+                    System.out.println((Math.round((crossLine.getEndX() - 338) * 10.0) / 10.0) + " " + (Math.round((crossLine.getEndY() - 50.6) * 10.0) / 10.0));
                     Pair pair = new Pair(new Point(startY, startX), new Point(endY, endX));
+                    System.out.println(pair);
                     if (RunCrosswordGame.getRunCrosswordGame().getWordList().containsKey(pair)) {
                         createLine(startX, startY, endX, endY);
+                        RunCrosswordGame.getRunCrosswordGame().getWordList().remove(pair);
+                        updateWordListView();
                     }
                     crossLine.setVisible(false);
+                    if (wordListView.getItems().isEmpty()) {
+                        if (RunCrosswordGame.getRunCrosswordGame().getSIZE() < 19) {
+                            nextLevelButton.setVisible(true);
+                        } else {
+                            replayButton.setVisible(true);
+                        }
+                    }
                 });
                 matrixFlowPane.getChildren().add(button);
             }
         }
-        buffBan();
+        wordListView.setVisible(true);
+        hintButton.setVisible(true);
+        timerLabel.setVisible(true);
+//        buffBan();
+    }
+
+    public void countTime() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (!isTimeUp) {
+                time = time.minusSeconds(1);
+                if (time.isBefore(LocalTime.of(0, 0, 1))) {
+                    isTimeUp = true;
+                    timerLabel.setText("Time's up!");
+                    replayButton.setVisible(true);
+                    matrixFlowPane.setDisable(true);
+                } else {
+                    timerLabel.setText(time.format(formatter));
+                }
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     public void buffBan() {
@@ -129,7 +197,7 @@ public class CrosswordGameController implements Initializable {
             if (sizeBefore != pairSet.size()) {
                 int X = randomKey.getStart().getX();
                 int Y = randomKey.getStart().getY();
-                matrixFlowPane.getChildren().get(X * 12 + Y).setStyle("-fx-background-color: transparent; -fx-font-size: 15px; -fx-text-fill: red; -fx-font-weight: bold;");
+                matrixFlowPane.getChildren().get(X * RunCrosswordGame.getRunCrosswordGame().getSIZE() + Y).setStyle("-fx-background-color: transparent; -fx-font-size: 15px; -fx-text-fill: red; -fx-font-weight: bold;");
             } else {
                 getHint(event);
             }
@@ -137,9 +205,63 @@ public class CrosswordGameController implements Initializable {
 
     }
 
+    @FXML
+    void nextLevel(MouseEvent event) {
+        restart(RunCrosswordGame.getRunCrosswordGame().getSIZE() + 1);
+    }
+
+    @FXML
+    void replay(MouseEvent event) {
+        if (RunCrosswordGame.getRunCrosswordGame().getSIZE() == 19) {
+            restart(12);
+        } else {
+            restart(RunCrosswordGame.getRunCrosswordGame().getSIZE());
+        }
+    }
+
+    public void restart(int size) {
+        pairSet = new HashSet<>();
+        RunCrosswordGame.getRunCrosswordGame().setSIZE(size);
+        Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask();
+        new Thread(task).start();
+
+        task.setOnSucceeded(e -> {
+            loadMatrix();
+            isTimeUp = false;
+            time = LocalTime.of(0, 5, 0);
+        });
+    }
+
+
+
+    public void updateWordListView() {
+        wordListView.getItems().clear();
+        for (Map.Entry<Pair, String> entry : RunCrosswordGame.getRunCrosswordGame().getWordList().entrySet()) {
+            String s = entry.getValue();
+            wordListView.getItems().add(s);
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         pairSet = new HashSet<>();
+        wordListView = new ListView<>();
+        formatter = DateTimeFormatter.ofPattern("mm:ss");
+        isTimeUp = false;
+        time = LocalTime.of(0, 5, 0);
         hintButton.setCursor(Cursor.HAND);
+        nextLevelButton.setCursor(Cursor.HAND);
+        replayButton.setCursor(Cursor.HAND);
+        hintButton.setLayoutX(20);
+        hintButton.setLayoutY(20);
+        nextLevelButton.setLayoutX(20);
+        nextLevelButton.setLayoutY(60);
+        wordListView.setLayoutX(20);
+        wordListView.setLayoutY(100);
+        timerLabel.setLayoutX((1402 - timerLabel.getWidth()) / 2);
+        timerLabel.setLayoutY(60);
+        replayButton.setLayoutX((1402 - replayButton.getWidth()) / 2);
+        replayButton.setLayoutY(20);
     }
 }

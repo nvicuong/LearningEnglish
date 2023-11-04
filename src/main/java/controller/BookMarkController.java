@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.BookMarkManager;
 import model.Word;
 
@@ -105,13 +106,16 @@ public class BookMarkController extends CommonController implements Initializabl
 
     @FXML
     void changeToCrosswordGame(MouseEvent event) throws IOException {
+        Stage stage = (Stage) crosswordButton.getScene().getWindow();
+        stage.setFullScreen(true);
         loadPage(crosswordParent);
         if (crosswordGameController.getMatrixFlowPane().getChildren().isEmpty()) {
-            Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask(12, 7, 5);
+            Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask();
             new Thread(task).start();
 
             task.setOnSucceeded(e -> {
                 crosswordGameController.loadMatrix();
+                crosswordGameController.countTime();
             });
         }
 
@@ -288,6 +292,7 @@ public class BookMarkController extends CommonController implements Initializabl
         viewWordButton.setCursor(Cursor.HAND);
         removeAllButton.setCursor(Cursor.HAND);
         searchInBankTextField.setCursor(Cursor.TEXT);
+        crosswordButton.setCursor(Cursor.HAND);
 
 
     }

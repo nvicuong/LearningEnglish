@@ -162,7 +162,9 @@ int main(int argc, char** argv)
         str s;
         while (longnote >> s)
         {
-            long_wordlist.push_back(s);
+            if (s.size() <= SIZE) {
+                long_wordlist.push_back(s);
+            }
         }
         longnote.close();
     }

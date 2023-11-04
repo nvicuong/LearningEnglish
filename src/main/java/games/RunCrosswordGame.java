@@ -12,7 +12,16 @@ import java.util.HashMap;
 public class RunCrosswordGame {
     private static RunCrosswordGame runCrosswordGame;
 
+    private int SIZE, SHRT, LONG;
     private ArrayList<ArrayList<Character>> matrix;
+
+    private RunCrosswordGame() {
+        SIZE = 12;
+        SHRT = 7;
+        LONG = 5;
+        matrix = new ArrayList<>();
+        wordList = new HashMap<>();
+    }
 
     private void init(int SIZE) {
         for (int i = 0; i < SIZE; i++) {
@@ -33,7 +42,8 @@ public class RunCrosswordGame {
         }
     }
 
-    private void clearMatrix(int SIZE) {
+    private void clearMatrix() {
+        wordList = new HashMap<>();
         matrix = new ArrayList<>();
         init(SIZE);
     }
@@ -51,12 +61,12 @@ public class RunCrosswordGame {
         return runCrosswordGame;
     }
 
-    public void createThread(int SIZE, int SHRT, int LONG) {
-        new Thread(createTask(SIZE, SHRT, LONG)).start();
+    public void createThread() {
+        new Thread(createTask()).start();
 
     }
 
-    private void runCppFile(int SIZE, int SHRT, int LONG) throws IOException, InterruptedException {
+    private void runCppFile() throws IOException, InterruptedException {
         Process compileProcess = new ProcessBuilder("g++",
                 "src/main/java/games/gener.cpp", "-o", "gener.exe").start();
         if (compileProcess.waitFor() != 0) {
@@ -87,14 +97,14 @@ public class RunCrosswordGame {
         runProcess.waitFor();
     }
 
-    public Task<Void> createTask(int SIZE, int SHRT, int LONG) {
+    public Task<Void> createTask() {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 // Thực hiện các tác vụ đồng bộ tại đây
                 clearWordList();
-                clearMatrix(SIZE);
-                runCppFile(SIZE, SHRT, LONG);
+                clearMatrix();
+                runCppFile();
                 return null;
             }
         };
@@ -106,5 +116,36 @@ public class RunCrosswordGame {
 
     public HashMap<Pair, String> getWordList() {
         return wordList;
+    }
+
+    public int getSIZE() {
+        return SIZE;
+    }
+
+    public void setSIZE(int SIZE) {
+        if (SIZE > this.SIZE) {
+            SHRT ++;
+            LONG ++;
+        } else if (SIZE < this.SIZE) {
+            SHRT--;
+            LONG--;
+        }
+        this.SIZE = SIZE;
+    }
+
+    public int getSHRT() {
+        return SHRT;
+    }
+
+    public void setSHRT(int SHRT) {
+        this.SHRT = SHRT;
+    }
+
+    public int getLONG() {
+        return LONG;
+    }
+
+    public void setLONG(int LONG) {
+        this.LONG = LONG;
     }
 }

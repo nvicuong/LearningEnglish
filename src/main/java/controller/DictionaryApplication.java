@@ -18,9 +18,9 @@ import java.io.IOException;
 public class DictionaryApplication extends Application {
     SideBarController sideBarController;
     Parent sideBarParent;
+
     @Override
     public void start(Stage stage) throws Exception {
-
         WordManager.getWordManager();
         HistoryManager.getHistoryManager();
         BookMarkManager.getBookMarkManager();
