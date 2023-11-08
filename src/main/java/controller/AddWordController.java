@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddWordController extends CommonController implements Initializable {
+public class AddWordController extends Controller implements Initializable {
 
     private BookMarkController bookMarkController;
 
@@ -57,13 +57,13 @@ public class AddWordController extends CommonController implements Initializable
     @FXML
     void addNewWord(MouseEvent event) throws IOException {
         if (wordTextField.getText().isEmpty() || wordTextField.getText().isBlank() || definitionTextArea.getText().isEmpty() || definitionTextArea.getText().isBlank()) {
-            showNotification("WARNING", "word field and definition field must be not blank!");
+            Help.showNotification("WARNING", "word field and definition field must be not blank!");
         } else {
             Word word = new Word(wordTextField.getText(), pronunciationTextField.getText(), definitionTextArea.getText(), "");
-            BookMarkManager.getBookMarkManager().addWordToBank(word);
+            BookMarkManager.getBookMarkManager().addWord(word);
             bookMarkController.updateWord();
             bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
-            showNotification("NOTIFICATION", "Add word successfully!");
+            Help.showNotification("NOTIFICATION", "Add word successfully!");
         }
     }
 

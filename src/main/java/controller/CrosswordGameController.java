@@ -142,7 +142,7 @@ public class CrosswordGameController implements Initializable {
         wordListView.setVisible(true);
         hintButton.setVisible(true);
         timerLabel.setVisible(true);
-//        buffBan();
+        buffBan();
     }
 
     public void countTime() {
@@ -220,6 +220,9 @@ public class CrosswordGameController implements Initializable {
     }
 
     public void restart(int size) {
+        replayButton.setVisible(false);
+        hintButton.setDisable(true);
+        nextLevelButton.setVisible(false);
         pairSet = new HashSet<>();
         RunCrosswordGame.getRunCrosswordGame().setSIZE(size);
         Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask();
@@ -227,6 +230,9 @@ public class CrosswordGameController implements Initializable {
 
         task.setOnSucceeded(e -> {
             loadMatrix();
+//            replayButton.setVisible(true);
+            hintButton.setDisable(false);
+//            nextLevelButton.setVisible(true);
             isTimeUp = false;
             time = LocalTime.of(0, 5, 0);
         });

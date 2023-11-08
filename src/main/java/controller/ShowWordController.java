@@ -1,6 +1,5 @@
 package controller;
 
-import help.Help;
 import javafx.scene.Parent;
 import model.BookMarkManager;
 import model.VoiceRssAPI;
@@ -19,7 +18,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ShowWordController extends CommonController implements Initializable {
+public class ShowWordController extends Controller implements Initializable {
 
     private BookMarkController bookMarkController;
 
@@ -56,7 +55,7 @@ public class ShowWordController extends CommonController implements Initializabl
 
     @FXML
     void saveWord(MouseEvent event) throws IOException {
-        BookMarkManager.getBookMarkManager().addWordToBank(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
+        BookMarkManager.getBookMarkManager().addWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
         bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
     }

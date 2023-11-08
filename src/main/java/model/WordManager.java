@@ -6,10 +6,9 @@ import javafx.concurrent.Task;
 import java.io.*;
 import java.util.*;
 
-public class WordManager {
+public class WordManager extends Manager{
 
     private static WordManager wordManager;
-    private final List<Word> wordList;
     private final String WORD_PATH = "src/main/resources/data/word.dat";
 
     public static WordManager getWordManager() throws IOException, ClassNotFoundException {
@@ -20,8 +19,16 @@ public class WordManager {
     }
 
     private WordManager() throws IOException, ClassNotFoundException {
-        wordList = new ArrayList<>();
-        new Thread(createTask()).start();
+        super();
+        read(WORD_PATH);
+    }
+
+    /**
+     * @throws IOException
+     */
+    @Override
+    public void save() throws IOException {
+        super.save(WORD_PATH);
     }
 
     public Word getRandomWord() {
@@ -72,47 +79,5 @@ public class WordManager {
             }
         }
         return new ArrayList<>(arr);
-    }
-
-    public void saveWord() {
-        try {
-            FileOutputStream fileInputStream = new FileOutputStream(WORD_PATH);
-            ObjectOutputStream os = new ObjectOutputStream(fileInputStream);
-            int count = 0;
-            for (Word word : wordList) {
-                System.out.println(count);
-                Word formatWord = Help.formatWord(word);
-                os.writeObject(formatWord);
-                count++;
-            }
-            os.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void readWord() throws IOException, ClassNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream(WORD_PATH);
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        Word w;
-        try {
-            while ((w = (Word) objectInputStream.readObject()) != null) {
-                wordList.add(w);
-            }
-        } catch (EOFException ignored) {
-
-        }
-        objectInputStream.close();
-    }
-
-    public Task<Void> createTask() {
-        return new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                // Thực hiện các tác vụ đồng bộ tại đây
-                readWord();
-                return null;
-            }
-        };
     }
 }

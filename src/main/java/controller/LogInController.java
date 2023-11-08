@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class LogInController extends CommonController implements Initializable {
+public class LogInController extends Controller implements Initializable {
 
     @FXML
     private Label createAccountLabel;

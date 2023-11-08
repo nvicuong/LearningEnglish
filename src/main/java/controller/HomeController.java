@@ -16,7 +16,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class HomeController extends CommonController implements Initializable {
+public class HomeController extends Controller implements Initializable {
 
     private Parent logInParent;
     private LogInController logInController;
@@ -109,12 +109,12 @@ public class HomeController extends CommonController implements Initializable {
 
     public void updateHistoryList() throws IOException {
         historyListView.getItems().clear();
-        historyListView.getItems().addAll(HistoryManager.getHistoryManager().getHistorySpelling());
+        historyListView.getItems().addAll(HistoryManager.getHistoryManager().getWordSpelling());
     }
 
     public void updateBookmarkList() throws IOException {
         bookmarkListView.getItems().clear();
-        bookmarkListView.getItems().addAll(BookMarkManager.getBookMarkManager().getWordBankSpelling());
+        bookmarkListView.getItems().addAll(BookMarkManager.getBookMarkManager().getWordSpelling());
     }
 
 

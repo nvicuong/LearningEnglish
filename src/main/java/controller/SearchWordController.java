@@ -7,6 +7,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -17,10 +18,9 @@ import model.Word;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 
-public class SearchWordController extends CommonController implements Initializable {
+public class SearchWordController extends Controller implements Initializable {
 
 
     private SearchController searchController;
@@ -54,14 +54,14 @@ public class SearchWordController extends CommonController implements Initializa
 
     @FXML
     void removeAllWord(MouseEvent event) throws IOException {
-        HistoryManager.getHistoryManager().getHistoryWord().clear();
+        HistoryManager.getHistoryManager().getWordList().clear();
         updateWord();
         searchController.getSideBarController().getHomeController().updateHistoryList();
     }
 
     public void updateWord() throws IOException {
         historyWordList.clear();
-        historyWordList.addAll(HistoryManager.getHistoryManager().getHistoryWord());
+        historyWordList.addAll(HistoryManager.getHistoryManager().getWordList());
     }
 
 
@@ -73,7 +73,7 @@ public class SearchWordController extends CommonController implements Initializa
 
         //khởi tạo bảng
         try {
-            historyWordList = FXCollections.observableArrayList(HistoryManager.getHistoryManager().getHistoryWord());
+            historyWordList = FXCollections.observableArrayList(HistoryManager.getHistoryManager().getWordList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -143,4 +143,5 @@ public class SearchWordController extends CommonController implements Initializa
         refreshButton.setCursor(Cursor.HAND);
         searchWordTextField.setCursor(Cursor.TEXT);
     }
+
 }

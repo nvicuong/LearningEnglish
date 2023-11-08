@@ -1,8 +1,7 @@
 package controller;
 
 import atlantafx.base.theme.NordDark;
-import atlantafx.base.theme.NordLight;
-import atlantafx.base.theme.PrimerLight;
+import help.Help;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -14,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.effect.Light;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,13 +24,14 @@ import model.HistoryManager;
 import model.Word;
 import model.WordManager;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class SideBarController extends CommonController implements Initializable {
+public class SideBarController extends Controller implements Initializable {
     private Parent homeParent;
     private Parent searchMainParent;
 
@@ -167,14 +166,14 @@ public class SideBarController extends CommonController implements Initializable
     int index = WordManager.getWordManager().binarySearchWordOnly(s);
         if (index >= 0) {
             Word word = WordManager.getWordManager().getEngWordIndex(index);
-            HistoryManager.getHistoryManager().addWordToHistory(word);
+            HistoryManager.getHistoryManager().addWord(word);
             homeController.updateHistoryList();
             showWordController.setContent(word);
             searchListView.setVisible(false);
             changeToShowWord();
             searchController.getSearchWordController().updateWord();
         } else {
-            showNotification("Notification", "word is not valid!");
+            Help.showNotification("Notification", "word is not valid!");
         }
     }
 
@@ -238,7 +237,7 @@ public class SideBarController extends CommonController implements Initializable
                         throw new RuntimeException(e);
                     }
                 } else if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER) {
-                    showNotification("Notification", "word is not valid!");
+                    Help.showNotification("Notification", "word is not valid!");
                 }
                 if (Objects.requireNonNull(event.getCode()) == KeyCode.DOWN && !searchListView.getItems().isEmpty()) {
                     searchListView.requestFocus();

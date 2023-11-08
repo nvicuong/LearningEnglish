@@ -1,7 +1,6 @@
 package controller;
 
-import database.ExecuteSQLFile;
-import games.RunCrosswordGame;
+import help.Help;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -39,16 +38,16 @@ public class DictionaryApplication extends Application {
         stage.setOnCloseRequest(event -> {
             event.consume();
             try {
-                HistoryManager.getHistoryManager().saveWordToHistory();
+                HistoryManager.getHistoryManager().save();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             try {
-                BookMarkManager.getBookMarkManager().saveWordBank();
+                BookMarkManager.getBookMarkManager().save();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            CommonController.loggout(stage);
+            Help.loggout(stage);
         });
 
     }

@@ -1,6 +1,7 @@
 package controller;
 
 import games.RunCrosswordGame;
+import help.Help;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -21,10 +22,9 @@ import model.Word;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class BookMarkController extends CommonController implements Initializable {
+public class BookMarkController extends Controller implements Initializable {
 
     private Parent crosswordParent;
     private CrosswordGameController crosswordGameController;
@@ -91,7 +91,7 @@ public class BookMarkController extends CommonController implements Initializabl
 
     public void updateWord() throws IOException {
         wordBankList.clear();
-        wordBankList.addAll(BookMarkManager.getBookMarkManager().getWordBank());
+        wordBankList.addAll(BookMarkManager.getBookMarkManager().getWordList());
     }
 
     @Override
@@ -124,17 +124,17 @@ public class BookMarkController extends CommonController implements Initializabl
     @FXML
     void changeToFlashCard(MouseEvent event) throws IOException {
         loadPage(flashCardParent);
-        flashCardController.start(BookMarkManager.getBookMarkManager().getWordBank());
+        flashCardController.start(BookMarkManager.getBookMarkManager().getWordList());
     }
 
     @FXML
     void changeToHangmanGame(MouseEvent event) throws IOException {
-        if (BookMarkManager.getBookMarkManager().getWordBank().isEmpty()) {
-            showNotification("Word Bank is empty", "save more word to play game");
+        if (BookMarkManager.getBookMarkManager().getWordList().isEmpty()) {
+            Help.showNotification("Word Bank is empty", "save more word to play game");
             return;
         }
         loadPage(hangmanGameParent);
-        hangmanGameController.start(BookMarkManager.getBookMarkManager().getWordBank());
+        hangmanGameController.start(BookMarkManager.getBookMarkManager().getWordList());
     }
 
     @FXML
@@ -161,9 +161,9 @@ public class BookMarkController extends CommonController implements Initializabl
         alert.setHeaderText("Remove all");
         alert.setContentText("Are you sure to delete all?");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            BookMarkManager.getBookMarkManager().getWordBank().clear();
+            BookMarkManager.getBookMarkManager().getWordList().clear();
             updateWord();
-            BookMarkManager.getBookMarkManager().updateWordBankSpelling();
+            BookMarkManager.getBookMarkManager().updateWordSpelling();
             sideBarController.getHomeController().updateBookmarkList();
         }
     }
@@ -177,11 +177,11 @@ public class BookMarkController extends CommonController implements Initializabl
         }
 
         Word word = new Word(spellingCollumn.getCellData(index), pronunciationCollumn.getCellData(index), contentCollumn.getCellData(index), synonymCollumn.getCellData(index));
-        BookMarkManager.getBookMarkManager().getWordBank().removeIf(word1 -> {
+        BookMarkManager.getBookMarkManager().getWordList().removeIf(word1 -> {
             return word1.equals(word);
         });
         updateWord();
-        BookMarkManager.getBookMarkManager().updateWordBankSpelling();
+        BookMarkManager.getBookMarkManager().updateWordSpelling();
         sideBarController.getHomeController().updateBookmarkList();
     }
 
@@ -224,7 +224,7 @@ public class BookMarkController extends CommonController implements Initializabl
 
         //khởi tạo bảng
         try {
-            wordBankList = FXCollections.observableArrayList(BookMarkManager.getBookMarkManager().getWordBank());
+            wordBankList = FXCollections.observableArrayList(BookMarkManager.getBookMarkManager().getWordList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

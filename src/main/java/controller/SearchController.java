@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class SearchController extends CommonController implements Initializable {
+public class SearchController extends Controller implements Initializable {
 
     private SideBarController sideBarController;
 
