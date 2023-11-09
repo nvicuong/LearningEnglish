@@ -67,12 +67,12 @@ public class RunCrosswordGame {
     }
 
     private void runCppFile() throws IOException, InterruptedException {
-        Process compileProcess = new ProcessBuilder("g++",
-                "src/main/java/games/gener.cpp", "-o", "gener.exe").start();
-        if (compileProcess.waitFor() != 0) {
-            System.err.println("Failed to compile gener.cpp");
-            return;
-        }
+//        Process compileProcess = new ProcessBuilder("g++",
+//                "src/main/java/games/gener.cpp", "-o", "gener.exe").start();
+//        if (compileProcess.waitFor() != 0) {
+//            System.err.println("Failed to compile gener.cpp");
+//            return;
+//        }
 
         Process runProcess = new ProcessBuilder("./gener.exe",
                 String.valueOf(SIZE), String.valueOf(SHRT), String.valueOf(LONG)).start();

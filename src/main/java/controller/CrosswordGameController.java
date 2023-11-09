@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -75,6 +76,8 @@ public class CrosswordGameController implements Initializable {
         matrixFlowPane.setLayoutX((1402 - matrixFlowPane.getPrefWrapLength()) / 2);
         matrixFlowPane.setLayoutY(100);
         matrixFlowPane.setDisable(false);
+        crossLine.setLayoutX(matrixFlowPane.getLayoutX());
+        crossLine.setLayoutY(matrixFlowPane.getLayoutY());
         for (ArrayList<Character> arr : RunCrosswordGame.getRunCrosswordGame().getMatrix()) {
             for (Character c : arr) {
                 Button button = new Button();
@@ -86,8 +89,9 @@ public class CrosswordGameController implements Initializable {
                     crossLine.setVisible(true);
                     startX = (int) ((int) (event.getSceneX() - matrixFlowPane.getLayoutX() - rootAnchorPane.getLayoutX()) / 35.2);
                     startY = (int) ((int) (event.getSceneY() - matrixFlowPane.getLayoutY() - rootAnchorPane.getLayoutY()) / 35.2);
-                    crossLine.setStartX(matrixFlowPane.getLayoutX() - 9 * 35 + rootAnchorPane.getLayoutX() + startX * 35.2 + 17.6);
-                    crossLine.setStartY(matrixFlowPane.getLayoutY() - 5 * 35 + 17.6 + rootAnchorPane.getLayoutY() + startY * 35.2 + 17.6);
+                    System.out.println(startX + " " + startY);
+                    crossLine.setStartX(startX * 35.2 + 17.6);
+                    crossLine.setStartY(startY * 35.2 + 17.6);
                     crossLine.setEndX(crossLine.getStartX());
                     crossLine.setEndY(crossLine.getStartY());
                 });
@@ -115,11 +119,8 @@ public class CrosswordGameController implements Initializable {
                 button.setOnMouseReleased(event -> {
                     double posEndX = Math.round((crossLine.getEndX()) * 10.0) / 10.0;
                     double posEndY = Math.round((crossLine.getEndY()) * 10.0) / 10.0;
-                    endX = (int) ((Math.round((posEndX - 337.9) * 10.0) / 10.0) / 35.2);
-                    endY = (int) ((Math.round((posEndY - 50.5) * 10.0) / 10.0) / 35.2);
-                    System.out.println(crossLine.getEndX() + " " + crossLine.getEndY());
-                    System.out.println(posEndX + " " + posEndY);
-                    System.out.println((Math.round((crossLine.getEndX() - 338) * 10.0) / 10.0) + " " + (Math.round((crossLine.getEndY() - 50.6) * 10.0) / 10.0));
+                    endX = (int) ((Math.round((posEndX) * 10.0) / 10.0) / 35.2);
+                    endY = (int) ((Math.round((posEndY) * 10.0) / 10.0) / 35.2);
                     Pair pair = new Pair(new Point(startY, startX), new Point(endY, endX));
                     System.out.println(pair);
                     if (RunCrosswordGame.getRunCrosswordGame().getWordList().containsKey(pair)) {
@@ -142,7 +143,7 @@ public class CrosswordGameController implements Initializable {
         wordListView.setVisible(true);
         hintButton.setVisible(true);
         timerLabel.setVisible(true);
-        buffBan();
+//        buffBan();
     }
 
     public void countTime() {
@@ -251,6 +252,7 @@ public class CrosswordGameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println(rootAnchorPane.getLayoutX() + " " + rootAnchorPane.getLayoutY());
         pairSet = new HashSet<>();
         wordListView = new ListView<>();
         formatter = DateTimeFormatter.ofPattern("mm:ss");
