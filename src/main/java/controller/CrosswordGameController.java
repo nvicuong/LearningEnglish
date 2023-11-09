@@ -12,6 +12,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -19,7 +20,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +32,8 @@ public class CrosswordGameController implements Initializable {
 
     @FXML
     private AnchorPane rootAnchorPane;
+
+    private ProgressIndicator loadingProgressIndicator;
 
     @FXML
     private FlowPane matrixFlowPane;
@@ -70,7 +72,7 @@ public class CrosswordGameController implements Initializable {
         wordListView.setPrefHeight(wordListView.getItems().size() * 25);
         wordListView.setMaxWidth(200);
         rootAnchorPane.getChildren().clear();
-        rootAnchorPane.getChildren().addAll(matrixFlowPane, hintButton, nextLevelButton, wordListView, crossLine, timerLabel, replayButton);
+        rootAnchorPane.getChildren().addAll(matrixFlowPane, hintButton, nextLevelButton, wordListView, crossLine, timerLabel, replayButton, loadingProgressIndicator);
         matrixFlowPane.getChildren().clear();
         matrixFlowPane.setPrefWidth(RunCrosswordGame.getRunCrosswordGame().getMatrix().size() * (35.2 + matrixFlowPane.getVgap()) + 25);
         matrixFlowPane.setLayoutX((1402 - matrixFlowPane.getPrefWrapLength()) / 2);
@@ -224,19 +226,30 @@ public class CrosswordGameController implements Initializable {
         replayButton.setVisible(false);
         hintButton.setDisable(true);
         nextLevelButton.setVisible(false);
+        startLoading();
         pairSet = new HashSet<>();
         RunCrosswordGame.getRunCrosswordGame().setSIZE(size);
         Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask();
         new Thread(task).start();
-
+        task.setOnRunning(e -> {
+        });
         task.setOnSucceeded(e -> {
+            endLoading();
             loadMatrix();
 //            replayButton.setVisible(true);
             hintButton.setDisable(false);
 //            nextLevelButton.setVisible(true);
             isTimeUp = false;
-            time = LocalTime.of(0, 5, 0);
+            time = LocalTime.of(0, 0, 5);
         });
+    }
+
+    public void startLoading() {
+        loadingProgressIndicator.setVisible(true);
+    }
+
+    public void endLoading() {
+        loadingProgressIndicator.setVisible(false);
     }
 
 
@@ -252,7 +265,8 @@ public class CrosswordGameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(rootAnchorPane.getLayoutX() + " " + rootAnchorPane.getLayoutY());
+        loadingProgressIndicator = new ProgressIndicator();
+        rootAnchorPane.getChildren().add(loadingProgressIndicator);
         pairSet = new HashSet<>();
         wordListView = new ListView<>();
         formatter = DateTimeFormatter.ofPattern("mm:ss");
@@ -261,6 +275,7 @@ public class CrosswordGameController implements Initializable {
         hintButton.setCursor(Cursor.HAND);
         nextLevelButton.setCursor(Cursor.HAND);
         replayButton.setCursor(Cursor.HAND);
+        loadingProgressIndicator.setProgress(-1);
         hintButton.setLayoutX(20);
         hintButton.setLayoutY(20);
         nextLevelButton.setLayoutX(20);
@@ -271,5 +286,7 @@ public class CrosswordGameController implements Initializable {
         timerLabel.setLayoutY(60);
         replayButton.setLayoutX((1402 - replayButton.getWidth()) / 2);
         replayButton.setLayoutY(20);
+        loadingProgressIndicator.setLayoutX((1402 - loadingProgressIndicator.getWidth()) / 2);
+        loadingProgressIndicator.setLayoutY((500 - loadingProgressIndicator.getHeight()) / 2);
     }
 }

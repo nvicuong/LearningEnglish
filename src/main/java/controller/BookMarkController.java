@@ -111,13 +111,8 @@ public class BookMarkController extends Controller implements Initializable {
         stage.setFullScreen(true);
         loadPage(crosswordParent);
         if (crosswordGameController.getMatrixFlowPane().getChildren().isEmpty()) {
-            Task<Void> task = RunCrosswordGame.getRunCrosswordGame().createTask();
-            new Thread(task).start();
-
-            task.setOnSucceeded(e -> {
-                crosswordGameController.loadMatrix();
-                crosswordGameController.countTime();
-            });
+            crosswordGameController.restart(12);
+            crosswordGameController.countTime();
         }
 
     }
