@@ -13,7 +13,6 @@ public class Word implements Comparable<Word>, Serializable {
     public Word() {
     }
 
-
     public Word(String spelling, String pronunciation, String content, String synonym) {
         this.spelling = spelling;
         this.pronunciation = pronunciation;
@@ -60,7 +59,7 @@ public class Word implements Comparable<Word>, Serializable {
         return spelling + "? " + pronunciation + "? " + content + "? " + synonym;
     }
 
-    
+
 
     /**
      * @param o the object to be compared.

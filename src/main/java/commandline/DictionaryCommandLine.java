@@ -44,6 +44,7 @@ public class DictionaryCommandLine {
                 System.out.println("Hãy nhập từ mà bạn muốn thêm vào từ điển");
                 System.out.println("Hãy nhập từ tiếng anh mà bạn muốn thêm vào từ điển");
                 String englishWord = sc.next();
+                sc.nextLine();
                 System.out.println("Nhập nghĩa tiếng việt của từ đấy");
                 String vietnameseWord = sc.nextLine();
                 Word word_target = new Word(englishWord, "", vietnameseWord, "");
@@ -80,6 +81,7 @@ public class DictionaryCommandLine {
                 System.out.println("Hãy nhập từ mới của bạn");
                 System.out.println("Hãy nhập từ tiếng anh mà bạn muốn thêm vào từ điển");
                 String englishWord1 = sc.next();
+                sc.nextLine();
                 System.out.println("Nhập nghĩa tiếng việt của từ đấy");
                 String vietnameseWord1 = sc.nextLine();
                 BookMarkManager.getBookMarkManager().removeWord(new Word(englishWord, "", "", ""));
