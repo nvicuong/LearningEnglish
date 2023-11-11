@@ -44,12 +44,10 @@ public class JDBCUtil {
             }
         });
 
-        String url = "jdbc:mysql://localhost:3306";
-        String username = "root";
-        String password = "";
+        String url = "jdbc:sqlite:src\\main\\resources\\database\\wordSource.db";
 
-        connection = DriverManager.getConnection(url, username, password);
-
+        connection = DriverManager.getConnection(url);
+        System.out.println("ket noi thanh cong");
         return connection;
     }
 

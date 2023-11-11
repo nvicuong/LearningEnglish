@@ -41,7 +41,7 @@ public class Word implements Comparable<Word>, Serializable {
         return content;
     }
 
-    public void setContent(String pos) {
+    public void setContent(String content) {
         this.content = content;
     }
 

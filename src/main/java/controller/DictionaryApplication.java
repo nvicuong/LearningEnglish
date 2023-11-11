@@ -17,7 +17,7 @@ public class DictionaryApplication extends Application {
     Parent sideBarParent;
     @Override
     public void start(Stage stage) throws Exception {
-
+        ExecuteSQLFile.init();
         FXMLLoader fxmlLoader = new FXMLLoader(DictionaryApplication.class.getResource("SideBar.fxml"));
         sideBarParent = fxmlLoader.load();
         sideBarController = fxmlLoader.getController();

@@ -3,6 +3,7 @@ package controller;
 import atlantafx.base.theme.NordDark;
 import atlantafx.base.theme.NordLight;
 import atlantafx.base.theme.PrimerLight;
+import database.ExecuteSQLFile;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -174,10 +175,25 @@ public class SideBarController extends CommonController implements Initializable
         loadPage(showWordParent);
     }
 
+//    public void searchWord(String s) throws SQLException, IOException {
+//        int index = wordManager.binarySearchWordOnly(s);
+//        if (index >= 0) {
+//            Word word = wordManager.getEngWordIndex(index);
+//            historyManager.addWordToHistory(word);
+//            homeController.updateHistoryList();
+//            showWordController.setContent(word);
+//            searchListView.setVisible(false);
+//            changeToShowWord();
+//            searchController.getSearchWordController().updateWord();
+//        } else {
+//            showNotification("Notification", "word is not valid!");
+//        }
+//    }
+
     public void searchWord(String s) throws SQLException, IOException {
-        int index = wordManager.binarySearchWordOnly(s);
-        if (index >= 0) {
-            Word word = wordManager.getEngWordIndex(index);
+        Word word = ExecuteSQLFile.searchWord(s);
+        System.out.println(word);
+        if (!word.getSpelling().isEmpty()) {
             historyManager.addWordToHistory(word);
             homeController.updateHistoryList();
             showWordController.setContent(word);
@@ -203,7 +219,12 @@ public class SideBarController extends CommonController implements Initializable
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             items.clear();
             searchListView.setVisible(!newValue.isEmpty());
-            List<String> s = wordManager.searchWordList(newValue);
+            List<String> s = null;
+            try {
+                s = wordManager.searchWordList(newValue);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             items.addAll(s);
             int size = searchListView.getItems().size();
             if (size < 10) {
@@ -315,7 +336,7 @@ public class SideBarController extends CommonController implements Initializable
         });
         try {
             wordManager = new WordManager();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
 
