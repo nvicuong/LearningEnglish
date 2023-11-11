@@ -1,6 +1,7 @@
 package controller;
 
 import atlantafx.base.theme.NordDark;
+import database.ExecuteSQLFile;
 import help.Help;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -163,9 +164,8 @@ public class SideBarController extends Controller implements Initializable {
     }
 
     public void searchWord(String s) throws SQLException, IOException, ClassNotFoundException {
-    int index = WordManager.getWordManager().binarySearchWordOnly(s);
-        if (index >= 0) {
-            Word word = WordManager.getWordManager().getEngWordIndex(index);
+        Word word = WordManager.getWordManager().searchWord(s);
+        if (!word.getSpelling().isEmpty()) {
             HistoryManager.getHistoryManager().addWord(word);
             homeController.updateHistoryList();
             showWordController.setContent(word);
@@ -203,7 +203,7 @@ public class SideBarController extends Controller implements Initializable {
             List<String> s = null;
             try {
                 s = WordManager.getWordManager().searchWordList(newValue);
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException | SQLException e) {
                 throw new RuntimeException(e);
             }
             items.addAll(s);

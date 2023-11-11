@@ -240,7 +240,7 @@ public class CrosswordGameController implements Initializable {
             hintButton.setDisable(false);
 //            nextLevelButton.setVisible(true);
             isTimeUp = false;
-            time = LocalTime.of(0, 0, 5);
+            time = LocalTime.of(0, 5, 0);
         });
     }
 

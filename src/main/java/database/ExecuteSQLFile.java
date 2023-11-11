@@ -7,195 +7,137 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 public class ExecuteSQLFile {
 
     public static Connection connection;
-    public static Statement statement;
-
-    public static final String queqyListSpelling = "SELECT spelling\n" +
-            "FROM word.word\n" +
-            ";";
-
-    public static final String queqyList = "SELECT spelling\n" +
-            "FROM word.word\n" +
-            "WHERE spelling REGEXP '^%s'\n" +
-            ";";
-    public static final String queqyExact = "SELECT c.spelling, w.pronunciation, c.pos, c.definition_pharse, w.synonym\n" +
-            "FROM word.word AS w\n" +
-            "JOIN word.content AS c ON w.spelling = c.spelling\n" +
-            "WHERE w.spelling = '%s'\n" +
-            ";";
-
-    public static void initSQLDatabase() throws SQLException {
-        restart();
-        start("word");
-        start("content");
-    }
 
     public static void init() throws SQLException {
         connection = JDBCUtil.getConnection();
-        statement = connection.createStatement();
+    }
+
+    public static void selectWord(String s) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM word WHERE spelling = ?")) {
+
+            preparedStatement.setString(1, s);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Xử lý kết quả
+                    String spelling = resultSet.getString("spelling");
+                    String pronunciation = resultSet.getString("pronunciation");
+                    String content = resultSet.getString("content");
+                    String synonym = resultSet.getString("synonym");
+
+                    System.out.println("Spelling: " + spelling);
+                    System.out.println("Pronunciation: " + pronunciation);
+                    System.out.println("Content: " + content);
+                    System.out.println("Synonym: " + synonym);
+                    System.out.println("------");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void readAll() {
+        String countQuery = "SELECT COUNT(*) AS rowCount FROM word";
+
+        // Thực hiện truy vấn và xử lý kết quả
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(countQuery)) {
+
+            if (resultSet.next()) {
+                int rowCount = resultSet.getInt("rowCount");
+                System.out.println("Số lượng dữ liệu: " + rowCount);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void close() throws SQLException {
         JDBCUtil.closeConnection(connection);
     }
 
-    private static String getFileContent(String filePath) throws IOException {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (InputStream inputStream = ExecuteSQLFile.class.getResourceAsStream(filePath);
-             BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                contentBuilder.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return contentBuilder.toString();
-    }
-
-    public static void start(String index) throws SQLException {
-        InputStream inputStream = HistoryManager.class.getResourceAsStream("/data/" + index + ".txt");
-        if (inputStream == null) {
-            System.err.println("File not found.");
-            return;
-        }
-        String insert = "INSERT INTO `word`.`word` \n" +
-                "VALUES %s;";
-        if (index.equals("word")) {
-            insert = "INSERT INTO `word`.`word` \n" +
-                    "VALUES %s;";
-        } else if (index.equals("content")) {
-            insert = "INSERT INTO `word`.`content` \n" +
-                    "VALUES %s;";
-        }
-        Connection connection = JDBCUtil.getConnection();
+    public static void insertWord(Word word) throws SQLException {
         Statement statement = connection.createStatement();
-        Scanner scanner = new Scanner(inputStream);
-        int count = 0;
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (line.isEmpty()) {
-                continue;
-            }
-            line = line.replaceAll("\\),", ")");
-            count++;
-            System.out.println(count + line);
-            int check = statement.executeUpdate(String.format(insert, line));
-        }
-        JDBCUtil.closeConnection(connection);
-    }
+        String insertData = "INSERT INTO word (spelling, pronunciation, content, synonym) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertData)) {
+            // Thiết lập giá trị cho các tham số
+            preparedStatement.setString(1, word.getSpelling());
+            preparedStatement.setString(2, word.getPronunciation());
+            preparedStatement.setString(3, word.getContent());
+            preparedStatement.setString(4, word.getSynonym());
 
-
-    public static void restart() {
-        try {
-            String[] createQuery = {
-                    "DROP DATABASE IF EXISTS `word`;",
-                    "CREATE DATABASE `word`;",
-                    "USE `word`;",
-                    "DROP TABLE IF EXISTS `content`;\n",
-                    "CREATE TABLE `content` (\n" +
-                            "  `spelling` varchar(300) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,\n" +
-                            "  `pos` varchar(45) DEFAULT NULL,\n" +
-                            "  `definition_pharse` varchar(10000) DEFAULT NULL\n" +
-                            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;",
-                    "DROP TABLE IF EXISTS `word`;",
-                    "CREATE TABLE `word` (\n" +
-                            "  `spelling` varchar(300) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,\n" +
-                            "  `pronunciation` varchar(100) DEFAULT NULL,\n" +
-                            "  `synonym` varchar(500) DEFAULT NULL\n" +
-                            ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;",
-                    "ALTER TABLE `content`\n" +
-                            "  ADD KEY `fk_content_word` (`spelling`);",
-                    "ALTER TABLE `word`\n" +
-                            "  ADD PRIMARY KEY (`spelling`);",
-                    "ALTER TABLE `content`\n" +
-                            "  ADD CONSTRAINT `fk_content_word` FOREIGN KEY (`spelling`) REFERENCES `word` (`spelling`);\n"
-            };
-
-            int count = 0;
-            Connection connection = JDBCUtil.getConnection();
-            Statement statement = connection.createStatement();
-
-            System.out.println(count);
-            for (String query : createQuery) {
-                if (query.trim().endsWith(";")) {
-                    query = query.substring(0, query.length() - 1);
-                }
-                if (query.startsWith("ALTER TABLE")) {
-                    statement.execute(query);
-                } else {
-                    System.out.println(query);
-                    statement.executeUpdate(query + ";");
-                }
-            }
-
-            connection.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // Thực thi câu lệnh INSERT
+            preparedStatement.executeUpdate();
+            System.out.println(word.getSpelling());
         }
     }
 
     public static ArrayList<String> searchWordListSpelling(String spelling) throws SQLException {
-        String query = String.format(queqyList, spelling);
-        ResultSet resultSet = statement.executeQuery(query);
         Set<String> wordList = new LinkedHashSet<>();
-        int count = 0;
-        while (resultSet.next()) {
-            if (count > 20) {
-                break;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM word WHERE spelling LIKE ? ORDER BY LENGTH(spelling) ASC, INSTR(spelling, ' ') DESC LIMIT 20")) {
+
+            preparedStatement.setString(1, spelling + "%");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    wordList.add(resultSet.getString("spelling"));
+                }
             }
-            wordList.add(resultSet.getString("spelling"));
-            count++;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+//        System.out.println(wordList);
         return new ArrayList<>(wordList);
     }
 
-    public static Word searchWord(String spelling) throws SQLException {
-        Connection connection = JDBCUtil.getConnection();
-        Statement statement = connection.createStatement();
-        String query = String.format(queqyExact, spelling);
-        ResultSet resultSet = statement.executeQuery(query);
-        Word wordDAO = new Word();
-        while (resultSet.next()) {
-            wordDAO.setSpelling(resultSet.getString("spelling"));
-            wordDAO.setPronunciation(resultSet.getString("pronunciation"));
-            wordDAO.setSynonym(resultSet.getString("synonym"));
+    public static Word searchWord(String s) throws SQLException {
+        Word word = new Word();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM word WHERE spelling = ?")) {
+
+            preparedStatement.setString(1, s);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Xử lý kết quả
+
+                    String spelling = resultSet.getString("spelling");
+                    String pronunciation = resultSet.getString("pronunciation");
+                    String content = resultSet.getString("content");
+                    String synonym = resultSet.getString("synonym");
+
+                    word.setSpelling(spelling);
+                    word.setPronunciation(pronunciation);
+                    word.setContent(content);
+                    word.setSynonym(synonym);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        connection.close();
-        return wordDAO;
+        return word;
     }
 
-    public static String getWord(Word wordDAO) {
-        return wordDAO.getSpelling() +
-                ", " +
-                wordDAO.getPronunciation() +
-                ", " +
-                wordDAO.getSynonym() +
-                ", " +
-                wordDAO.getContent();
-    }
+    public static Word getRandomWord() throws SQLException {
+        String randomWord = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT spelling FROM word ORDER BY RANDOM() LIMIT 1")) {
 
-    public static void getAllWord() throws SQLException {
-        ResultSet resultSet = statement.executeQuery(queqyListSpelling);
-        Set<String> wordList = new LinkedHashSet<>();
-        while (resultSet.next()) {
-            wordList.add(resultSet.getString("spelling"));
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    randomWord = resultSet.getString("spelling");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        for (String s : wordList) {
-            Word wordDAO = searchWord(s);
-            String string = getWord(wordDAO);
-            System.out.println(string);
-        }
-        System.out.println("thanh cong");
+        return searchWord(randomWord);
     }
-
 }
