@@ -32,29 +32,63 @@ public class DictionaryCommandLine {
             s = sc.next().charAt(0);
             if (s < '0' || s > '9') {
                 System.out.println("Action not supported.");
-                System.out.println("Hãy chọn các chức năng mà bạn muốn sử dụng [0-9]");
+                System.out.println("Hãy chọn các chức năng mà bạn muốn sử dụng");
             }
             if (s == '0') {
+                System.out.println("Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi");
+                System.out.println("Chúc bạn một ngày tốt lành");
                 BookMarkManager.getBookMarkManager().save();
                 return;
             }
             if (s == '1') {
-                System.out.println("Vui lòng nhập từ mà bạn muốn thêm vào từ điển");
+                System.out.println("Hãy nhập từ mà bạn muốn thêm vào từ điển");
+                System.out.println("Hãy nhập từ tiếng anh mà bạn muốn thêm vào từ điển");
                 String englishWord = sc.next();
-                String vietnameseWord = sc.next();
+                System.out.println("Nhập nghĩa tiếng việt của từ đấy");
+                String vietnameseWord = sc.nextLine();
                 Word word_target = new Word(englishWord, "", vietnameseWord, "");
                 BookMarkManager.getBookMarkManager().addWord(word_target);
-                System.out.println(BookMarkManager.getBookMarkManager().getWordList());
+                //System.out.println(BookMarkManager.getBookMarkManager().getWordList());
+                System.out.println("Ban đã thêm từ " + englishWord + " vào từ điển");
+                System.out.println();
+                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
             }
             if (s == '2') {
-                System.out.println("Vui lòng nhập từ mà bạn muốn xóa khỏi từ điển");
+                System.out.println("Hãy nhập từ mà bạn muốn xóa khỏi từ điển");
                 String englishWord = sc.next();
                 Word word_target = new Word(englishWord, "", "", "");
-                BookMarkManager.getBookMarkManager().removeWord(word_target);
-                System.out.println(BookMarkManager.getBookMarkManager().getWordList());
+                System.out.println("Đã chắc chắn muốn xóa chưa? [Y/N]");
+                char question = sc.next().charAt(0);
+                if (question == 'Y' || question == 'y') {
+                    System.out.println("Bạn đã xóa từ " + englishWord + " khỏi từ điển");
+                    BookMarkManager.getBookMarkManager().removeWord(word_target);
+                    System.out.println();
+                    System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
+                } else  {
+                    System.out.println("Bạn đã không xóa từ " + englishWord + " khỏi từ điển");
+                    System.out.println();
+                    System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
+                }
             }
             if (s == '3') {
-                System.out.println("Vui lòng nhập từ mà bạn muốn thay đổi nó");
+                System.out.println("Bạn muốn thay đổi từ nào");
+                System.out.println("Hãy nhập từ đấy đi : )");
+                String englishWord = sc.next();
+                System.out.println("Hãy nhập từ mới của bạn");
+                System.out.println("Hãy nhập từ tiếng anh mà bạn muốn thêm vào từ điển");
+                String englishWord1 = sc.next();
+                System.out.println("Nhập nghĩa tiếng việt của từ đấy");
+                String vietnameseWord1 = sc.nextLine();
+                BookMarkManager.getBookMarkManager().removeWord(new Word(englishWord, "", "", ""));
+                Word word_target = new Word(englishWord1, "", vietnameseWord1, "");
+                System.out.println("Bạn đã thay đổi từ " + englishWord + " thành từ " + englishWord1);
+                BookMarkManager.getBookMarkManager().addWord(word_target);
+                System.out.println();
+                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
             }
             if (s == '4') {
                 System.out.println("Danh sách các từ trong BookMark");
