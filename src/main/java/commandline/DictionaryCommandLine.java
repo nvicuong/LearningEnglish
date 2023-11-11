@@ -7,6 +7,7 @@ import model.Word;
 import model.WordManager;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class DictionaryCommandLine {
@@ -94,7 +95,10 @@ public class DictionaryCommandLine {
             }
             if (s == '4') {
                 System.out.println("Danh sách các từ trong BookMark");
-
+                List<Word> wordList = BookMarkManager.getBookMarkManager().getWordList();
+                for (Word word : wordList) {
+                    System.out.println(word.getSpelling() + ": " + word.getContent());
+                }
             }
             if (s == '5') {
                 System.out.println("Vui lòng nhập từ mà bạn muốn tra cứu");
