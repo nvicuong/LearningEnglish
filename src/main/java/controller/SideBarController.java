@@ -15,7 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.effect.Light;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -27,18 +26,14 @@ import model.HistoryManager;
 import model.Word;
 import model.WordManager;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
-public class SideBarController extends CommonController implements Initializable {
-
-
-    private WordManager wordManager;
-
-    private HistoryManager historyManager;
+public class SideBarController extends Controller implements Initializable {
     private Parent homeParent;
     private Parent searchMainParent;
 
@@ -115,18 +110,12 @@ public class SideBarController extends CommonController implements Initializable
     @FXML
     private AnchorPane slider;
 
-    public WordManager getWordManager() {
-        return wordManager;
-    }
     public HomeController getHomeController() {
         return homeController;
     }
 
     public BorderPane getBorderPane() {
         return borderPane;
-    }
-    public HistoryManager getHistoryManager() {
-        return historyManager;
     }
 
     public SearchController getSearchController() {
@@ -158,7 +147,7 @@ public class SideBarController extends CommonController implements Initializable
     }
 
     @FXML
-    void searchWordButton(MouseEvent event) throws IOException, SQLException {
+    void searchWordButton(MouseEvent event) throws IOException, SQLException, ClassNotFoundException {
         if (searchListView.getSelectionModel().getSelectedItem() == null) {
             searchWord(searchTextField.getText());
         } else {
@@ -201,19 +190,28 @@ public class SideBarController extends CommonController implements Initializable
             changeToShowWord();
             searchController.getSearchWordController().updateWord();
         } else {
-            showNotification("Notification", "word is not valid!");
+            Help.showNotification("Notification", "word is not valid!");
         }
     }
 
     @Override
     public void loadPage(Parent root) throws IOException {
         borderPane.setCenter(root);
+        checkSlide();
     }
 
 
     /**
      * Side Bar Transiting.
      */
+
+    public void checkSlide() {
+        if (slider.getTranslateX() == 0) {
+            borderPane.getCenter().setTranslateX(0);
+        } else {
+            borderPane.getCenter().setTranslateX(-100);
+        }
+    }
 
     public void searchBarViewControl() {
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -239,7 +237,7 @@ public class SideBarController extends CommonController implements Initializable
             if (searchListView.getSelectionModel().getSelectedItem() != null) {
                 try {
                     searchWord(searchListView.getSelectionModel().getSelectedItem());
-                } catch (SQLException | IOException e) {
+                } catch (SQLException | IOException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -252,11 +250,11 @@ public class SideBarController extends CommonController implements Initializable
                 if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER && !searchListView.getItems().isEmpty()) {
                     try {
                         searchWord(searchTextField.getText());
-                    } catch (SQLException | IOException e) {
+                    } catch (SQLException | IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 } else if (Objects.requireNonNull(event.getCode()) == KeyCode.ENTER) {
-                    showNotification("Notification", "word is not valid!");
+                    Help.showNotification("Notification", "word is not valid!");
                 }
                 if (Objects.requireNonNull(event.getCode()) == KeyCode.DOWN && !searchListView.getItems().isEmpty()) {
                     searchListView.requestFocus();
@@ -271,13 +269,13 @@ public class SideBarController extends CommonController implements Initializable
                     if (searchListView.getSelectionModel().getSelectedItem() == null) {
                         try {
                             searchWord(searchTextField.getText());
-                        } catch (SQLException | IOException e) {
+                        } catch (SQLException | IOException | ClassNotFoundException e) {
                             throw new RuntimeException(e);
                         }
                     } else {
                         try {
                             searchWord(searchListView.getSelectionModel().getSelectedItem());
-                        } catch (SQLException | IOException e) {
+                        } catch (SQLException | IOException | ClassNotFoundException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -298,22 +296,38 @@ public class SideBarController extends CommonController implements Initializable
         menu.setOnMouseClicked(event -> {
             if (slider.getTranslateX() == -176) {
                 TranslateTransition slide = new TranslateTransition();
-                slide.setDuration(Duration.seconds(0.4));
-                slide.setNode(slider);
-                slide.setToX(0);
-                slide.play();
+                TranslateTransition slide1 = new TranslateTransition();
 
+                slide.setDuration(Duration.seconds(0.4));
+                slide1.setDuration(Duration.seconds(0.4));
+                slide.setNode(slider);
+                slide1.setNode(borderPane.getCenter());
+                slide.setToX(0);
+                slide1.setToX(0);
+                slide.play();
+                slide1.play();
+                borderPane.getCenter().setTranslateX(-80);
                 slider.setTranslateX(-176);
 
             } else {
                 TranslateTransition slide = new TranslateTransition();
-                slide.setDuration(Duration.seconds(0.4));
+                TranslateTransition slide1 = new TranslateTransition();
+
+
                 slide.setNode(slider);
+                slide1.setNode(borderPane.getCenter());
+
+                slide.setDuration(Duration.seconds(0.4));
+                slide1.setDuration(Duration.seconds(0.4));
 
                 slide.setToX(-176);
+                slide1.setToX(-80);
+
                 slide.play();
+                slide1.play();
 
                 slider.setTranslateX(0);
+                borderPane.getCenter().setTranslateX(0);
             }
         });
     }

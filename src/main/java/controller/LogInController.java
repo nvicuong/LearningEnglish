@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class LogInController extends CommonController implements Initializable {
+public class LogInController extends Controller implements Initializable {
 
     @FXML
     private Label createAccountLabel;
@@ -67,7 +67,7 @@ public class LogInController extends CommonController implements Initializable {
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        homeController.getSideBarController().getBorderPane().setCenter(parent);
+        homeController.getSideBarController().loadPage(parent);
     }
 
     @FXML

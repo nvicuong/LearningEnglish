@@ -1,4 +1,4 @@
 package controller;
 
-public class HelpController {
+public class HelpController extends Controller {
 }

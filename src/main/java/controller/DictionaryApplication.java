@@ -1,13 +1,15 @@
 package controller;
 
-import database.ExecuteSQLFile;
+import help.Help;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import atlantafx.base.theme.*;
+import model.BookMarkManager;
+import model.HistoryManager;
+import model.WordManager;
 
 import java.io.IOException;
 
@@ -15,6 +17,7 @@ import java.io.IOException;
 public class DictionaryApplication extends Application {
     SideBarController sideBarController;
     Parent sideBarParent;
+
     @Override
     public void start(Stage stage) throws Exception {
         ExecuteSQLFile.init();
@@ -32,16 +35,16 @@ public class DictionaryApplication extends Application {
         stage.setOnCloseRequest(event -> {
             event.consume();
             try {
-                sideBarController.getHistoryManager().saveWordToHistory();
+                HistoryManager.getHistoryManager().save();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             try {
-                sideBarController.getBookMarkController().getBookMarkManager().saveWordBank();
+                BookMarkManager.getBookMarkManager().save();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            CommonController.loggout(stage);
+            Help.loggout(stage);
         });
 
     }

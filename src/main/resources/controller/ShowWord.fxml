@@ -56,5 +56,13 @@
             <Image url="@../image/makeSound.png" />
          </image>
       </ImageView>
+      <Button fx:id="nextWordButton" layoutX="617.0" layoutY="41.0" mnemonicParsing="false" onMouseClicked="#nextWord" prefHeight="31.0" prefWidth="107.0" style="-fx-background-color: #24A0ED;" text="NEXT WORD" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

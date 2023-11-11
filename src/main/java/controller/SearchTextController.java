@@ -3,6 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -17,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-public class SearchTextController extends CommonController implements Initializable {
+public class SearchTextController extends Controller implements Initializable {
     private SearchController searchController;
 
     @FXML
@@ -86,4 +87,5 @@ public class SearchTextController extends CommonController implements Initializa
         makeSoundImageView.setCursor(Cursor.HAND);
         back.setCursor(Cursor.HAND);
     }
+
 }

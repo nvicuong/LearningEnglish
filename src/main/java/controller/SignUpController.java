@@ -3,6 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SignUpController extends CommonController implements Initializable {
+public class SignUpController extends Controller implements Initializable {
 
     private LogInController logInController;
 
@@ -61,4 +62,5 @@ public class SignUpController extends CommonController implements Initializable 
         signUpButton.setCursor(Cursor.HAND);
         logInButton.setCursor(Cursor.HAND);
     }
+
 }
