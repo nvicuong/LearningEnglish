@@ -54,7 +54,7 @@ public class DictionaryCommandLine {
                 System.out.println("Ban đã thêm từ " + englishWord + " vào từ điển");
                 System.out.println();
                 System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
+                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
             }
             if (s == '2') {
                 System.out.println("Hãy nhập từ mà bạn muốn xóa khỏi từ điển");
@@ -67,12 +67,12 @@ public class DictionaryCommandLine {
                     BookMarkManager.getBookMarkManager().removeWord(word_target);
                     System.out.println();
                     System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
+                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
                 } else  {
                     System.out.println("Bạn đã không xóa từ " + englishWord + " khỏi từ điển");
                     System.out.println();
                     System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
+                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
                 }
             }
             if (s == '3') {
@@ -91,7 +91,7 @@ public class DictionaryCommandLine {
                 BookMarkManager.getBookMarkManager().addWord(word_target);
                 System.out.println();
                 System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng");
+                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
             }
             if (s == '4') {
                 System.out.println("Danh sách các từ trong BookMark");
@@ -99,9 +99,37 @@ public class DictionaryCommandLine {
                 for (Word word : wordList) {
                     System.out.println(word.getSpelling() + ": " + word.getContent());
                 }
+                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
             }
             if (s == '5') {
-                System.out.println("Vui lòng nhập từ mà bạn muốn tra cứu");
+                boolean isFound = false;
+                System.out.println("Hãy nhập từ mà bạn muốn tra cứu");
+                String englishWord = sc.next();
+                Word word_target = new Word(englishWord, "", "", "");
+                List<Word> wordList = BookMarkManager.getBookMarkManager().getWordList();
+                for (Word word : wordList) {
+                    if (word.getSpelling().equals(word_target.getSpelling())) {
+                        System.out.println("Từ bạn muốn tra là: " + word.getSpelling() + " đã có trong từ điển");
+                        System.out.println();
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (!isFound) {
+                    System.out.println("Từ bạn muốn tra là: " + word_target.getSpelling() + " chưa có trong từ điển");
+                    System.out.println("Bạn có muốn thêm từ này vào từ điển không? [Y/N]");
+                    char question = sc.next().charAt(0);
+                    if (question == 'Y' || question == 'y') {
+                        System.out.println("Bạn nhập số 1 đi : )) để thêm nào hihi");
+                    } else  {
+                        System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                        System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                    }
+                } else  {
+                    System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                }
             }
             if (s == '6') {
                 System.out.println("Vui lòng nhập từ mà bạn muốn tìm kiếm");
