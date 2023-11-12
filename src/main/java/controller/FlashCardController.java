@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class FlashCardController implements Initializable {
+public class FlashCardController extends Controller implements Initializable {
     private List<Word> wordList;
 
     private BookMarkController bookMarkController;

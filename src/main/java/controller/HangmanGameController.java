@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HangmanGameController implements Initializable {
+public class HangmanGameController extends Controller implements Initializable {
 
     private BookMarkController bookMarkController;
 

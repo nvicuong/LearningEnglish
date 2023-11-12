@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class SearchController extends CommonController implements Initializable {
+public class SearchController extends Controller implements Initializable {
 
     private SideBarController sideBarController;
 
@@ -55,12 +55,11 @@ public class SearchController extends CommonController implements Initializable 
 
     public void init(SideBarController sideBarController) {
         this.sideBarController = sideBarController;
-        searchWordController.init(sideBarController.getHistoryManager());
     }
 
     @Override
     public void loadPage(Parent parent) throws IOException {
-        sideBarController.getBorderPane().setCenter(parent);
+        sideBarController.loadPage(parent);
     }
 
     @Override
