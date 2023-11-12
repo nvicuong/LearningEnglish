@@ -7,6 +7,7 @@ import model.Word;
 import model.WordManager;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class DictionaryCommandLine {
@@ -20,7 +21,7 @@ public class DictionaryCommandLine {
 
     private static int isFound;
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
         WordManager.getWordManager();
         BookMarkManager.getBookMarkManager();
         HistoryManager.getHistoryManager();
