@@ -25,4 +25,10 @@ public class BookMarkManager extends Manager {
     public void save() throws IOException {
         super.save(BOOKMARK_PATH);
     }
+
+    public void removeWord(Word word) throws IOException {
+        BookMarkManager.getBookMarkManager().getWordList().removeIf(word1 -> {
+            return word1.equals(word);
+        });
+    }
 }
