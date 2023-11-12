@@ -57,7 +57,7 @@ public class Word implements Comparable<Word>, Serializable {
 
     @Override
     public String toString() {
-        return spelling + "? " + pronunciation + "? " + content + "? " + synonym;
+        return "*spelling: " + spelling + "\n*pronunciation: " + pronunciation + "\n*definition: " + content + "\n*synonym: " + synonym;
     }
 
     /**

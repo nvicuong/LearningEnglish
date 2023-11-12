@@ -63,8 +63,7 @@ public class DictionaryCommandLine {
                 //System.out.println(BookMarkManager.getBookMarkManager().getWordList());
                 System.out.println("Ban đã thêm từ " + englishWord + " vào từ điển");
                 System.out.println();
-                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                continueOrNot();
             }
             if (s == '2') {
                 System.out.println("Hãy nhập từ mà bạn muốn xóa khỏi từ điển");
@@ -76,13 +75,11 @@ public class DictionaryCommandLine {
                     System.out.println("Bạn đã xóa từ " + englishWord + " khỏi từ điển");
                     BookMarkManager.getBookMarkManager().removeWord(word_target);
                     System.out.println();
-                    System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                    continueOrNot();
                 } else  {
                     System.out.println("Bạn đã không xóa từ " + englishWord + " khỏi từ điển");
                     System.out.println();
-                    System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                    continueOrNot();
                 }
             }
             if (s == '3') {
@@ -100,8 +97,7 @@ public class DictionaryCommandLine {
                 System.out.println("Bạn đã thay đổi từ " + englishWord + " thành từ " + englishWord1);
                 BookMarkManager.getBookMarkManager().addWord(word_target);
                 System.out.println();
-                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                continueOrNot();
             }
             if (s == '4') {
                 System.out.println("Danh sách các từ trong BookMark");
@@ -109,8 +105,7 @@ public class DictionaryCommandLine {
                 for (Word word : wordList) {
                     System.out.println(word.getSpelling() + ": " + word.getContent());
                 }
-                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                continueOrNot();
             }
             if (s == '5') {
                 boolean isFound = false;
@@ -133,18 +128,21 @@ public class DictionaryCommandLine {
                     if (question == 'Y' || question == 'y') {
                         System.out.println("Bạn nhập số 1 đi : )) để thêm nào hihi");
                     } else  {
-                        System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                        System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                        continueOrNot();
                     }
                 } else  {
-                    System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                    System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                    continueOrNot();
                 }
             }
             if (s == '6') {
                 System.out.println("Vui lòng nhập từ mà bạn muốn tìm kiếm");
                 String englishWord = sc.next();
-
+                Word word = WordManager.getWordManager().searchWord(englishWord);
+                if (word.getSpelling() == null) {
+                    System.out.println("từ không tồn tại");
+                } else {
+                    System.out.println(word);
+                }
             }
             if (s == '7') {
                 System.out.println("Game Doan Tu : )");
@@ -216,8 +214,7 @@ public class DictionaryCommandLine {
                     }
                 }
                 System.out.println();
-                System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
-                System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
+                continueOrNot();
             }
             if (s == '8') {
                 System.out.println("Nhập tên tệp bạn muốn nhập từ vựng từ:");
@@ -235,5 +232,10 @@ public class DictionaryCommandLine {
                 System.out.println("Đã xuất từ vựng ra tệp " + fileName);
             }
         }
+    }
+
+    public static void continueOrNot() {
+        System.out.println("Bạn có muốn sử dụng thêm chức nào của tôi nữa không?");
+        System.out.println("Nếu có thì nhập các chức năng mà bạn muốn sử dụng\n");
     }
 }
