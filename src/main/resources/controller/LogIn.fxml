@@ -11,10 +11,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="458.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController">
+<AnchorPane prefHeight="458.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController">
    <children>
-      <HBox layoutX="557.0" layoutY="267.0" prefHeight="34.0" prefWidth="268.0">
+      <HBox layoutX="562.0" layoutY="234.0" prefHeight="34.0" prefWidth="268.0">
          <children>
             <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -23,8 +24,8 @@
             </ImageView>
             <TextField fx:id="userNameTextField" prefHeight="34.0" prefWidth="237.0" promptText="Username" style="-fx-background-color: transparent;" />
          </children></HBox>
-      <Line endX="117.800048828125" endY="0.399993896484375" layoutX="708.0" layoutY="301.0" startX="-115.39996337890625" />
-      <HBox layoutX="557.0" layoutY="326.0" prefHeight="34.0" prefWidth="268.0">
+      <Line endX="117.800048828125" endY="0.399993896484375" layoutX="713.0" layoutY="268.0" startX="-115.39996337890625" />
+      <HBox layoutX="562.0" layoutY="285.0" prefHeight="34.0" prefWidth="268.0">
          <children>
             <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -34,8 +35,8 @@
             <PasswordField fx:id="passWordFied" prefHeight="36.0" prefWidth="235.0" promptText="Password" style="-fx-background-color: transparent;" />
          </children>
       </HBox>
-      <Line endX="117.800048828125" endY="0.399993896484375" layoutX="706.0" layoutY="360.0" startX="-115.39996337890625" />
-      <Button fx:id="loginButton" layoutX="559.0" layoutY="383.0" mnemonicParsing="false" onMouseClicked="#logIn" prefHeight="31.0" prefWidth="268.0" style="-fx-background-color: #00CBFF;" text="LOG IN" textFill="WHITE">
+      <Line endX="117.800048828125" endY="0.399993896484375" layoutX="711.0" layoutY="319.0" startX="-115.39996337890625" />
+      <Button fx:id="loginButton" layoutX="566.0" layoutY="366.0" mnemonicParsing="false" onMouseClicked="#logIn" prefHeight="31.0" prefWidth="268.0" style="-fx-background-color: #00CBFF;" text="LOG IN" textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>
@@ -43,16 +44,21 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Label layoutX="558.0" layoutY="431.0" text="First time to dictionary?" />
-      <Label fx:id="createAccountLabel" layoutX="731.0" layoutY="431.0" text="Create account" textFill="#00caff">
+      <Label layoutX="557.0" layoutY="409.0" text="First time to dictionary?" />
+      <Label fx:id="createAccountLabel" layoutX="732.0" layoutY="409.0" text="Create account" textFill="#00caff">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ImageView fitHeight="186.0" fitWidth="248.0" layoutX="600.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="155.0" fitWidth="155.0" layoutX="618.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/logoUET.png" />
          </image>
       </ImageView>
+      <Text fx:id="errorLog" layoutX="574.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="251.2841796875">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

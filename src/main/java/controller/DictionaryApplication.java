@@ -1,5 +1,6 @@
 package controller;
 
+import database.UserDB;
 import help.Help;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ public class DictionaryApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        UserDB.initialize();
+
         WordManager.getWordManager();
         HistoryManager.getHistoryManager();
         BookMarkManager.getBookMarkManager();

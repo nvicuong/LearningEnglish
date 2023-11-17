@@ -13,6 +13,18 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <junit.version>5.9.2</junit.version>  </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.cloud</groupId>
+        <artifactId>libraries-bom</artifactId>
+        <version>26.27.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.openjfx</groupId>
@@ -29,7 +41,7 @@
       <artifactId>async-http-client</artifactId>
       <version>2.12.0</version> <!-- Use the appropriate version -->
     </dependency>
-<dependency>
+    <dependency>
       <groupId>org.controlsfx</groupId>
       <artifactId>controlsfx</artifactId>
       <version>11.1.2</version>
@@ -80,6 +92,20 @@
       <groupId>io.github.mkpaz</groupId>
       <artifactId>atlantafx-base</artifactId>
       <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.firebase</groupId>
+      <artifactId>firebase-admin</artifactId>
+      <version>9.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-firestore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-core</artifactId>
+      <version>2.6.1</version>
     </dependency>
   </dependencies>
 

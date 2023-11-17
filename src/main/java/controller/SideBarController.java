@@ -127,6 +127,7 @@ public class SideBarController extends Controller implements Initializable {
 
     @FXML
     public void changeToHome(MouseEvent event) throws IOException {
+        homeController.resetUser();
         loadPage(homeParent);
     }
 

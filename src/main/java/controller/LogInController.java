@@ -1,5 +1,7 @@
 package controller;
 
+import database.UserDB;
+import javafx.scene.text.Text;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +29,9 @@ public class LogInController extends Controller implements Initializable {
 
     @FXML
     private Button loginButton;
+
+    @FXML
+    private Text errorLog;
 
     @FXML
     private PasswordField passWordFied;
@@ -71,8 +76,36 @@ public class LogInController extends Controller implements Initializable {
     }
 
     @FXML
-    void logIn(MouseEvent event) {
+    void logIn(MouseEvent event) throws Exception {
+        String username = userNameTextField.getText();
+        String password = passWordFied.getText();
 
+        try {
+            UserDB.login(username, password);
+        } catch (Exception e) {
+            errorLog.setText(e.getMessage());
+            errorLog.setVisible(true);
+            errorLog.setStyle("-fx-fill: red");
+            return;
+        }
+
+        homeController.getSideBarController().changeToHome(event);
+        userNameTextField.clear();
+        passWordFied.clear();
+        errorLog.setVisible(false);
+    }
+
+    public void signInSuccess() {
+        userNameTextField.clear();
+
+        passWordFied.clear();
+
+        // ask user to login
+        errorLog.setVisible(true);
+        errorLog.setText("Sign up successfully! Please login");
+
+        // set errorLog color to green
+        errorLog.setStyle("-fx-fill: green");
     }
 
     @Override
@@ -108,5 +141,7 @@ public class LogInController extends Controller implements Initializable {
         loginButton.setCursor(Cursor.HAND);
         passWordFied.setCursor(Cursor.TEXT);
         userNameTextField.setCursor(Cursor.TEXT);
+
+        errorLog.setVisible(false);
     }
 }

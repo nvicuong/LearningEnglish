@@ -1,5 +1,6 @@
 package controller;
 
+import database.UserDB;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -78,6 +79,12 @@ public class HomeController extends Controller implements Initializable {
     }
 
     @FXML
+    void logout(MouseEvent event) {
+        UserDB.logout();
+        resetUser();
+    }
+
+    @FXML
     void changeToSearchWord(MouseEvent event) throws IOException {
         sideBarController.getSearchController().changeToSearchWord(event);
     }
@@ -146,6 +153,18 @@ public class HomeController extends Controller implements Initializable {
         searchNewWordButton.setCursor(Cursor.HAND);
         translateButton.setCursor(Cursor.HAND);
 
+        resetUser();
+    }
 
+    public void resetUser() {
+        if (UserDB.getUsername() != null) {
+            loginButton.setVisible(false);
+            logoutButton.setVisible(true);
+            welcomeLabel.setText("Welcome back, " + UserDB.getUsername() + "!");
+        } else {
+            loginButton.setVisible(true);
+            logoutButton.setVisible(false);
+            welcomeLabel.setText("Not logged in!");
+        }
     }
 }
