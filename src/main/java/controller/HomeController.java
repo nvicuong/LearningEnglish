@@ -25,6 +25,8 @@ public class HomeController extends Controller implements Initializable {
 
     private SideBarController sideBarController;
 
+    @FXML
+    private Label welcomeLabel;
 
     @FXML
     private Label addWordButton;

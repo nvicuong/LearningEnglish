@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeController">
    <children>
       <Label layoutX="36.0" layoutY="28.0" text="Dashboard">
          <font>
@@ -23,8 +23,8 @@
       <Line endX="19.4000244140625" endY="0.20000076293945312" layoutX="113.0" layoutY="55.0" startX="-79.0" startY="0.20000076293945312" />
       <Pane layoutX="274.0" layoutY="28.0" prefHeight="27.0" prefWidth="283.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
-            <Label contentDisplay="CENTER" layoutX="33.0" prefHeight="27.0" prefWidth="92.0" text="Not logged in" />
-            <Button fx:id="loginButton" layoutX="125.0" mnemonicParsing="false" onMouseClicked="#changeToLogin" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #57B5D6;" text="Log in" textFill="WHITE">
+            <Label fx:id="welcomeLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="-58.0" prefHeight="27.0" prefWidth="200.0" text="Not logged in" />
+            <Button fx:id="loginButton" layoutX="157.0" mnemonicParsing="false" onMouseClicked="#changeToLogin" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #57B5D6;" text="Log in" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -35,7 +35,7 @@
                      </color>
                   </DropShadow>
                </effect></Button>
-            <Button fx:id="logoutButton" layoutX="215.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #D6407B;" text="Log out" textFill="WHITE">
+            <Button fx:id="logoutButton" layoutX="160.0" layoutY="-2.0" mnemonicParsing="false" onMouseClicked="#logout" prefHeight="27.0" prefWidth="68.0" style="-fx-background-color: #D6407B;" text="Log out" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
