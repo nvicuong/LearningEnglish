@@ -27,7 +27,7 @@ public class UserDB {
 
     public static class Credential {
         private static boolean checkValidUsername(String s) {
-            if (s.length() <= 6) return false;
+            if (s.length() < 5) return false;
 
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
@@ -67,7 +67,7 @@ public class UserDB {
 
         public static void signin(String username, String password) throws Exception {
             if (!checkValidUsername(username)) {
-                throw new Exception("Username must be at least 6 characters long and contain only letters and digits");
+                throw new Exception("Username must be at least 5 characters long and contain only letters and digits");
             }
             if (password.length() < 6) {
                 throw new Exception("Password must be at least 6 characters long");
@@ -77,6 +77,7 @@ public class UserDB {
             }
 
             setPassword(username, password);
+            Bookmark.init(username);
         }
 
         public static void login(String username, String password) throws Exception {
@@ -92,44 +93,49 @@ public class UserDB {
     }
 
     public static class Bookmark {
-        private static void init() throws Exception {
-            String username = currentUser;
-            if (username == null) throw new Exception("Not logged in");
-
+        private static void init(String username) throws Exception {
             DocumentReference docRef = db.collection("bookmark").document(username);
             DocumentSnapshot document = docRef.get().get();
 
             if (!document.exists()) {
-                Map<String, Object> data = new HashMap<>();
-                data.put("value", new ArrayList<String>());
-                docRef.set(data).get();
+                docRef.set(new HashMap<>()).get();
             }
         }
 
-        public static void add(String word) throws Exception {
+        public static void add(String spell, String pronun, String def, String syn) throws Exception {
             String username = currentUser;
             if (username == null) throw new Exception("Not logged in");
 
             DocumentReference docRef = db.collection("bookmark").document(username);
             DocumentSnapshot document = docRef.get().get();
 
-            if (document.exists()) {
-                ArrayList<String> res = (ArrayList<String>) document.get("value");
-                if (!res.contains(word)) res.add(word);
-                docRef.update("value", res).get();
+            HashMap<String, String> newValue = new HashMap<>();
+            newValue.put("pronunciation", pronun);
+            newValue.put("definition", def);
+            newValue.put("synonym", syn);
+
+            // Check if a field of name spell of document exists
+            if (document.contains(spell)) {
+                // Update new value
+                docRef.update(spell, newValue).get();
             } else {
-                System.err.println("No such document!");
+                // Create new field with new value
+                docRef.update(spell, newValue).get();
             }
         }
 
-        public static ArrayList<String> fetch() throws Exception {
+        public static HashMap<String, String> fetch(String word) throws Exception {
             String username = currentUser;
             if (username == null) throw new Exception("Not logged in");
 
             DocumentReference docRef = db.collection("bookmark").document(username);
             DocumentSnapshot document = docRef.get().get();
 
-            return (ArrayList<String>) document.get("value");
+            if (document.contains(word)) {
+                return (HashMap<String, String>) document.get(word);
+            } else {
+                throw new Exception("Word " + word + " does not exist");
+            }
         }
     }
 
@@ -137,9 +143,27 @@ public class UserDB {
         return currentUser;
     }
 
+    public static boolean loggedIn() {
+        return currentUser != null;
+    }
+
     public static void main(String[] args) throws Exception {
         initialize();
+        // Credential.signin("admin", "admin");
+        Credential.login("admin", "admin");
 
+        Bookmark.add("hello", "həˈlō", "used as a greeting or to begin a telephone conversation", "hi");
+        Bookmark.add("world", "wərld", "the earth, together with all of its countries and peoples", "earth");
+        Bookmark.add("java", "ˈjävə", "a high-level programming language developed by Sun Microsystems", "programming language");
+        Bookmark.add("cheese", "CHēz", "a food made from the pressed curds of milk", "milk");
 
+        System.out.println("Fetch \"Java\" bookmark: " + Bookmark.fetch("java"));
+        System.out.println("Fetch \"world\" bookmark: " + Bookmark.fetch("world"));
+
+        try {
+            System.out.println(Bookmark.fetch("sugoi"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
