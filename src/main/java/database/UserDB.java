@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import com.google.cloud.firestore.*;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -24,100 +25,112 @@ public class UserDB {
         db = options.getService();
     }
 
-    private static boolean checkValidUsername(String s) {
-        if (s.length() <= 6) return false;
+    public static class Credential {
+        private static boolean checkValidUsername(String s) {
+            if (s.length() <= 6) return false;
 
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (!Character.isLetterOrDigit(c)) {
-                return false;
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if (!Character.isLetterOrDigit(c)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static String getPassword(String username) throws Exception {
+            DocumentReference docRef = db.collection("login").document(username);
+            DocumentSnapshot document = docRef.get().get();
+
+            if (document.exists()) {
+                return document.getString("password");
+            } else {
+                return null;
             }
         }
 
-        return true;
-    }
+        private static void setPassword(String username, String password) throws Exception {
+            DocumentReference docRef = db.collection("login").document(username);
+            DocumentSnapshot document = docRef.get().get();
 
-    public static void signin(String username, String password) throws Exception {
-        if (!checkValidUsername(username)) {
-            throw new Exception("Username must be at least 6 characters long and contain only letters and digits");
-        }
-        if (password.length() < 6) {
-            throw new Exception("Password must be at least 6 characters long");
-        }
-        if (getPassword(username) != null) {
-            throw new Exception("Username already exists");
-        }
+            password = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
-        setPassword(username, password);
-    }
-
-    private static String getPassword(String username) throws Exception {
-        DocumentReference docRef = db.collection("login").document(username);
-        DocumentSnapshot document = docRef.get().get();
-
-        if (document.exists()) {
-            return document.getString("password");
-        } else {
-            return null;
-        }
-    }
-
-    private static void setPassword(String username, String password) throws Exception {
-        DocumentReference docRef = db.collection("login").document(username);
-        DocumentSnapshot document = docRef.get().get();
-
-        if (document.exists()) {
-            docRef.update("password", password).get();
-        } else {
-            Map<String, Object> data = new HashMap<>();
-            data.put("password", password);
-            docRef.set(data).get();
-        }
-    }
-
-    private static void initBookmark(String username) throws Exception {
-        DocumentReference docRef = db.collection("bookmark").document(username);
-        DocumentSnapshot document = docRef.get().get();
-
-        if (document.exists()) {
-
-        } else {
-            
+            if (document.exists()) {
+                docRef.update("password", password).get();
+            } else {
+                Map<String, Object> data = new HashMap<>();
+                data.put("password", password);
+                docRef.set(data).get();
+            }
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("value", new ArrayList<String>());
-        docRef.set(data).get();
-    }
+        public static void signin(String username, String password) throws Exception {
+            if (!checkValidUsername(username)) {
+                throw new Exception("Username must be at least 6 characters long and contain only letters and digits");
+            }
+            if (password.length() < 6) {
+                throw new Exception("Password must be at least 6 characters long");
+            }
+            if (getPassword(username) != null) {
+                throw new Exception("Username already exists");
+            }
 
-    public static void addWordToBookmark(String username, String word) throws Exception {
-        DocumentReference docRef = db.collection("bookmark").document(username);
-        DocumentSnapshot document = docRef.get().get();
+            setPassword(username, password);
+        }
 
-        if (document.exists()) {
-            ArrayList<String> res = (ArrayList<String>) document.get("value");
-            if (!res.contains(word)) res.add(word);
-            docRef.update("value", res).get();
-        } else {
-            System.err.println("No such document!");
+        public static void login(String username, String password) throws Exception {
+            String expected = getPassword(username);
+            if (expected == null) {
+                throw new Exception("Username " + username + " does not exist");
+            }
+            if (!BCrypt.verifyer().verify(password.toCharArray(), expected).verified) {
+                throw new Exception("Wrong password");
+            }
+            currentUser = username;
         }
     }
 
-    public static ArrayList<String> getBookmark(String username) throws Exception {
-        DocumentReference docRef = db.collection("bookmark").document(username);
-        DocumentSnapshot document = docRef.get().get();
+    public static class Bookmark {
+        private static void init() throws Exception {
+            String username = currentUser;
+            if (username == null) throw new Exception("Not logged in");
 
-        return (ArrayList<String>) document.get("value");
-    }
+            DocumentReference docRef = db.collection("bookmark").document(username);
+            DocumentSnapshot document = docRef.get().get();
 
-    public static void login(String username, String password) throws Exception {
-        if (getPassword(username) == null) {
-            throw new Exception("Username " + username + " does not exist");
+            if (!document.exists()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("value", new ArrayList<String>());
+                docRef.set(data).get();
+            }
         }
-        if (!getPassword(username).equals(password)) {
-            throw new Exception("Wrong password");
+
+        public static void add(String word) throws Exception {
+            String username = currentUser;
+            if (username == null) throw new Exception("Not logged in");
+
+            DocumentReference docRef = db.collection("bookmark").document(username);
+            DocumentSnapshot document = docRef.get().get();
+
+            if (document.exists()) {
+                ArrayList<String> res = (ArrayList<String>) document.get("value");
+                if (!res.contains(word)) res.add(word);
+                docRef.update("value", res).get();
+            } else {
+                System.err.println("No such document!");
+            }
         }
-        currentUser = username;
+
+        public static ArrayList<String> fetch() throws Exception {
+            String username = currentUser;
+            if (username == null) throw new Exception("Not logged in");
+
+            DocumentReference docRef = db.collection("bookmark").document(username);
+            DocumentSnapshot document = docRef.get().get();
+
+            return (ArrayList<String>) document.get("value");
+        }
     }
 
     public static String getUsername() {
@@ -127,12 +140,6 @@ public class UserDB {
     public static void main(String[] args) throws Exception {
         initialize();
 
-        signin("admin", "admin");
-        addWordToBookmark("admin", "wine");
-        addWordToBookmark("admin", "wine");
-        addWordToBookmark("admin", "alcohol");
-        addWordToBookmark("admin", "wine");
 
-        System.out.println(getBookmark("admin"));
     }
 }

@@ -19,6 +19,7 @@ module dictionaryapplication.dictionaryapplication {
     requires java.management;
     requires java.instrument;
     requires atlantafx.base;
+    requires bcrypt;
 
     opens controller to javafx.fxml;
     exports controller;

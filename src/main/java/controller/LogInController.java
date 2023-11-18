@@ -81,7 +81,7 @@ public class LogInController extends Controller implements Initializable {
         String password = passWordFied.getText();
 
         try {
-            UserDB.login(username, password);
+            UserDB.Credential.login(username, password);
         } catch (Exception e) {
             errorLog.setText(e.getMessage());
             errorLog.setVisible(true);

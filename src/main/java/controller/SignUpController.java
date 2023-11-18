@@ -70,7 +70,7 @@ public class SignUpController extends Controller implements Initializable {
         }
 
         try {
-            UserDB.signin(username, password);
+            UserDB.Credential.signin(username, password);
         } catch (Exception e) {
             errorLog.setText(e.getMessage());
             return;
