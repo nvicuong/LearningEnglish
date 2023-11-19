@@ -1,6 +1,8 @@
 package controller;
 
 import database.UserDB;
+import help.Help;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,6 +10,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import model.BookMarkManager;
 import model.HistoryManager;
 import model.WordManager;
@@ -19,11 +22,27 @@ import java.util.ResourceBundle;
 
 public class HomeController extends Controller implements Initializable {
 
+    public Parent getLogInParent() {
+        return logInParent;
+    }
+
     private Parent logInParent;
+
+    public LogInController getLogInController() {
+        return logInController;
+    }
+
     private LogInController logInController;
 
 
     private SideBarController sideBarController;
+
+    public AnchorPane getHomeAnchorPane() {
+        return homeAnchorPane;
+    }
+
+    @FXML
+    private AnchorPane homeAnchorPane;
 
     @FXML
     private Label welcomeLabel;
@@ -75,6 +94,7 @@ public class HomeController extends Controller implements Initializable {
     public void init(SideBarController sideBarController) {
         this.sideBarController = sideBarController;
     }
+
     @FXML
     void changeToLogin(MouseEvent event) throws IOException {
         loadPage(logInParent);
@@ -82,8 +102,20 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     void logout(MouseEvent event) {
-        UserDB.logout();
-        resetUser();
+        Help.threadProcess(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                BookMarkManager.getBookMarkManager().saveDatabase();
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                UserDB.logout();
+                resetUser();
+                super.succeeded();
+            }
+        }, homeAnchorPane, "SAVING...");
     }
 
     @FXML

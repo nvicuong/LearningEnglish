@@ -33,6 +33,10 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SideBarController extends Controller implements Initializable {
+    public Parent getHomeParent() {
+        return homeParent;
+    }
+
     private Parent homeParent;
     private Parent searchMainParent;
 
@@ -55,6 +59,10 @@ public class SideBarController extends Controller implements Initializable {
 
     private BookMarkController bookMarkController;
     private HelpController helpController;
+
+    public AnchorPane getMainAnchorPane() {
+        return mainAnchorPane;
+    }
 
     @FXML
     private AnchorPane mainAnchorPane;

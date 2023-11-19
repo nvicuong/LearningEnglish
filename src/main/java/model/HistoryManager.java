@@ -1,5 +1,7 @@
 package model;
 
+import database.UserDB;
+
 import java.io.*;
 
 

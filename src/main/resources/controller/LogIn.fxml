@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="458.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController">
+<AnchorPane fx:id="homeAnchorPane" prefHeight="458.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogInController">
    <children>
       <HBox layoutX="562.0" layoutY="234.0" prefHeight="34.0" prefWidth="268.0">
          <children>

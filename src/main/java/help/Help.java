@@ -1,7 +1,13 @@
 package help;
 
+import javafx.concurrent.Task;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.Word;
 import org.controlsfx.control.Notifications;
@@ -64,5 +70,30 @@ public class Help {
             System.out.println("log out successfully");
             stage.close();
         }
+    }
+
+    public static void threadProcess(Task<Void> task, AnchorPane anchorPane, String massage) {
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+        Label label = new Label(massage);
+        ProgressIndicator loadingProgressIndicator = new ProgressIndicator();
+        loadingProgressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+        loadingProgressIndicator.progressProperty().bind(task.progressProperty());
+        loadingProgressIndicator.setLayoutX((anchorPane.getWidth() - loadingProgressIndicator.getWidth()) / 2);
+        loadingProgressIndicator.setLayoutY((anchorPane.getHeight() - loadingProgressIndicator.getHeight()) / 2);
+        label.setLayoutX(loadingProgressIndicator.getLayoutX());
+        label.setLayoutY(loadingProgressIndicator.getLayoutY() + 50);
+        anchorPane.getChildren().addAll(loadingProgressIndicator, label);
+        task.setOnRunning(e -> {
+            loadingProgressIndicator.setVisible(true);
+            label.setVisible(true);
+        });
+        task.setOnSucceeded(e -> {
+            loadingProgressIndicator.setVisible(false);
+            label.setVisible(false);
+            anchorPane.getChildren().remove(loadingProgressIndicator);
+            anchorPane.getChildren().remove(label);
+        });
     }
 }

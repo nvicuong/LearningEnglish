@@ -1,5 +1,10 @@
 package model;
 
+import controller.LogInController;
+import database.UserDB;
+import help.Help;
+import javafx.concurrent.Task;
+
 import java.io.*;
 import java.util.*;
 
@@ -26,9 +31,24 @@ public class BookMarkManager extends Manager {
         super.save(BOOKMARK_PATH);
     }
 
+    public void fetch() throws Exception {
+        String s = LogInController.readLastLogin();
+        if (s.equals(UserDB.getUsername())) {
+            UserDB.addWordAll(wordList);
+        }
+        wordList.clear();
+        wordList.addAll(UserDB.getAllWords());
+        UserDB.clearAll();
+        LogInController.saveLastLogin(UserDB.getUsername());
+    }
+
     public void removeWord(Word word) throws IOException {
         BookMarkManager.getBookMarkManager().getWordList().removeIf(word1 -> {
             return word1.equals(word);
         });
+    }
+
+    public void saveDatabase() {
+        UserDB.save(wordList);
     }
 }

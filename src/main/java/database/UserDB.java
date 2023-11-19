@@ -1,11 +1,10 @@
 package database;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import model.Word;
 
 import com.google.cloud.firestore.*;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -77,7 +76,7 @@ public class UserDB {
             }
 
             setPassword(username, password);
-            Bookmark.init(username);
+//            Bookmark.init(username);
         }
 
         public static void login(String username, String password) throws Exception {
@@ -115,12 +114,18 @@ public class UserDB {
             newValue.put("synonym", syn);
 
             // Check if a field of name spell of document exists
-            if (document.contains(spell)) {
+            if (document.exists() && document.contains(spell)) {
                 // Update new value
-                docRef.update(spell, newValue).get();
+//                docRef.update(spell, newValue).get();
+                Map<String, Object> updateData = new HashMap<>();
+                updateData.put(spell, newValue);
+                docRef.update(updateData).get();
             } else {
                 // Create new field with new value
-                docRef.update(spell, newValue).get();
+//                docRef.update(spell, newValue).get();
+                Map<String, Object> newData = new HashMap<>();
+                newData.put(spell, newValue);
+                docRef.set(newData, SetOptions.merge()).get();
             }
         }
 
@@ -137,6 +142,31 @@ public class UserDB {
                 throw new Exception("Word " + word + " does not exist");
             }
         }
+
+        public static List<Word> fetchAllWords() throws Exception {
+            String username = currentUser;
+            if (username == null) throw new Exception("Not logged in");
+
+            DocumentReference docRef = db.collection("bookmark").document(username);
+            DocumentSnapshot document = docRef.get().get();
+
+            List<Word> wordsList = new ArrayList<>();
+
+            if (document.exists()) {
+                // Lặp qua tất cả các giá trị trong tài liệu và thêm chúng vào danh sách
+                Map<String, Object> allData = document.getData();
+
+                // In ra tất cả các trường và giá trị
+                for (Map.Entry<String, Object> entry : allData.entrySet()) {
+                    String field = entry.getKey();
+                    Object value = entry.getValue();
+                    value = (HashMap<String, String>) value;
+                    wordsList.add(new Word(field, (String) ((HashMap<?, ?>) value).get("pronunciation"), (String) ((HashMap<?, ?>) value).get("definition"), (String) ((HashMap<?, ?>) value).get("synonym")));
+                }
+
+            }
+            return wordsList;
+        }
     }
 
     public static String getUsername() {
@@ -148,22 +178,46 @@ public class UserDB {
     }
 
     public static void main(String[] args) throws Exception {
-        initialize();
         // Credential.signin("admin", "admin");
-        Credential.login("admin", "admin");
-
-        Bookmark.add("hello", "həˈlō", "used as a greeting or to begin a telephone conversation", "hi");
-        Bookmark.add("world", "wərld", "the earth, together with all of its countries and peoples", "earth");
-        Bookmark.add("java", "ˈjävə", "a high-level programming language developed by Sun Microsystems", "programming language");
-        Bookmark.add("cheese", "CHēz", "a food made from the pressed curds of milk", "milk");
-
-        System.out.println("Fetch \"Java\" bookmark: " + Bookmark.fetch("java"));
-        System.out.println("Fetch \"world\" bookmark: " + Bookmark.fetch("world"));
-
         try {
-            System.out.println(Bookmark.fetch("sugoi"));
+            initialize();
+            Credential.login("admin", "admin");
+            addWord(new Word("world", "wɜːld", "thế giới", "earth"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println("Khong the ket noi");
         }
+
+//        addWord(new Word("hello", "həˈləʊ", "xin chào", "hi"));
+    }
+
+    public static void addWord(Word word) throws Exception {
+        Bookmark.add(word.getSpelling(), word.getPronunciation(), word.getContent(), word.getSynonym());
+    }
+
+    public static Word getWord(String word) throws Exception {
+        HashMap<String, String> hashMap = Bookmark.fetch(word);
+        return new Word(word, hashMap.get("pronunciation"), hashMap.get("definition"), hashMap.get("synonym"));
+    }
+
+    public static void clearAll() {
+        db.collection("bookmark").document(currentUser).delete();
+    }
+
+    public static void addWordAll(List<Word> wordList) {
+        for (Word word : wordList) {
+            try {
+                addWord(word);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void save(List<Word> wordList) {
+        addWordAll(wordList);
+    }
+
+    public static List<Word> getAllWords() throws Exception {
+        return Bookmark.fetchAllWords();
     }
 }

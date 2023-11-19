@@ -1,6 +1,8 @@
 package controller;
 
 import database.UserDB;
+import help.Help;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -11,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import model.BookMarkManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -69,25 +72,41 @@ public class SignUpController extends Controller implements Initializable {
             return;
         }
 
-        try {
-            UserDB.Credential.signin(username, password);
-        } catch (Exception e) {
-            errorLog.setText(e.getMessage());
-            return;
-        }
-
-        errorLog.setVisible(false);
-
-        try {
-            logInController.signInSuccess();
-            logInController.getHomeController().changeToLogin(event);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Help.threadProcess(createTask(event), logInController.getHomeController().getHomeAnchorPane(), "Sign up...");
     }
 
     public void init(LogInController logInController) {
         this.logInController = logInController;
+    }
+
+    public Task<Void> createTask(MouseEvent event) {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    String username = userNameTextField.getText();
+                    String password = passWordFied.getText();
+                    UserDB.Credential.signin(username, password);
+                } catch (Exception e) {
+                    errorLog.setText(e.getMessage());
+                    return null;
+                }
+
+                errorLog.setVisible(false);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                try {
+                    logInController.signInSuccess();
+                    logInController.getHomeController().changeToLogin(event);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
     }
 
     @Override
