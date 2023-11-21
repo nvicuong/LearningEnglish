@@ -39,5 +39,22 @@ khi đó ứng dụng sẽ hiển thị nghĩa của từ đó
 # Demo 
 
 
+# Future improvements
+1. Thêm nhiều từ điển hơn 
+2. Thêm các trò chơi thú vị hay ho để cải thiện khả năng học từ vựng 
+3. Tối ưu hóa code 
+4. Thêm chức năng đồng bộ hóa dữ liệu với server
+5. Thêm chức năng đồng bộ hóa dữ liệu với các thiết bị khác
+6.   Cải thiện đồ họa cho nhiều cảm hứng học tập
+7. Tích hợp ứng dụng với API của Google Translate để dịch nhiều ngôn ngữ hơn
+8. Tích hợp ứng dụng với API của Google Translate để dịch đoạn văn và toàn bộ tài liệu.
+9. Tích hợp ứng dụng với API của Google Speech to Text để chuyển lời nói thành văn bản.
 
+# Contributing
 
+# Project status
+* Tình trạng của dự án
+  Dự án đã hoàn thành.
+
+# Notes 
+* Ứng dụng này được viết cho mục đích giáo dục.
