@@ -2,8 +2,8 @@
 
 # Author
 Group 12
-1. Nguyễn Việt Cường - 2202121x
-2. Đào Lê Bảo Minh - 22021112
+1. Nguyễn Việt Cường - 22021211
+2. Đào Lê Bảo Minh - 22021115
 3. Nguyễn Sinh Hùng - 22021184
 
 # Description
