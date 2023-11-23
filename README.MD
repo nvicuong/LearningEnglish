@@ -37,7 +37,7 @@ khi đó ứng dụng sẽ hiển thị nghĩa của từ đó
    - crossWord sẽ lấy những từ mà trong database có để bạn sử dụng khả năng tìm kiếm từ của mình thành thạo hơn.
 
 # UML
-   ![ClassUML.png](..%2F..%2Fsubline%20text%2FClassUML.png)
+   ![Uploading ClassUML.png…]()
 # Demo 
 
 
