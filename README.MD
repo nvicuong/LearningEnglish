@@ -37,7 +37,7 @@ khi đó ứng dụng sẽ hiển thị nghĩa của từ đó
    - crossWord sẽ lấy những từ mà trong database có để bạn sử dụng khả năng tìm kiếm từ của mình thành thạo hơn.
 
 # UML
-   ![Uploading ClassUML.png…]()
+   ![ClassUML](https://github.com/nvicuong/LearningEnglish/assets/117707758/68dd327a-fd05-4970-a20f-65684aa89c35)
 # Demo 
 
 
