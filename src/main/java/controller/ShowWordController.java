@@ -22,10 +22,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ShowWordController extends Controller implements Initializable {
-
-    private BookMarkController bookMarkController;
-    private HomeController homeController;
-
     @FXML
     private AnchorPane mainAnchorPane;
 
@@ -72,12 +68,6 @@ public class ShowWordController extends Controller implements Initializable {
         BookMarkManager.getInstance().addWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
         homeController.updateBookmarkList();
-    }
-
-    @Override
-    public void init() {
-        this.homeController = (HomeController) ScreenManager.getInstance().getController("Home");
-        this.bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     public void setContent(Word word) {

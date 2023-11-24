@@ -32,10 +32,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SideBarController extends Controller implements Initializable {
-    private HomeController homeController;
-    private SearchWordController searchWordController;
-    private ShowWordController showWordController;
-
     public AnchorPane getMainAnchorPane() {
         return mainAnchorPane;
     }
@@ -319,11 +315,5 @@ public class SideBarController extends Controller implements Initializable {
         modeButton.setCursor(Cursor.HAND);
         searchTextField.setCursor(Cursor.TEXT);
 
-    }
-    @Override
-    public void init() {
-        searchWordController = (SearchWordController) ScreenManager.getInstance().getController("SearchWord");
-        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
-        showWordController = (ShowWordController) ScreenManager.getInstance().getController("ShowWord");
     }
 }

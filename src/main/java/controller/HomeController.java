@@ -20,8 +20,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeController extends Controller implements Initializable {
-    private SideBarController sideBarController;
-
     public AnchorPane getHomeAnchorPane() {
         return homeAnchorPane;
     }
@@ -117,11 +115,6 @@ public class HomeController extends Controller implements Initializable {
         sideBarController.searchWord(WordManager.getWordManager().getRandomWord().getSpelling());
     }
 
-    @Override
-    public void init() {
-        sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
-    }
-
     public void updateHistoryList() throws IOException {
         historyListView.getItems().clear();
         historyListView.getItems().addAll(HistoryManager.getInstance().getWordSpelling());
@@ -131,7 +124,6 @@ public class HomeController extends Controller implements Initializable {
         bookmarkListView.getItems().clear();
         bookmarkListView.getItems().addAll(BookMarkManager.getInstance().getWordSpelling());
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -146,7 +138,6 @@ public class HomeController extends Controller implements Initializable {
         historyScrollPane.setContent(historyListView);
 
         bookmarkScrollPane.setContent(bookmarkListView);
-
 
         addWordButton.setCursor(Cursor.HAND);
         learnNewWordButton.setCursor(Cursor.HAND);

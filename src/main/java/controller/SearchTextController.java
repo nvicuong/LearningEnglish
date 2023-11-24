@@ -99,11 +99,4 @@ public class SearchTextController extends Controller implements Initializable {
         makeSoundImageView.setCursor(Cursor.HAND);
         back.setCursor(Cursor.HAND);
     }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
-    }
 }

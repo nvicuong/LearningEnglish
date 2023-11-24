@@ -103,10 +103,6 @@ public class FlashCardController extends Controller implements Initializable {
         positionInListLabel.setText(String.valueOf(index + 1) + "/" + String.valueOf(wordList.size()));
     }
 
-//    public void init(BookMarkController bookMarkController) {
-//        this.bookMarkController = bookMarkController;
-//    }
-
     public void start(List<Word> list) {
         index = 0;
         wordList = new ArrayList<>(list);
@@ -135,12 +131,5 @@ public class FlashCardController extends Controller implements Initializable {
         nextButton.setCursor(Cursor.HAND);
         previousButton.setCursor(Cursor.HAND);
         makeSoundImageView.setCursor(Cursor.HAND);
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
     }
 }
