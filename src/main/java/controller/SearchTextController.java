@@ -1,5 +1,7 @@
 package controller;
 
+import help.Help;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -8,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import model.ScreenManager;
 import model.VoiceRssAPI;
 import model.translateAPI;
 
@@ -19,7 +23,9 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class SearchTextController extends Controller implements Initializable {
-    private SearchController searchController;
+
+    @FXML
+    private AnchorPane mainAnchorPane;
 
     @FXML
     private ImageView back;
@@ -41,40 +47,46 @@ public class SearchTextController extends Controller implements Initializable {
 
     @FXML
     void translateTextEnToVi(MouseEvent event) throws IOException {
-        String text = inputTextArea.getText();
-        translateAPI.translateTextEntoVi(text);
-        loadOutputText();
+        Help.threadProcess(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                String text = inputTextArea.getText();
+                outputTextArea.setText(translateAPI.translateTextEntoVi(text));
+                return null;
+            }
+        }, mainAnchorPane, "Loading...");
     }
 
     @FXML
     void translateTextVitoEn(MouseEvent event) throws IOException {
-        String text = inputTextArea.getText();
-        translateAPI.translateTextViToEn(text);
-        loadOutputText();
+        Help.threadProcess(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                String text = inputTextArea.getText();
+                outputTextArea.setText(translateAPI.translateTextViToEn(text));
+
+                return null;
+            }
+        }, mainAnchorPane, "Loading...");
     }
 
     @FXML
     void makeSoundWord(MouseEvent event) throws Exception {
-        VoiceRssAPI.speakWord(inputTextArea.getText());
+        Help.threadProcess(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                VoiceRssAPI.speakWord(inputTextArea.getText());
+                return null;
+            }
+        }, mainAnchorPane, "Loading...");
     }
 
-    public void init(SearchController searchController) {
-        this.searchController = searchController;
-    }
-
-    public void loadOutputText() throws FileNotFoundException {
-        File file = new File("src\\\\main\\\\resources\\\\data\\\\translateText.txt");
-        Scanner scanner = new Scanner(file);
-        String s = scanner.nextLine();
-        s = s.substring(44, s.length() - 5);
-        outputTextArea.setText(s);
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         back.setOnMouseClicked(mouseEvent -> {
             try {
-                searchController.getSideBarController().changeToMainSearch(mouseEvent);
+                ScreenManager.getInstance().setScreen("Search");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -88,4 +100,10 @@ public class SearchTextController extends Controller implements Initializable {
         back.setCursor(Cursor.HAND);
     }
 
+    /**
+     *
+     */
+    @Override
+    public void init() {
+    }
 }

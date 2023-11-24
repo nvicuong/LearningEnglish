@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import model.ScreenManager;
 import model.VoiceRssAPI;
 import model.Word;
 
@@ -22,8 +23,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class HangmanGameController extends Controller implements Initializable {
-
-    private BookMarkController bookMarkController;
 
     @FXML
     private Text correctAnswerText;
@@ -85,13 +84,7 @@ public class HangmanGameController extends Controller implements Initializable {
     private int mistakes;
     private String myWord;
     private List<Character> list = new ArrayList<>();
-
     private String res;
-
-    public void init(BookMarkController bookMarkController) {
-        this.bookMarkController = bookMarkController;
-    }
-
 
     @FXML
     void changeToNextWord(MouseEvent event) {
@@ -117,7 +110,7 @@ public class HangmanGameController extends Controller implements Initializable {
 
     @FXML
     void backtoBookmark(MouseEvent event) throws IOException {
-        bookMarkController.getSideBarController().changeToBookmark(event);
+        ScreenManager.getInstance().setScreen("BookMark");
     }
 
     @FXML
@@ -280,5 +273,12 @@ public class HangmanGameController extends Controller implements Initializable {
         replayButton.setCursor(Cursor.HAND);
         correctButton.setCursor(Cursor.HAND);
 
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void init() {
     }
 }

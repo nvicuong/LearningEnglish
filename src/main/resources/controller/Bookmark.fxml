@@ -41,7 +41,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TableView fx:id="wordBankTableView" layoutX="321.0" layoutY="76.0" onMouseClicked="#getItem" prefHeight="402.0" prefWidth="530.0">
+      <TableView fx:id="wordBankTableView" layoutX="321.0" layoutY="76.0" prefHeight="402.0" prefWidth="530.0">
          <columns>
             <TableColumn fx:id="spellingCollumn" prefWidth="88.80002212524414" text="Word" />
             <TableColumn fx:id="pronunciationCollumn" prefWidth="88.79998779296875" text="pronunciation" />

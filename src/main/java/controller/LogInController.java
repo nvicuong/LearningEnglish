@@ -6,10 +6,8 @@ import help.Help;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -20,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.BookMarkManager;
-import model.Word;
+import model.ScreenManager;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -51,11 +49,8 @@ public class LogInController extends Controller implements Initializable {
     @FXML
     private TextField userNameTextField;
 
-    private Parent signUpParent;
-    private SignUpController signUpController;
-
-
     private HomeController homeController;
+    private BookMarkController bookMarkController;
 
     private AutoCompletionBinding<String> autoCompletionBinding;
 
@@ -74,17 +69,15 @@ public class LogInController extends Controller implements Initializable {
         autoCompletionBinding = TextFields.bindAutoCompletion(userNameTextField, possibleSuggestions);
     }
 
-    public void init(HomeController homeController) {
-        this.homeController = homeController;
-    }
 
     public void changeToSignUp(MouseEvent event) throws IOException {
-        loadPage(signUpParent);
+        ScreenManager.getInstance().setScreen("SignUp");
     }
 
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        homeController.getSideBarController().loadPage(parent);
+    public void init() {
+        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     @FXML
@@ -101,7 +94,7 @@ public class LogInController extends Controller implements Initializable {
                 String password = passWordFied.getText();
                 try {
                     UserDB.Credential.login(username, password);
-                    BookMarkManager.getBookMarkManager().fetch();
+                    BookMarkManager.getInstance().fetch();
                 } catch (Exception e) {
                     errorLog.setText(e.getMessage());
                     errorLog.setVisible(true);
@@ -119,11 +112,10 @@ public class LogInController extends Controller implements Initializable {
             protected void succeeded() {
                 super.succeeded();
                 if (!errorLog.isVisible()) {
-//                    signInSuccess();
                     try {
                         homeController.updateBookmarkList();
-                        homeController.getSideBarController().getBookMarkController().updateWord();
-                        loadPage(homeController.getSideBarController().getHomeParent());
+                        bookMarkController.updateWord();
+                        ScreenManager.getInstance().setScreen("Home");
                         homeController.resetUser();
                         Help.showNotification("Notification", "Log in successfully!");
                     } catch (IOException e) {
@@ -159,14 +151,8 @@ public class LogInController extends Controller implements Initializable {
             }
         });
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
-            signUpParent = loader.load();
-            signUpController = loader.getController();
-            signUpController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        signUpController = (SignUpController) ScreenManager.getInstance().getController("SignUp");
+//        signUpController.init(this);
 
         createAccountLabel.setOnMouseClicked(mouseEvent -> {
             try {

@@ -6,14 +6,13 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import model.BookMarkManager;
+import model.ScreenManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -75,10 +74,6 @@ public class SignUpController extends Controller implements Initializable {
         Help.threadProcess(createTask(event), logInController.getHomeController().getHomeAnchorPane(), "Sign up...");
     }
 
-    public void init(LogInController logInController) {
-        this.logInController = logInController;
-    }
-
     public Task<Void> createTask(MouseEvent event) {
         return new Task<Void>() {
             @Override
@@ -101,7 +96,7 @@ public class SignUpController extends Controller implements Initializable {
                 super.succeeded();
                 try {
                     logInController.signInSuccess();
-                    logInController.getHomeController().changeToLogin(event);
+                    ScreenManager.getInstance().setScreen("LogIn");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -129,4 +124,8 @@ public class SignUpController extends Controller implements Initializable {
         errorLog.setVisible(false);
     }
 
+    @Override
+    public void init() {
+        this.logInController = (LogInController) ScreenManager.getInstance().getController("LogIn");
+    }
 }

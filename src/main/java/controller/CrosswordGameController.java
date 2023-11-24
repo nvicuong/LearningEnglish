@@ -25,7 +25,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class CrosswordGameController implements Initializable {
+public class CrosswordGameController extends Controller implements Initializable {
     public FlowPane getMatrixFlowPane() {
         return matrixFlowPane;
     }
@@ -288,5 +288,13 @@ public class CrosswordGameController implements Initializable {
         replayButton.setLayoutY(20);
         loadingProgressIndicator.setLayoutX((1402 - loadingProgressIndicator.getWidth()) / 2);
         loadingProgressIndicator.setLayoutY((500 - loadingProgressIndicator.getHeight()) / 2);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void init() {
+
     }
 }
