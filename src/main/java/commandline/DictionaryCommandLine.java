@@ -217,18 +217,11 @@ public class DictionaryCommandLine {
                 continueOrNot();
             }
             if (s == '8') {
-                System.out.println("Nhập tên tệp bạn muốn nhập từ vựng từ:");
-                String fileName = sc.next();
-                //List<Word> words = read(fileName);
-//                for (Word word : words) {
-//                    WordManager.getWordManager().addWord(word);
-//                }
-                System.out.println("Đã nhập từ vựng từ tệp " + fileName);
+                BookMarkManager.getBookMarkManager().importFile();
+                System.out.println("Đã nhập từ vựng từ tệp ");
             } else if (s == '9') {
-                System.out.println("Nhập tên tệp bạn muốn xuất từ vựng ra:");
-                String fileName = sc.next();
-//                List<Word> words = WordManager.getWordManager().getWordList();
-//                writeWordsToFile(words, fileName);
+                String fileName = "src/main/resources/data/export.dat";
+                BookMarkManager.getBookMarkManager().exportFile();
                 System.out.println("Đã xuất từ vựng ra tệp " + fileName);
             }
         }

@@ -5,6 +5,7 @@ import database.UserDB;
 import help.Help;
 import javafx.concurrent.Task;
 
+import javax.swing.plaf.PanelUI;
 import java.io.*;
 import java.util.*;
 
@@ -12,6 +13,8 @@ public class BookMarkManager extends Manager {
 
     private static BookMarkManager bookMarkManager;
     private final String BOOKMARK_PATH = "src/main/resources/data/wordBank.dat";
+
+    private final String PATH = "src/main/resources/data/export.dat";
 
     public static BookMarkManager getBookMarkManager() throws IOException {
         if (bookMarkManager == null) {
@@ -46,6 +49,38 @@ public class BookMarkManager extends Manager {
         BookMarkManager.getBookMarkManager().getWordList().removeIf(word1 -> {
             return word1.equals(word);
         });
+    }
+
+    public void exportFile() throws IOException {
+        File file = new File(PATH);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fileWriter = new FileWriter(file);
+        for (Word word : wordList) {
+            fileWriter.write(word.getSpelling() + "\n");
+            //fileWriter.write("\n");
+            fileWriter.write(word.getContent() + "\n");
+        }
+        fileWriter.close();
+    }
+
+    public void importFile() throws IOException {
+        File file = new File(PATH);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        Scanner scanner = new Scanner(file);
+        String s = "";
+        while (scanner.hasNextLine()) {
+            s += scanner.nextLine() + "\n";
+        }
+        String[] strings = s.split("\n");
+        for (int i = 0; i < strings.length; i += 2) {
+            Word word = new Word(strings[i], " ", strings[i + 1], " ");
+            wordList.add(word);
+        }
+        scanner.close();
     }
 
     public void saveDatabase() {
