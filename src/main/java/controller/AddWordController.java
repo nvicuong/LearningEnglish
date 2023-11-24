@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import model.BookMarkManager;
+import model.ScreenManager;
 import model.Word;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
 public class AddWordController extends Controller implements Initializable {
 
     private BookMarkController bookMarkController;
-
+    private HomeController homeController;
 
     @FXML
     private Button addButton;
@@ -33,13 +34,7 @@ public class AddWordController extends Controller implements Initializable {
     private Button cancelWordButton;
 
     @FXML
-    private Line definitionLine;
-
-    @FXML
     private TextArea definitionTextArea;
-
-    @FXML
-    private Line speechLine;
 
     @FXML
     private TextField pronunciationTextField;
@@ -50,9 +45,6 @@ public class AddWordController extends Controller implements Initializable {
     @FXML
     private TextField wordTextField;
 
-    public void init(BookMarkController bookMarkController) {
-        this.bookMarkController = bookMarkController;
-    }
 
     @FXML
     void addNewWord(MouseEvent event) throws IOException {
@@ -62,7 +54,7 @@ public class AddWordController extends Controller implements Initializable {
             Word word = new Word(wordTextField.getText(), pronunciationTextField.getText(), definitionTextArea.getText(), "");
             BookMarkManager.getBookMarkManager().addWord(word);
             bookMarkController.updateWord();
-            bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
+            homeController.updateBookmarkList();
             Help.showNotification("NOTIFICATION", "Add word successfully!");
         }
     }
@@ -75,20 +67,24 @@ public class AddWordController extends Controller implements Initializable {
     }
 
     @FXML
-    void changeToBookMark(MouseEvent event) {
-
+    void changeToBookMark(MouseEvent event) throws IOException {
+        ScreenManager.getInstance().setScreen("BookMark");
     }
 
+    /**
+     *
+     */
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        bookMarkController.getSideBarController().loadPage(parent);
+    public void init() {
+        this.homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        this.bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         back.setOnMouseClicked(mouseEvent -> {
             try {
-                bookMarkController.getSideBarController().changeToBookmark(mouseEvent);
+                ScreenManager.getInstance().setScreen("BookMark");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

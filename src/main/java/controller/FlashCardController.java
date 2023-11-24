@@ -1,6 +1,5 @@
 package controller;
 
-import help.Help;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -9,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import model.ScreenManager;
 import model.VoiceRssAPI;
 import model.Word;
 
@@ -21,9 +21,6 @@ import java.util.ResourceBundle;
 
 public class FlashCardController extends Controller implements Initializable {
     private List<Word> wordList;
-
-    private BookMarkController bookMarkController;
-
     private int index;
 
     @FXML
@@ -106,9 +103,9 @@ public class FlashCardController extends Controller implements Initializable {
         positionInListLabel.setText(String.valueOf(index + 1) + "/" + String.valueOf(wordList.size()));
     }
 
-    public void init(BookMarkController bookMarkController) {
-        this.bookMarkController = bookMarkController;
-    }
+//    public void init(BookMarkController bookMarkController) {
+//        this.bookMarkController = bookMarkController;
+//    }
 
     public void start(List<Word> list) {
         index = 0;
@@ -128,7 +125,7 @@ public class FlashCardController extends Controller implements Initializable {
         index = 0;
         back.setOnMouseClicked(mouseEvent -> {
             try {
-                bookMarkController.getSideBarController().changeToBookmark(mouseEvent);
+                ScreenManager.getInstance().setScreen("BookMark");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -138,5 +135,12 @@ public class FlashCardController extends Controller implements Initializable {
         nextButton.setCursor(Cursor.HAND);
         previousButton.setCursor(Cursor.HAND);
         makeSoundImageView.setCursor(Cursor.HAND);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void init() {
     }
 }

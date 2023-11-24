@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.BookMarkManager;
+import model.ScreenManager;
 import model.Word;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
@@ -51,11 +52,8 @@ public class LogInController extends Controller implements Initializable {
     @FXML
     private TextField userNameTextField;
 
-    private Parent signUpParent;
-    private SignUpController signUpController;
-
-
     private HomeController homeController;
+    private BookMarkController bookMarkController;
 
     private AutoCompletionBinding<String> autoCompletionBinding;
 
@@ -74,17 +72,15 @@ public class LogInController extends Controller implements Initializable {
         autoCompletionBinding = TextFields.bindAutoCompletion(userNameTextField, possibleSuggestions);
     }
 
-    public void init(HomeController homeController) {
-        this.homeController = homeController;
-    }
 
     public void changeToSignUp(MouseEvent event) throws IOException {
-        loadPage(signUpParent);
+        ScreenManager.getInstance().setScreen("SignUp");
     }
 
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        homeController.getSideBarController().loadPage(parent);
+    public void init() {
+        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     @FXML
@@ -119,11 +115,10 @@ public class LogInController extends Controller implements Initializable {
             protected void succeeded() {
                 super.succeeded();
                 if (!errorLog.isVisible()) {
-//                    signInSuccess();
                     try {
                         homeController.updateBookmarkList();
-                        homeController.getSideBarController().getBookMarkController().updateWord();
-                        loadPage(homeController.getSideBarController().getHomeParent());
+                        bookMarkController.updateWord();
+                        ScreenManager.getInstance().setScreen("Home");
                         homeController.resetUser();
                         Help.showNotification("Notification", "Log in successfully!");
                     } catch (IOException e) {
@@ -159,14 +154,8 @@ public class LogInController extends Controller implements Initializable {
             }
         });
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignUp.fxml"));
-            signUpParent = loader.load();
-            signUpController = loader.getController();
-            signUpController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        signUpController = (SignUpController) ScreenManager.getInstance().getController("SignUp");
+//        signUpController.init(this);
 
         createAccountLabel.setOnMouseClicked(mouseEvent -> {
             try {

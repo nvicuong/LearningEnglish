@@ -22,8 +22,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import model.HistoryManager;
+import model.ScreenManager;
 import model.Word;
 import model.WordManager;
+import org.controlsfx.control.SearchableComboBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,32 +35,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class SideBarController extends Controller implements Initializable {
-    public Parent getHomeParent() {
-        return homeParent;
-    }
-
-    private Parent homeParent;
-    private Parent searchMainParent;
-
-    public Parent getBookMarkParent() {
-        return bookMarkParent;
-    }
-
-    private Parent bookMarkParent;
-    private Parent helpParent;
-
-    private Parent showWordParent;
-
-
     private HomeController homeController;
-
-
-    private SearchController searchController;
+    private SearchWordController searchWordController;
     private ShowWordController showWordController;
-
-
-    private BookMarkController bookMarkController;
-    private HelpController helpController;
 
     public AnchorPane getMainAnchorPane() {
         return mainAnchorPane;
@@ -69,8 +48,6 @@ public class SideBarController extends Controller implements Initializable {
 
     @FXML
     private ListView<String> searchListView;
-
-
 
     ObservableList<String> items = FXCollections.observableArrayList();
 
@@ -117,41 +94,25 @@ public class SideBarController extends Controller implements Initializable {
     @FXML
     private AnchorPane slider;
 
-    public HomeController getHomeController() {
-        return homeController;
-    }
-
-    public BorderPane getBorderPane() {
-        return borderPane;
-    }
-
-    public SearchController getSearchController() {
-        return searchController;
-    }
-
-    public BookMarkController getBookMarkController() {
-        return bookMarkController;
-    }
-
     @FXML
     public void changeToHome(MouseEvent event) throws IOException {
         homeController.resetUser();
-        loadPage(homeParent);
+        ScreenManager.getInstance().setScreen("Home");
     }
 
     @FXML
     public void changeToMainSearch(MouseEvent event) throws IOException {
-        loadPage(searchMainParent);
+        ScreenManager.getInstance().setScreen("Search");
     }
 
     @FXML
     public void changeToBookmark(MouseEvent event) throws IOException {
-        loadPage(bookMarkParent);
+        ScreenManager.getInstance().setScreen("BookMark");
     }
 
     @FXML
     public void changeToHelp(MouseEvent event) throws IOException {
-        loadPage(helpParent);
+        ScreenManager.getInstance().setScreen("Help");
     }
 
     @FXML
@@ -164,12 +125,12 @@ public class SideBarController extends Controller implements Initializable {
     }
 
     public void changeToShowWord() throws IOException {
-        loadPage(showWordParent);
+        ScreenManager.getInstance().setScreen("ShowWord");
     }
 
     public void changeToShowWord(Word word) throws IOException {
         showWordController.setContent(word);
-        loadPage(showWordParent);
+        ScreenManager.getInstance().setScreen("ShowWord");
     }
 
     public void searchWord(String s) throws SQLException, IOException, ClassNotFoundException {
@@ -180,22 +141,15 @@ public class SideBarController extends Controller implements Initializable {
             showWordController.setContent(word);
             searchListView.setVisible(false);
             changeToShowWord();
-            searchController.getSearchWordController().updateWord();
+            searchWordController.updateWord();
         } else {
             Help.showNotification("Notification", "word is not valid!");
         }
     }
 
-    @Override
-    public void loadPage(Parent root) throws IOException {
-        borderPane.setCenter(root);
-        checkSlide();
+    public void setContent(Parent parent) {
+        borderPane.setCenter(parent);
     }
-
-
-    /**
-     * Side Bar Transiting.
-     */
 
     public void checkSlide() {
         if (slider.getTranslateX() == 0) {
@@ -352,62 +306,6 @@ public class SideBarController extends Controller implements Initializable {
             searchListView.setVisible(false);
         });
 
-        //loadPage
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Home.fxml"));
-            homeParent = loader.load();
-            homeController = loader.getController();
-            homeController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Search.fxml"));
-            searchMainParent = loader.load();
-            searchController = loader.getController();
-            searchController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Help.fxml"));
-            helpParent = loader.load();
-            helpController = loader.getController();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Bookmark.fxml"));
-            bookMarkParent = loader.load();
-            bookMarkController = loader.getController();
-            bookMarkController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ShowWord.fxml"));
-            showWordParent = loader.load();
-            showWordController = loader.getController();
-            showWordController.init(bookMarkController);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            loadPage(homeParent);
-            homeController.updateHistoryList();
-            homeController.updateBookmarkList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         //slide menu bar
         slideMenuBar();
 
@@ -424,5 +322,11 @@ public class SideBarController extends Controller implements Initializable {
         modeButton.setCursor(Cursor.HAND);
         searchTextField.setCursor(Cursor.TEXT);
 
+    }
+    @Override
+    public void init() {
+        searchWordController = (SearchWordController) ScreenManager.getInstance().getController("SearchWord");
+        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        showWordController = (ShowWordController) ScreenManager.getInstance().getController("ShowWord");
     }
 }

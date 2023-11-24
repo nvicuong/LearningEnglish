@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import model.ScreenManager;
 import model.VoiceRssAPI;
 import model.translateAPI;
 
@@ -19,8 +20,6 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class SearchTextController extends Controller implements Initializable {
-    private SearchController searchController;
-
     @FXML
     private ImageView back;
 
@@ -58,10 +57,6 @@ public class SearchTextController extends Controller implements Initializable {
         VoiceRssAPI.speakWord(inputTextArea.getText());
     }
 
-    public void init(SearchController searchController) {
-        this.searchController = searchController;
-    }
-
     public void loadOutputText() throws FileNotFoundException {
         File file = new File("src\\\\main\\\\resources\\\\data\\\\translateText.txt");
         Scanner scanner = new Scanner(file);
@@ -74,7 +69,7 @@ public class SearchTextController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         back.setOnMouseClicked(mouseEvent -> {
             try {
-                searchController.getSideBarController().changeToMainSearch(mouseEvent);
+                ScreenManager.getInstance().setScreen("Search");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -88,4 +83,10 @@ public class SearchTextController extends Controller implements Initializable {
         back.setCursor(Cursor.HAND);
     }
 
+    /**
+     *
+     */
+    @Override
+    public void init() {
+    }
 }

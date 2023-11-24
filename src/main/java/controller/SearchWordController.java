@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.HistoryManager;
+import model.ScreenManager;
 import model.Word;
 
 import java.io.IOException;
@@ -21,9 +22,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class SearchWordController extends Controller implements Initializable {
-
-
-    private SearchController searchController;
+    private SideBarController sideBarController;
+    private HomeController homeController;
 
     @FXML
     private ImageView back;
@@ -48,7 +48,6 @@ public class SearchWordController extends Controller implements Initializable {
 
     private ObservableList<Word> historyWordList;
 
-
     @FXML
     private TextField searchWordTextField;
 
@@ -56,7 +55,7 @@ public class SearchWordController extends Controller implements Initializable {
     void removeAllWord(MouseEvent event) throws IOException {
         HistoryManager.getHistoryManager().getWordList().clear();
         updateWord();
-        searchController.getSideBarController().getHomeController().updateHistoryList();
+        homeController.updateHistoryList();
     }
 
     public void updateWord() throws IOException {
@@ -64,10 +63,6 @@ public class SearchWordController extends Controller implements Initializable {
         historyWordList.addAll(HistoryManager.getHistoryManager().getWordList());
     }
 
-
-    public void init(SearchController searchController) {
-        this.searchController = searchController;
-    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -111,7 +106,7 @@ public class SearchWordController extends Controller implements Initializable {
                 Word word = historyTableView.getSelectionModel().getSelectedItem();
                 if (word != null) {
                     try {
-                        searchController.getSideBarController().searchWord(word.getSpelling());
+                       sideBarController.searchWord(word.getSpelling());
                     } catch (SQLException | IOException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -133,7 +128,7 @@ public class SearchWordController extends Controller implements Initializable {
 
         back.setOnMouseClicked(mouseEvent -> {
             try {
-                searchController.getSideBarController().changeToMainSearch(mouseEvent);
+                ScreenManager.getInstance().setScreen("Search");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -144,4 +139,12 @@ public class SearchWordController extends Controller implements Initializable {
         searchWordTextField.setCursor(Cursor.TEXT);
     }
 
+    /**
+     *
+     */
+    @Override
+    public void init() {
+        this.homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        this.sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
+    }
 }

@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.BookMarkManager;
 import model.HistoryManager;
+import model.ScreenManager;
 import model.WordManager;
 
 import java.io.IOException;
@@ -21,20 +22,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeController extends Controller implements Initializable {
-
-    public Parent getLogInParent() {
-        return logInParent;
-    }
-
-    private Parent logInParent;
-
-    public LogInController getLogInController() {
-        return logInController;
-    }
-
-    private LogInController logInController;
-
-
     private SideBarController sideBarController;
 
     public AnchorPane getHomeAnchorPane() {
@@ -83,21 +70,10 @@ public class HomeController extends Controller implements Initializable {
     @FXML
     private ScrollPane bookmarkScrollPane;
 
-    @FXML
-    private TitledPane historyTitledPane;
-
-
-    public SideBarController getSideBarController() {
-        return sideBarController;
-    }
-
-    public void init(SideBarController sideBarController) {
-        this.sideBarController = sideBarController;
-    }
 
     @FXML
     void changeToLogin(MouseEvent event) throws IOException {
-        loadPage(logInParent);
+        ScreenManager.getInstance().setScreen("LogIn");
     }
 
     @FXML
@@ -120,22 +96,21 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     void changeToSearchWord(MouseEvent event) throws IOException {
-        sideBarController.getSearchController().changeToSearchWord(event);
+        ScreenManager.getInstance().setScreen("SearchWord");
     }
-
     @FXML
     void changeToBookmark(MouseEvent event) throws IOException {
-        sideBarController.changeToBookmark(event);
+        ScreenManager.getInstance().setScreen("BookMark");
     }
 
     @FXML
     void changeToAddword(MouseEvent event) throws IOException {
-        sideBarController.getBookMarkController().changeToAddWord(event);
+        ScreenManager.getInstance().setScreen("AddWord");
     }
 
     @FXML
     void changeToSearchText(MouseEvent event) throws IOException {
-        sideBarController.getSearchController().changeToTranslateText(event);
+        ScreenManager.getInstance().setScreen("TranslateText");
     }
 
     @FXML
@@ -144,8 +119,8 @@ public class HomeController extends Controller implements Initializable {
     }
 
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        sideBarController.loadPage(parent);
+    public void init() {
+        sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
     }
 
     public void updateHistoryList() throws IOException {
@@ -161,16 +136,6 @@ public class HomeController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
-            logInParent = loader.load();
-            logInController = loader.getController();
-            logInController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
         historyListView = new ListView<>();
         historyScrollPane.setContent(historyListView);
 

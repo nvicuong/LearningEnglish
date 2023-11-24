@@ -1,24 +1,22 @@
 package controller;
 
-import games.RunCrosswordGame;
 import help.Help;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.BookMarkManager;
+import model.ScreenManager;
 import model.Word;
 
 import java.io.IOException;
@@ -27,15 +25,11 @@ import java.util.ResourceBundle;
 
 public class BookMarkController extends Controller implements Initializable {
 
-    private Parent crosswordParent;
     private CrosswordGameController crosswordGameController;
-    private Parent addWordParent;
-    private Parent hangmanGameParent;
     private HangmanGameController hangmanGameController;
-    private Parent flashCardParent;
     private FlashCardController flashCardController;
-    private AddWordController addWordController;
     private SideBarController sideBarController;
+    private HomeController homeController;
 
     @FXML
     private Button crosswordButton;
@@ -82,34 +76,33 @@ public class BookMarkController extends Controller implements Initializable {
 
     private ObservableList<Word> wordBankList;
 
-    public SideBarController getSideBarController() {
-        return sideBarController;
-    }
-
-    public void init(SideBarController sideBarController) {
-        this.sideBarController = sideBarController;
-    }
-
     public void updateWord() throws IOException {
         wordBankList.clear();
         wordBankList.addAll(BookMarkManager.getBookMarkManager().getWordList());
     }
 
+    /**
+     *
+     */
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        sideBarController.loadPage(parent);
+    public void init() {
+        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        flashCardController = (FlashCardController) ScreenManager.getInstance().getController("FlashCard");
+        hangmanGameController = (HangmanGameController) ScreenManager.getInstance().getController("HangmanGame");
+        crosswordGameController = (CrosswordGameController) ScreenManager.getInstance().getController("CrosswordGame");
+        sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
     }
 
     @FXML
     public void changeToAddWord(MouseEvent event) throws IOException {
-        loadPage(addWordParent);
+        ScreenManager.getInstance().setScreen("AddWord");
     }
 
     @FXML
     void changeToCrosswordGame(MouseEvent event) throws IOException {
         Stage stage = (Stage) crosswordButton.getScene().getWindow();
         stage.setFullScreen(true);
-        loadPage(crosswordParent);
+        ScreenManager.getInstance().setScreen("CrosswordGame");
         if (crosswordGameController.getMatrixFlowPane().getChildren().isEmpty()) {
             crosswordGameController.restart(12);
             crosswordGameController.countTime();
@@ -119,7 +112,7 @@ public class BookMarkController extends Controller implements Initializable {
 
     @FXML
     void changeToFlashCard(MouseEvent event) throws IOException {
-        loadPage(flashCardParent);
+        ScreenManager.getInstance().setScreen("FlashCard");
         flashCardController.start(BookMarkManager.getBookMarkManager().getWordList());
     }
 
@@ -129,13 +122,8 @@ public class BookMarkController extends Controller implements Initializable {
             Help.showNotification("Word Bank is empty", "save more word to play game");
             return;
         }
-        loadPage(hangmanGameParent);
+        ScreenManager.getInstance().setScreen("HangmanGame");
         hangmanGameController.start(BookMarkManager.getBookMarkManager().getWordList());
-    }
-
-    @FXML
-    void getItem(MouseEvent event) throws IOException {
-
     }
 
     @FXML
@@ -160,7 +148,7 @@ public class BookMarkController extends Controller implements Initializable {
             BookMarkManager.getBookMarkManager().getWordList().clear();
             updateWord();
             BookMarkManager.getBookMarkManager().updateWordSpelling();
-            sideBarController.getHomeController().updateBookmarkList();
+            homeController.updateBookmarkList();
         }
     }
 
@@ -178,46 +166,11 @@ public class BookMarkController extends Controller implements Initializable {
         });
         updateWord();
         BookMarkManager.getBookMarkManager().updateWordSpelling();
-        sideBarController.getHomeController().updateBookmarkList();
+        homeController.updateBookmarkList();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddWord.fxml"));
-            addWordParent = loader.load();
-            addWordController = loader.getController();
-            addWordController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FlashCard.fxml"));
-            flashCardParent = loader.load();
-            flashCardController = loader.getController();
-            flashCardController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanGame.fxml"));
-            hangmanGameParent = loader.load();
-            hangmanGameController = loader.getController();
-            hangmanGameController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CrosswordGame.fxml"));
-            crosswordParent = loader.load();
-            crosswordGameController = loader.getController();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         //khởi tạo bảng
         try {
             wordBankList = FXCollections.observableArrayList(BookMarkManager.getBookMarkManager().getWordList());

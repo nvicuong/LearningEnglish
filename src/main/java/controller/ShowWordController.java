@@ -2,6 +2,7 @@ package controller;
 
 import javafx.scene.Parent;
 import model.BookMarkManager;
+import model.ScreenManager;
 import model.VoiceRssAPI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 public class ShowWordController extends Controller implements Initializable {
 
     private BookMarkController bookMarkController;
+    private HomeController homeController;
 
     @FXML
     private Button nextWordButton;
@@ -50,19 +52,20 @@ public class ShowWordController extends Controller implements Initializable {
 
     @FXML
     void nextWord(MouseEvent event) throws SQLException, IOException, ClassNotFoundException {
-        bookMarkController.getSideBarController().getHomeController().learnANewWord(event);
+        homeController.learnANewWord(event);
     }
 
     @FXML
     void saveWord(MouseEvent event) throws IOException {
         BookMarkManager.getBookMarkManager().addWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
-        bookMarkController.getSideBarController().getHomeController().updateBookmarkList();
+        homeController.updateBookmarkList();
     }
 
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        bookMarkController.getSideBarController().loadPage(parent);
+    public void init() {
+        this.homeController = (HomeController) ScreenManager.getInstance().getController("Home");
+        this.bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     public void setContent(Word word) {
@@ -71,18 +74,12 @@ public class ShowWordController extends Controller implements Initializable {
         synonymLabel.setText(word.getSynonym());
         contentTextArea.setText(word.getContent());
     }
-
-    public void init(BookMarkController bookMarkController) {
-        this.bookMarkController = bookMarkController;
-    }
-
     /**
      * @param url
      * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         makeSoundImageView.setCursor(Cursor.HAND);
         saveButton.setCursor(Cursor.HAND);
         nextWordButton.setCursor(Cursor.HAND);
