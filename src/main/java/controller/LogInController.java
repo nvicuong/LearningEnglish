@@ -6,10 +6,8 @@ import help.Help;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -21,7 +19,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import model.BookMarkManager;
 import model.ScreenManager;
-import model.Word;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -97,7 +94,7 @@ public class LogInController extends Controller implements Initializable {
                 String password = passWordFied.getText();
                 try {
                     UserDB.Credential.login(username, password);
-                    BookMarkManager.getBookMarkManager().fetch();
+                    BookMarkManager.getInstance().fetch();
                 } catch (Exception e) {
                     errorLog.setText(e.getMessage());
                     errorLog.setVisible(true);

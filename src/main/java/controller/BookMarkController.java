@@ -6,10 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -78,7 +76,7 @@ public class BookMarkController extends Controller implements Initializable {
 
     public void updateWord() throws IOException {
         wordBankList.clear();
-        wordBankList.addAll(BookMarkManager.getBookMarkManager().getWordList());
+        wordBankList.addAll(BookMarkManager.getInstance().getWordList());
     }
 
     /**
@@ -113,17 +111,17 @@ public class BookMarkController extends Controller implements Initializable {
     @FXML
     void changeToFlashCard(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("FlashCard");
-        flashCardController.start(BookMarkManager.getBookMarkManager().getWordList());
+        flashCardController.start(BookMarkManager.getInstance().getWordList());
     }
 
     @FXML
     void changeToHangmanGame(MouseEvent event) throws IOException {
-        if (BookMarkManager.getBookMarkManager().getWordList().isEmpty()) {
+        if (BookMarkManager.getInstance().getWordList().isEmpty()) {
             Help.showNotification("Word Bank is empty", "save more word to play game");
             return;
         }
         ScreenManager.getInstance().setScreen("HangmanGame");
-        hangmanGameController.start(BookMarkManager.getBookMarkManager().getWordList());
+        hangmanGameController.start(BookMarkManager.getInstance().getWordList());
     }
 
     @FXML
@@ -145,9 +143,9 @@ public class BookMarkController extends Controller implements Initializable {
         alert.setHeaderText("Remove all");
         alert.setContentText("Are you sure to delete all?");
         if (alert.showAndWait().get() == ButtonType.OK) {
-            BookMarkManager.getBookMarkManager().getWordList().clear();
+            BookMarkManager.getInstance().getWordList().clear();
             updateWord();
-            BookMarkManager.getBookMarkManager().updateWordSpelling();
+            BookMarkManager.getInstance().updateWordSpelling();
             homeController.updateBookmarkList();
         }
     }
@@ -161,11 +159,11 @@ public class BookMarkController extends Controller implements Initializable {
         }
 
         Word word = new Word(spellingCollumn.getCellData(index), pronunciationCollumn.getCellData(index), contentCollumn.getCellData(index), synonymCollumn.getCellData(index));
-        BookMarkManager.getBookMarkManager().getWordList().removeIf(word1 -> {
+        BookMarkManager.getInstance().getWordList().removeIf(word1 -> {
             return word1.equals(word);
         });
         updateWord();
-        BookMarkManager.getBookMarkManager().updateWordSpelling();
+        BookMarkManager.getInstance().updateWordSpelling();
         homeController.updateBookmarkList();
     }
 
@@ -173,7 +171,7 @@ public class BookMarkController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //khởi tạo bảng
         try {
-            wordBankList = FXCollections.observableArrayList(BookMarkManager.getBookMarkManager().getWordList());
+            wordBankList = FXCollections.observableArrayList(BookMarkManager.getInstance().getWordList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

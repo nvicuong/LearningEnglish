@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.scene.Parent;
 import model.BookMarkManager;
 import model.ScreenManager;
 import model.VoiceRssAPI;
@@ -57,7 +56,7 @@ public class ShowWordController extends Controller implements Initializable {
 
     @FXML
     void saveWord(MouseEvent event) throws IOException {
-        BookMarkManager.getBookMarkManager().addWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
+        BookMarkManager.getInstance().addWord(new Word(spellingLabel.getText(), pronunciationLabel.getText(), contentTextArea.getText(), synonymLabel.getText()));
         bookMarkController.updateWord();
         homeController.updateBookmarkList();
     }

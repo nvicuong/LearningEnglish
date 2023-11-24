@@ -1,7 +1,6 @@
 package controller;
 
 import atlantafx.base.theme.NordDark;
-import database.ExecuteSQLFile;
 import help.Help;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -9,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
@@ -25,7 +23,6 @@ import model.HistoryManager;
 import model.ScreenManager;
 import model.Word;
 import model.WordManager;
-import org.controlsfx.control.SearchableComboBox;
 
 import java.io.IOException;
 import java.net.URL;
@@ -136,7 +133,7 @@ public class SideBarController extends Controller implements Initializable {
     public void searchWord(String s) throws SQLException, IOException, ClassNotFoundException {
         Word word = WordManager.getWordManager().searchWord(s);
         if (!word.getSpelling().isEmpty()) {
-            HistoryManager.getHistoryManager().addWord(word);
+            HistoryManager.getInstance().addWord(word);
             homeController.updateHistoryList();
             showWordController.setContent(word);
             searchListView.setVisible(false);

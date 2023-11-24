@@ -18,19 +18,16 @@ import java.util.Map;
 
 public class ScreenManager {
     private static ScreenManager instance;
-
     private SideBarController sideBarController;
     private Parent sideBarParent;
     private Map<String, Parent> screens = new HashMap<>();
     private Map<String, Controller> controllers = new HashMap<>();
-
-
     private Stage primaryStage;
 
     private ScreenManager() {
         // Khởi tạo các controller và loaders ở đây
         try {
-            String path = "/controller/" + "SideBar.fxml";  // Đảm bảo rằng thư mục chứa FXML có thể được tìm thấy trong classpath
+            String path = "/controller/" + "SideBar.fxml";
             URL url = getClass().getResource(path);
 
             if (url == null) {
@@ -82,16 +79,6 @@ public class ScreenManager {
 
         AddWordController addWordController = loadScreen("AddWord", "AddWord.fxml").getController();
         controllers.put("AddWord", addWordController);
-
-        // in ra cac key trong controllers
-
-//        for (String key : controllers.keySet()) {
-//            System.out.println(key);
-//        }
-
-
-
-
     }
 
     public static ScreenManager getInstance() {
@@ -124,9 +111,9 @@ public class ScreenManager {
                 Help.threadProcess(new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        BookMarkManager.getBookMarkManager().save();
-                        HistoryManager.getHistoryManager().save();
-                        BookMarkManager.getBookMarkManager().saveDatabase();
+                        BookMarkManager.getInstance().save();
+                        HistoryManager.getInstance().save();
+                        BookMarkManager.getInstance().saveDatabase();
                         return null;
                     }
 

@@ -7,7 +7,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -53,14 +52,14 @@ public class SearchWordController extends Controller implements Initializable {
 
     @FXML
     void removeAllWord(MouseEvent event) throws IOException {
-        HistoryManager.getHistoryManager().getWordList().clear();
+        HistoryManager.getInstance().getWordList().clear();
         updateWord();
         homeController.updateHistoryList();
     }
 
     public void updateWord() throws IOException {
         historyWordList.clear();
-        historyWordList.addAll(HistoryManager.getHistoryManager().getWordList());
+        historyWordList.addAll(HistoryManager.getInstance().getWordList());
     }
 
     @Override
@@ -68,7 +67,7 @@ public class SearchWordController extends Controller implements Initializable {
 
         //khởi tạo bảng
         try {
-            historyWordList = FXCollections.observableArrayList(HistoryManager.getHistoryManager().getWordList());
+            historyWordList = FXCollections.observableArrayList(HistoryManager.getInstance().getWordList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

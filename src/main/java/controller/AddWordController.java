@@ -4,7 +4,6 @@ import help.Help;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -52,7 +51,7 @@ public class AddWordController extends Controller implements Initializable {
             Help.showNotification("WARNING", "word field and definition field must be not blank!");
         } else {
             Word word = new Word(wordTextField.getText(), pronunciationTextField.getText(), definitionTextArea.getText(), "");
-            BookMarkManager.getBookMarkManager().addWord(word);
+            BookMarkManager.getInstance().addWord(word);
             bookMarkController.updateWord();
             homeController.updateBookmarkList();
             Help.showNotification("NOTIFICATION", "Add word successfully!");

@@ -4,10 +4,8 @@ import database.UserDB;
 import help.Help;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -81,7 +79,7 @@ public class HomeController extends Controller implements Initializable {
         Help.threadProcess(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                BookMarkManager.getBookMarkManager().saveDatabase();
+                BookMarkManager.getInstance().saveDatabase();
                 return null;
             }
 
@@ -125,12 +123,12 @@ public class HomeController extends Controller implements Initializable {
 
     public void updateHistoryList() throws IOException {
         historyListView.getItems().clear();
-        historyListView.getItems().addAll(HistoryManager.getHistoryManager().getWordSpelling());
+        historyListView.getItems().addAll(HistoryManager.getInstance().getWordSpelling());
     }
 
     public void updateBookmarkList() throws IOException {
         bookmarkListView.getItems().clear();
-        bookmarkListView.getItems().addAll(BookMarkManager.getBookMarkManager().getWordSpelling());
+        bookmarkListView.getItems().addAll(BookMarkManager.getInstance().getWordSpelling());
     }
 
 
