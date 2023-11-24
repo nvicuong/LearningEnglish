@@ -274,11 +274,4 @@ public class HangmanGameController extends Controller implements Initializable {
         correctButton.setCursor(Cursor.HAND);
 
     }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
-    }
 }

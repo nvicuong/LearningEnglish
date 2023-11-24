@@ -31,10 +31,6 @@ public class SearchController extends Controller implements Initializable {
     }
 
     @Override
-    public void init() {
-    }
-
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         searchTextButton.setCursor(Cursor.HAND);
         searchWordButton.setCursor(Cursor.HAND);

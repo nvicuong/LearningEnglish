@@ -19,9 +19,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SignUpController extends Controller implements Initializable {
-
-    private LogInController logInController;
-
     @FXML
     private TextField emailTextField;
 
@@ -120,12 +117,6 @@ public class SignUpController extends Controller implements Initializable {
         userNameTextField.setCursor(Cursor.TEXT);
         signUpButton.setCursor(Cursor.HAND);
         logInButton.setCursor(Cursor.HAND);
-
         errorLog.setVisible(false);
-    }
-
-    @Override
-    public void init() {
-        this.logInController = (LogInController) ScreenManager.getInstance().getController("LogIn");
     }
 }

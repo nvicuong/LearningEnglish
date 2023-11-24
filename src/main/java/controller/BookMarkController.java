@@ -22,13 +22,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BookMarkController extends Controller implements Initializable {
-
-    private CrosswordGameController crosswordGameController;
-    private HangmanGameController hangmanGameController;
-    private FlashCardController flashCardController;
-    private SideBarController sideBarController;
-    private HomeController homeController;
-
     @FXML
     private Button crosswordButton;
 
@@ -77,18 +70,6 @@ public class BookMarkController extends Controller implements Initializable {
     public void updateWord() throws IOException {
         wordBankList.clear();
         wordBankList.addAll(BookMarkManager.getInstance().getWordList());
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
-        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
-        flashCardController = (FlashCardController) ScreenManager.getInstance().getController("FlashCard");
-        hangmanGameController = (HangmanGameController) ScreenManager.getInstance().getController("HangmanGame");
-        crosswordGameController = (CrosswordGameController) ScreenManager.getInstance().getController("CrosswordGame");
-        sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
     }
 
     @FXML

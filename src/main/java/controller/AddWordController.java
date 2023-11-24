@@ -19,10 +19,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddWordController extends Controller implements Initializable {
-
-    private BookMarkController bookMarkController;
-    private HomeController homeController;
-
     @FXML
     private Button addButton;
 
@@ -68,15 +64,6 @@ public class AddWordController extends Controller implements Initializable {
     @FXML
     void changeToBookMark(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("BookMark");
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
-        this.homeController = (HomeController) ScreenManager.getInstance().getController("Home");
-        this.bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     @Override

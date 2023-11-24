@@ -289,12 +289,4 @@ public class CrosswordGameController extends Controller implements Initializable
         loadingProgressIndicator.setLayoutX((1402 - loadingProgressIndicator.getWidth()) / 2);
         loadingProgressIndicator.setLayoutY((500 - loadingProgressIndicator.getHeight()) / 2);
     }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
-
-    }
 }

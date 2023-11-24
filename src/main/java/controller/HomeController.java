@@ -20,8 +20,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeController extends Controller implements Initializable {
-    private SideBarController sideBarController;
-
     public AnchorPane getHomeAnchorPane() {
         return homeAnchorPane;
     }
@@ -96,6 +94,7 @@ public class HomeController extends Controller implements Initializable {
     void changeToSearchWord(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("SearchWord");
     }
+
     @FXML
     void changeToBookmark(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("BookMark");
@@ -116,11 +115,6 @@ public class HomeController extends Controller implements Initializable {
         sideBarController.searchWord(WordManager.getWordManager().getRandomWord().getSpelling());
     }
 
-    @Override
-    public void init() {
-        sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
-    }
-
     public void updateHistoryList() throws IOException {
         historyListView.getItems().clear();
         historyListView.getItems().addAll(HistoryManager.getInstance().getWordSpelling());
@@ -131,15 +125,18 @@ public class HomeController extends Controller implements Initializable {
         bookmarkListView.getItems().addAll(BookMarkManager.getInstance().getWordSpelling());
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        historyListView = new ListView<>();
+        try {
+            historyListView = new ListView<>();
+            bookmarkListView = new ListView<>();
+            updateHistoryList();
+            updateBookmarkList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         historyScrollPane.setContent(historyListView);
-
-        bookmarkListView = new ListView<>();
         bookmarkScrollPane.setContent(bookmarkListView);
-
 
         addWordButton.setCursor(Cursor.HAND);
         learnNewWordButton.setCursor(Cursor.HAND);

@@ -21,9 +21,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class SearchWordController extends Controller implements Initializable {
-    private SideBarController sideBarController;
-    private HomeController homeController;
-
     @FXML
     private ImageView back;
 
@@ -136,14 +133,5 @@ public class SearchWordController extends Controller implements Initializable {
         back.setCursor(Cursor.HAND);
         refreshButton.setCursor(Cursor.HAND);
         searchWordTextField.setCursor(Cursor.TEXT);
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void init() {
-        this.homeController = (HomeController) ScreenManager.getInstance().getController("Home");
-        this.sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
     }
 }

@@ -49,9 +49,6 @@ public class LogInController extends Controller implements Initializable {
     @FXML
     private TextField userNameTextField;
 
-    private HomeController homeController;
-    private BookMarkController bookMarkController;
-
     private AutoCompletionBinding<String> autoCompletionBinding;
 
     private Set<String> possibleSuggestions = new HashSet<>();
@@ -72,12 +69,6 @@ public class LogInController extends Controller implements Initializable {
 
     public void changeToSignUp(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("SignUp");
-    }
-
-    @Override
-    public void init() {
-        homeController = (HomeController) ScreenManager.getInstance().getController("Home");
-        bookMarkController = (BookMarkController) ScreenManager.getInstance().getController("BookMark");
     }
 
     @FXML
@@ -151,8 +142,6 @@ public class LogInController extends Controller implements Initializable {
             }
         });
 
-//        signUpController = (SignUpController) ScreenManager.getInstance().getController("SignUp");
-//        signUpController.init(this);
 
         createAccountLabel.setOnMouseClicked(mouseEvent -> {
             try {
