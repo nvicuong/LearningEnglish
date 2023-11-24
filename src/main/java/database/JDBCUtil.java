@@ -55,7 +55,4 @@ public class JDBCUtil {
         connection.close();
     }
 
-    public static void printInfo(Connection connection) throws SQLException {
-        System.out.println(connection.getMetaData().getDatabaseProductName());
-    }
 }

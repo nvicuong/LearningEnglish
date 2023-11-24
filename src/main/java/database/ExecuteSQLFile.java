@@ -18,68 +18,6 @@ public class ExecuteSQLFile {
         connection = JDBCUtil.getConnection();
     }
 
-    public static void selectWord(String s) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM word WHERE spelling = ?")) {
-
-            preparedStatement.setString(1, s);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    // Xử lý kết quả
-                    String spelling = resultSet.getString("spelling");
-                    String pronunciation = resultSet.getString("pronunciation");
-                    String content = resultSet.getString("content");
-                    String synonym = resultSet.getString("synonym");
-
-                    System.out.println("Spelling: " + spelling);
-                    System.out.println("Pronunciation: " + pronunciation);
-                    System.out.println("Content: " + content);
-                    System.out.println("Synonym: " + synonym);
-                    System.out.println("------");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void readAll() {
-        String countQuery = "SELECT COUNT(*) AS rowCount FROM word";
-
-        // Thực hiện truy vấn và xử lý kết quả
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(countQuery)) {
-
-            if (resultSet.next()) {
-                int rowCount = resultSet.getInt("rowCount");
-                System.out.println("Số lượng dữ liệu: " + rowCount);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void close() throws SQLException {
-        JDBCUtil.closeConnection(connection);
-    }
-
-    public static void insertWord(Word word) throws SQLException {
-        Statement statement = connection.createStatement();
-        String insertData = "INSERT INTO word (spelling, pronunciation, content, synonym) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertData)) {
-            // Thiết lập giá trị cho các tham số
-            preparedStatement.setString(1, word.getSpelling());
-            preparedStatement.setString(2, word.getPronunciation());
-            preparedStatement.setString(3, word.getContent());
-            preparedStatement.setString(4, word.getSynonym());
-
-            // Thực thi câu lệnh INSERT
-            preparedStatement.executeUpdate();
-            System.out.println(word.getSpelling());
-        }
-    }
-
     public static ArrayList<String> searchWordListSpelling(String spelling) throws SQLException {
         Set<String> wordList = new LinkedHashSet<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(
