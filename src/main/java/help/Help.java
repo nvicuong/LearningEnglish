@@ -61,17 +61,6 @@ public class Help {
         alert.setContentText(contentText);
     }
 
-    public static void loggout(Stage stage) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Loggout");
-        alert.setHeaderText("you're about to log out");
-        alert.setContentText("do you want to save before logging out");
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            System.out.println("log out successfully");
-            stage.close();
-        }
-    }
-
     public static void threadProcess(Task<Void> task, AnchorPane anchorPane, String massage) {
         Thread thread = new Thread(task);
         thread.setDaemon(true);
@@ -81,7 +70,7 @@ public class Help {
         loadingProgressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
         loadingProgressIndicator.progressProperty().bind(task.progressProperty());
         loadingProgressIndicator.setLayoutX((anchorPane.getWidth() - loadingProgressIndicator.getWidth()) / 2);
-        loadingProgressIndicator.setLayoutY((anchorPane.getHeight() - loadingProgressIndicator.getHeight()) / 2);
+        loadingProgressIndicator.setLayoutY((anchorPane.getHeight() - loadingProgressIndicator.getHeight()) / 2 - 50);
         label.setLayoutX(loadingProgressIndicator.getLayoutX());
         label.setLayoutY(loadingProgressIndicator.getLayoutY() + 50);
         anchorPane.getChildren().addAll(loadingProgressIndicator, label);

@@ -1,5 +1,8 @@
 package controller;
 
+import help.Help;
+import javafx.concurrent.Task;
+import javafx.scene.layout.AnchorPane;
 import model.BookMarkManager;
 import model.ScreenManager;
 import model.VoiceRssAPI;
@@ -24,6 +27,9 @@ public class ShowWordController extends Controller implements Initializable {
     private HomeController homeController;
 
     @FXML
+    private AnchorPane mainAnchorPane;
+
+    @FXML
     private Button nextWordButton;
 
     @FXML
@@ -46,7 +52,14 @@ public class ShowWordController extends Controller implements Initializable {
 
     @FXML
     void makeSoundWord(MouseEvent event) throws Exception {
-        VoiceRssAPI.speakWord(spellingLabel.getText());
+        Help.threadProcess(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                VoiceRssAPI.speakWord(spellingLabel.getText());
+                return null;
+            }
+        }, mainAnchorPane, "Loading...");
+
     }
 
     @FXML

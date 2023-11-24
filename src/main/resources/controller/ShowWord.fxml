@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowWordController">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowWordController">
    <children>
       <Line endX="671.2000732421875" endY="7.62939453125E-6" layoutX="152.0" layoutY="95.0" startX="-100.0" />
       <Label layoutX="52.0" layoutY="128.0" text="Pronunciation:" textFill="#ff9500">

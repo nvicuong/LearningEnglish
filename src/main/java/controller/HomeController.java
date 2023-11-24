@@ -96,6 +96,7 @@ public class HomeController extends Controller implements Initializable {
     void changeToSearchWord(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("SearchWord");
     }
+
     @FXML
     void changeToBookmark(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("BookMark");
@@ -135,9 +136,15 @@ public class HomeController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         historyListView = new ListView<>();
+        bookmarkListView = new ListView<>();
+        try {
+            updateHistoryList();
+            updateBookmarkList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         historyScrollPane.setContent(historyListView);
 
-        bookmarkListView = new ListView<>();
         bookmarkScrollPane.setContent(bookmarkListView);
 
 
