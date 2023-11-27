@@ -1,10 +1,8 @@
 package model;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 import java.net.URI;
@@ -12,7 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class translateAPI {
+public class TranslateAPI {
     static HttpRequest.Builder builder;
 
     public static void initialize() {

@@ -5,7 +5,6 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -13,14 +12,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.ScreenManager;
 import model.VoiceRssAPI;
-import model.translateAPI;
+import model.TranslateAPI;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 public class SearchTextController extends Controller implements Initializable {
 
@@ -51,7 +47,7 @@ public class SearchTextController extends Controller implements Initializable {
             @Override
             protected Void call() throws Exception {
                 String text = inputTextArea.getText();
-                outputTextArea.setText(translateAPI.translateTextEntoVi(text));
+                outputTextArea.setText(TranslateAPI.translateTextEntoVi(text));
                 return null;
             }
         }, mainAnchorPane, "Loading...");
@@ -63,7 +59,7 @@ public class SearchTextController extends Controller implements Initializable {
             @Override
             protected Void call() throws Exception {
                 String text = inputTextArea.getText();
-                outputTextArea.setText(translateAPI.translateTextViToEn(text));
+                outputTextArea.setText(TranslateAPI.translateTextViToEn(text));
 
                 return null;
             }

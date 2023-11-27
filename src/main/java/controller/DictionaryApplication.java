@@ -11,7 +11,7 @@ public class DictionaryApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         UserDB.initialize();
-        translateAPI.initialize();
+        TranslateAPI.initialize();
         WordManager.getWordManager();
         HistoryManager.getInstance();
         BookMarkManager.getInstance();
