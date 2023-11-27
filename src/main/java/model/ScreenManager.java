@@ -138,6 +138,9 @@ public class ScreenManager {
             }
             FXMLLoader loader = new FXMLLoader(url);
             Parent screen = loader.load();
+            if (loader.getController() == null) {
+                throw new RuntimeException("Controller not found in FXML file: " + path);
+            }
             screens.put(name, screen);
             return loader;
         } catch (IOException e) {

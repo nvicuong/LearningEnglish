@@ -60,14 +60,24 @@ public class AddWordController extends Controller implements Initializable {
 
     @FXML
     void cancelWord(MouseEvent event) {
-        wordTextField.clear();
-        definitionTextArea.clear();
-        pronunciationTextField.clear();
+        clearContent();
     }
 
     @FXML
     void changeToBookMark(MouseEvent event) throws IOException {
         ScreenManager.getInstance().setScreen("BookMark");
+    }
+
+    public void clearContent() {
+        wordTextField.clear();
+        definitionTextArea.clear();
+        pronunciationTextField.clear();
+    }
+
+    public void setContent(Word word) {
+        wordTextField.setText(word.getSpelling());
+        pronunciationTextField.setText(word.getPronunciation());
+        definitionTextArea.setText(word.getContent());
     }
 
     /**

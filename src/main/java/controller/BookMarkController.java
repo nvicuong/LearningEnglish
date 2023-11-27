@@ -28,6 +28,7 @@ public class BookMarkController extends Controller implements Initializable {
     private FlashCardController flashCardController;
     private SideBarController sideBarController;
     private HomeController homeController;
+    private AddWordController addWordController;
 
     @FXML
     private Button crosswordButton;
@@ -92,10 +93,12 @@ public class BookMarkController extends Controller implements Initializable {
         hangmanGameController = (HangmanGameController) ScreenManager.getInstance().getController("HangmanGame");
         crosswordGameController = (CrosswordGameController) ScreenManager.getInstance().getController("CrosswordGame");
         sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
+        addWordController = (AddWordController) ScreenManager.getInstance().getController("AddWord");
     }
 
     @FXML
     public void changeToAddWord(MouseEvent event) throws IOException {
+        addWordController.clearContent();
         ScreenManager.getInstance().setScreen("AddWord");
     }
 
@@ -147,7 +150,8 @@ public class BookMarkController extends Controller implements Initializable {
             return;
         }
         Word word = new Word(spellingCollumn.getCellData(index), pronunciationCollumn.getCellData(index), contentCollumn.getCellData(index), synonymCollumn.getCellData(index));
-        loadPage(addWordParent);
+        addWordController.setContent(word);
+        ScreenManager.getInstance().setScreen("AddWord");
     }
 
 

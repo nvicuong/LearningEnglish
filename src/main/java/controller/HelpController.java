@@ -6,15 +6,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 public class HelpController extends Controller {
-
-    @FXML
-    private AnchorPane base;
-
-    @FXML
-    private ImageView girl;
-
-    @FXML
-    private ImageView imageCute;
     /**
      *
      */
@@ -22,4 +13,5 @@ public class HelpController extends Controller {
     public void init() {
 
     }
+
 }
