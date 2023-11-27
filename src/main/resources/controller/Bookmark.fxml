@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookMarkController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookMarkController">
    <children>
       <TextField fx:id="searchInBankTextField" layoutX="40.0" layoutY="101.0" prefHeight="31.0" prefWidth="260.0" promptText="search in Word Bank" style="-fx-background-radius: 20;" />
       <Button fx:id="addNewButton" layoutX="41.0" layoutY="156.0" mnemonicParsing="false" onMouseClicked="#changeToAddWord" prefHeight="31.0" prefWidth="97.0" style="-fx-background-color: #8AC249;" text="+ Add New" textFill="WHITE">
@@ -49,27 +49,32 @@
             <TableColumn fx:id="synonymCollumn" prefWidth="74.40008544921875" text="synonym" />
          </columns>
       </TableView>
-      <Button fx:id="removeButton" layoutX="40.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#removeWord" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #FF8570;" text="- Remove" textFill="WHITE">
+      <Button fx:id="removeButton" layoutX="200.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#removeWord" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #FF8570;" text="- Remove" textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>
       </Button>
-      <Button fx:id="removeAllButton" layoutX="200.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#removeAllWord" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF1544;" text="Remove all" textFill="WHITE">
+      <Button fx:id="removeAllButton" layoutX="40.0" layoutY="284.0" mnemonicParsing="false" onMouseClicked="#removeAllWord" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF1544;" text="Remove all" textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>
       </Button>
-      <Button fx:id="flashCardButton" layoutX="40.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#changeToFlashCard" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #AC4ACF;" text="Flash Card" textFill="WHITE">
+      <Button fx:id="flashCardButton" layoutX="200.0" layoutY="292.0" mnemonicParsing="false" onMouseClicked="#changeToFlashCard" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #AC4ACF;" text="Flash Card" textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>
       </Button>
-      <Button fx:id="hangmanGameButton" layoutX="200.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#changeToHangmanGame" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF6C15;" text="Hangman" textFill="WHITE">
+      <Button fx:id="hangmanGameButton" layoutX="200.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#changeToHangmanGame" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF6C15;" text="Hangman" textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>
       </Button>
       <Button fx:id="crosswordButton" layoutX="40.0" layoutY="346.0" mnemonicParsing="false" onMouseClicked="#changeToCrosswordGame" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #CF6C15;" text="Crossword" textFill="WHITE">
+         <effect>
+            <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
+         </effect>
+      </Button>
+      <Button fx:id="editButton" layoutX="40.0" layoutY="223.0" mnemonicParsing="false" onMouseClicked="#editWord" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: pink;" text="Edit " textFill="WHITE">
          <effect>
             <DropShadow height="4.62" offsetX="1.0" radius="4.15" width="13.98" />
          </effect>

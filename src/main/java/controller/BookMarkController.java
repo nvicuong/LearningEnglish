@@ -37,6 +37,9 @@ public class BookMarkController extends Controller implements Initializable {
     private Button addNewButton;
 
     @FXML
+    private Button editButton;
+
+    @FXML
     private Button removeButton;
 
     @FXML
@@ -137,6 +140,18 @@ public class BookMarkController extends Controller implements Initializable {
     }
 
     @FXML
+    public void editWord(MouseEvent event) throws  IOException {
+        int index = wordBankTableView.getSelectionModel().getSelectedIndex();
+
+        if (index <= -1) {
+            return;
+        }
+        Word word = new Word(spellingCollumn.getCellData(index), pronunciationCollumn.getCellData(index), contentCollumn.getCellData(index), synonymCollumn.getCellData(index));
+        loadPage(addWordParent);
+    }
+
+
+    @FXML
     void removeAllWord(MouseEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("WARNING");
@@ -233,6 +248,7 @@ public class BookMarkController extends Controller implements Initializable {
 
         addNewButton.setCursor(Cursor.HAND);
         removeButton.setCursor(Cursor.HAND);
+        editButton.setCursor(Cursor.HAND);
         searchImageView.setCursor(Cursor.HAND);
         hangmanGameButton.setCursor(Cursor.HAND);
         flashCardButton.setCursor(Cursor.HAND);

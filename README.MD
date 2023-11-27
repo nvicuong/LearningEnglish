@@ -22,9 +22,8 @@ Group 12 - INT2204 1
 # Usage
 1. Chạy file DictionaryApplication
 2. Ứng dụng đã tích hợp sẵn database có thể tìm kiếm song ngữ
-3. Tìm kiếm một từ trong từ điển và chọn những từ gợi ý mà bạn muốn tra cứu
-   khi đó ứng dụng sẽ hiển thị nghĩa của từ đó
-4. Để thêm từ mới bạn hãy vào bookmark nhấn vào nút Add new word.
+3. Tìm kiếm một từ trong từ điển và chọn những từ gợi ý mà bạn muốn tra cứu khi đó ứng dụng sẽ hiển thị nghĩa của từ đó
+4. Để thêm từ mới bạn hãy vào bookmark nhấn vào nút Add new word. 
 5. Để xóa một từ, bạn click vào từ đó và nhấn vào nút remove.
 6. Để sửa một từ, bạn click vào từ đó sửa theo ý bạn muốn
 7. Để phát âm từ đó hãy nhấp vào nút phát âm (biểu tượng là loa).

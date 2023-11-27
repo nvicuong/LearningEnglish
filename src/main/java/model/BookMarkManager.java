@@ -3,6 +3,7 @@ package model;
 import controller.LogInController;
 import database.UserDB;
 
+import javax.swing.plaf.PanelUI;
 import java.io.*;
 import java.util.Scanner;
 
@@ -57,7 +58,6 @@ public class BookMarkManager extends Manager {
         });
     }
 
-
     public void exportFile() throws IOException {
         File file = new File(PATH);
         if (!file.exists()) {
@@ -71,7 +71,6 @@ public class BookMarkManager extends Manager {
         }
         fileWriter.close();
     }
-
 
     public void importFile() throws IOException {
         File file = new File(PATH1);
