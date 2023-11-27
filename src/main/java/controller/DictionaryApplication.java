@@ -4,16 +4,14 @@ import database.UserDB;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import model.BookMarkManager;
-import model.HistoryManager;
-import model.ScreenManager;
-import model.WordManager;
+import model.*;
 
 
 public class DictionaryApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         UserDB.initialize();
+        translateAPI.initialize();
         WordManager.getWordManager();
         HistoryManager.getInstance();
         BookMarkManager.getInstance();

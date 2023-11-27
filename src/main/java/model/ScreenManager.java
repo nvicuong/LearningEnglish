@@ -47,7 +47,7 @@ public class ScreenManager {
         HomeController homeController =  loadScreen("Home", "Home.fxml").getController();
         controllers.put("Home", homeController);
 
-        BookMarkController bookMarkController = loadScreen("BookMark", "BookMark.fxml").getController();
+        BookMarkController bookMarkController = loadScreen("BookMark", "Bookmark.fxml").getController();
         controllers.put("BookMark", bookMarkController);
 
         SearchTextController searchTextController = loadScreen("SearchText", "SearchText.fxml").getController();

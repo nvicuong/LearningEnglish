@@ -1,7 +1,5 @@
 package model;
 
-import org.asynchttpclient.AsyncHttpClient;
-import org.asynchttpclient.DefaultAsyncHttpClient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -9,85 +7,56 @@ import com.google.gson.JsonParser;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class translateAPI {
+    static HttpRequest.Builder builder;
 
-    private static final String TEXT_PATH = "src\\\\main\\\\resources\\\\data\\\\translateText.txt";
-
-    public static void main(String[] args) throws IOException {
-        try {
-            AsyncHttpClient client = new DefaultAsyncHttpClient();
-            client.prepare("POST", "https://google-translate113.p.rapidapi.com/api/v1/translator/text")
-                    .setHeader("content-type", "application/x-www-form-urlencoded")
-                    .setHeader("X-RapidAPI-Key", "b4a10b2eebmsh4174637d18d6aa4p1a236ejsnb849ca9b50cd")
-                    .setHeader("X-RapidAPI-Host", "google-translate113.p.rapidapi.com")
-                    .setBody("from=auto&to=en&text=xin%20ch%C3%A0o")
-                    .execute()
-                    .toCompletableFuture()
-                    .thenAccept(System.out::println)
-                    .join();
-
-            client.close();
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
+    public static void initialize() {
+        builder = HttpRequest.newBuilder()
+                .uri(URI.create("https://google-translate1.p.rapidapi.com/language/translate/v2"))
+                .header("content-type", "application/x-www-form-urlencoded")
+                .header("Accept-Encoding", "application/gzip")
+                .header("X-RapidAPI-Key", "d2c5e20068mshe31dffe11518238p16a140jsnf527385aeb14")
+                .header("X-RapidAPI-Host", "google-translate1.p.rapidapi.com");
     }
 
-    public static String translateTextEntoVi(String s) throws IOException {
-        AsyncHttpClient client = new DefaultAsyncHttpClient();
-        try {
-            return client.prepare("POST", "https://google-translate1.p.rapidapi.com/language/translate/v2")
-                    .setHeader("content-type", "application/x-www-form-urlencoded")
-                    .setHeader("Accept-Encoding", "application/gzip")
-                    .setHeader("X-RapidAPI-Key", "f3ab0c33e1msh2ce3b88d5979e49p1867f1jsn146816834117")
-                    .setHeader("X-RapidAPI-Host", "google-translate1.p.rapidapi.com")
-                    .setBody("q=" + s + "&target=vi&source=en")
-                    .execute()
-                    .toCompletableFuture()
-                    .thenApply(response -> {
-                        // Xử lý phản hồi ở đây
-                        JsonObject jsonResponse = JsonParser.parseString(response.getResponseBody()).getAsJsonObject();
+    public static void main(String[] args) throws Exception {
+        initialize();
 
-                        // Extract the translated text
-                        return jsonResponse.getAsJsonObject("data")
-                                .getAsJsonArray("translations")
-                                .get(0)
-                                .getAsJsonObject()
-                                .get("translatedText")
-                                .getAsString();
-                    })
-                    .join();
-        } finally {
-            client.close();
-        }
+        HttpRequest request = builder.method("POST", HttpRequest.BodyPublishers.ofString("q=Hello%2C%20world!&target=vi&source=en")).build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
     }
 
-    public static String translateTextViToEn(String s) throws IOException {
-        AsyncHttpClient client = new DefaultAsyncHttpClient();
-        try {
-            return client.prepare("POST", "https://google-translate1.p.rapidapi.com/language/translate/v2")
-                    .setHeader("content-type", "application/x-www-form-urlencoded")
-                    .setHeader("Accept-Encoding", "application/gzip")
-                    .setHeader("X-RapidAPI-Key", "f3ab0c33e1msh2ce3b88d5979e49p1867f1jsn146816834117")
-                    .setHeader("X-RapidAPI-Host", "google-translate1.p.rapidapi.com")
-                    .setBody("q=" + s + "&target=en&source=vi")
-                    .execute()
-                    .toCompletableFuture()
-                    .thenApply(response -> {
-                        // Xử lý phản hồi ở đây
-                        JsonObject jsonResponse = JsonParser.parseString(response.getResponseBody()).getAsJsonObject();
+    public static String translateTextEntoVi(String s) throws IOException, InterruptedException {
+        String body = String.format("q=%s&target=vi&source=en", s);
+        HttpRequest request = builder.method("POST", HttpRequest.BodyPublishers.ofString(body)).build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
 
-                        // Extract the translated text
-                        return jsonResponse.getAsJsonObject("data")
-                                .getAsJsonArray("translations")
-                                .get(0)
-                                .getAsJsonObject()
-                                .get("translatedText")
-                                .getAsString();
-                    })
-                    .join();
-        } finally {
-            client.close();
-        }
+        return jsonResponse.getAsJsonObject("data")
+                .getAsJsonArray("translations")
+                .get(0)
+                .getAsJsonObject()
+                .get("translatedText")
+                .getAsString();
+    }
+
+    public static String translateTextViToEn(String s) throws IOException, InterruptedException {
+        String body = String.format("q=%s&target=en&source=vi", s);
+        HttpRequest request = builder.method("POST", HttpRequest.BodyPublishers.ofString(body)).build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
+
+        return jsonResponse.getAsJsonObject("data")
+                .getAsJsonArray("translations")
+                .get(0)
+                .getAsJsonObject()
+                .get("translatedText")
+                .getAsString();
     }
 }
