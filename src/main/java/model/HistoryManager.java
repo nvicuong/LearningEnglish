@@ -1,7 +1,5 @@
 package model;
 
-import database.UserDB;
-
 import java.io.*;
 
 
@@ -9,7 +7,7 @@ public class HistoryManager extends Manager{
     private static HistoryManager historyManager;
     private final String HISTORYWORD_PATH = "src/main/resources/data/wordHistory.dat";
 
-    public static HistoryManager getHistoryManager() throws IOException {
+    public static HistoryManager getInstance() throws IOException {
         if (historyManager == null) {
             historyManager = new HistoryManager();
         }

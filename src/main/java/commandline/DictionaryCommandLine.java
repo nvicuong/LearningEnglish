@@ -1,6 +1,5 @@
 package commandline;
 
-import controller.AddWordController;
 import model.BookMarkManager;
 import model.HistoryManager;
 import model.Word;
@@ -23,8 +22,8 @@ public class DictionaryCommandLine {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
         WordManager.getWordManager();
-        BookMarkManager.getBookMarkManager();
-        HistoryManager.getHistoryManager();
+        BookMarkManager.getInstance();
+        HistoryManager.getInstance();
         System.out.println("Welcome to My Application!");
         System.out.println("\t[0] Exit");
         System.out.println("\t[1] Add");
@@ -48,7 +47,7 @@ public class DictionaryCommandLine {
             if (s == '0') {
                 System.out.println("Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi");
                 System.out.println("Chúc bạn một ngày tốt lành");
-                BookMarkManager.getBookMarkManager().save();
+                BookMarkManager.getInstance().save();
                 return;
             }
             if (s == '1') {
@@ -59,7 +58,7 @@ public class DictionaryCommandLine {
                 System.out.println("Nhập nghĩa tiếng việt của từ đấy");
                 String vietnameseWord = sc.nextLine();
                 Word word_target = new Word(englishWord, "", vietnameseWord, "");
-                BookMarkManager.getBookMarkManager().addWord(word_target);
+                BookMarkManager.getInstance().addWord(word_target);
                 //System.out.println(BookMarkManager.getBookMarkManager().getWordList());
                 System.out.println("Ban đã thêm từ " + englishWord + " vào từ điển");
                 System.out.println();
@@ -73,7 +72,7 @@ public class DictionaryCommandLine {
                 char question = sc.next().charAt(0);
                 if (question == 'Y' || question == 'y') {
                     System.out.println("Bạn đã xóa từ " + englishWord + " khỏi từ điển");
-                    BookMarkManager.getBookMarkManager().removeWord(word_target);
+                    BookMarkManager.getInstance().removeWord(word_target);
                     System.out.println();
                     continueOrNot();
                 } else  {
@@ -92,16 +91,16 @@ public class DictionaryCommandLine {
                 sc.nextLine();
                 System.out.println("Nhập nghĩa tiếng việt của từ đấy");
                 String vietnameseWord1 = sc.nextLine();
-                BookMarkManager.getBookMarkManager().removeWord(new Word(englishWord, "", "", ""));
+                BookMarkManager.getInstance().removeWord(new Word(englishWord, "", "", ""));
                 Word word_target = new Word(englishWord1, "", vietnameseWord1, "");
                 System.out.println("Bạn đã thay đổi từ " + englishWord + " thành từ " + englishWord1);
-                BookMarkManager.getBookMarkManager().addWord(word_target);
+                BookMarkManager.getInstance().addWord(word_target);
                 System.out.println();
                 continueOrNot();
             }
             if (s == '4') {
                 System.out.println("Danh sách các từ trong BookMark");
-                List<Word> wordList = BookMarkManager.getBookMarkManager().getWordList();
+                List<Word> wordList = BookMarkManager.getInstance().getWordList();
                 for (Word word : wordList) {
                     System.out.println(word.getSpelling() + ": " + word.getContent());
                 }
@@ -112,7 +111,7 @@ public class DictionaryCommandLine {
                 System.out.println("Hãy nhập từ mà bạn muốn tra cứu");
                 String englishWord = sc.next();
                 Word word_target = new Word(englishWord, "", "", "");
-                List<Word> wordList = BookMarkManager.getBookMarkManager().getWordList();
+                List<Word> wordList = BookMarkManager.getInstance().getWordList();
                 for (Word word : wordList) {
                     if (word.getSpelling().equals(word_target.getSpelling())) {
                         System.out.println("Từ bạn muốn tra là: " + word.getSpelling() + " đã có trong từ điển");

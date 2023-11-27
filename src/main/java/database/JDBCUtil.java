@@ -44,10 +44,9 @@ public class JDBCUtil {
             }
         });
 
-        String url = "jdbc:sqlite:src\\main\\resources\\database\\wordSource.db";
+        String url = "jdbc:sqlite:src/main/resources/database/wordSource.db";
 
         connection = DriverManager.getConnection(url);
-        System.out.println("ket noi thanh cong");
         return connection;
     }
 
@@ -55,7 +54,4 @@ public class JDBCUtil {
         connection.close();
     }
 
-    public static void printInfo(Connection connection) throws SQLException {
-        System.out.println(connection.getMetaData().getDatabaseProductName());
-    }
 }

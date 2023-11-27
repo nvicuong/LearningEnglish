@@ -4,15 +4,14 @@ import database.UserDB;
 import help.Help;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.BookMarkManager;
 import model.HistoryManager;
+import model.ScreenManager;
 import model.WordManager;
 
 import java.io.IOException;
@@ -21,20 +20,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class HomeController extends Controller implements Initializable {
-
-    public Parent getLogInParent() {
-        return logInParent;
-    }
-
-    private Parent logInParent;
-
-    public LogInController getLogInController() {
-        return logInController;
-    }
-
-    private LogInController logInController;
-
-
     private SideBarController sideBarController;
 
     public AnchorPane getHomeAnchorPane() {
@@ -83,21 +68,10 @@ public class HomeController extends Controller implements Initializable {
     @FXML
     private ScrollPane bookmarkScrollPane;
 
-    @FXML
-    private TitledPane historyTitledPane;
-
-
-    public SideBarController getSideBarController() {
-        return sideBarController;
-    }
-
-    public void init(SideBarController sideBarController) {
-        this.sideBarController = sideBarController;
-    }
 
     @FXML
     void changeToLogin(MouseEvent event) throws IOException {
-        loadPage(logInParent);
+        ScreenManager.getInstance().setScreen("LogIn");
     }
 
     @FXML
@@ -105,7 +79,7 @@ public class HomeController extends Controller implements Initializable {
         Help.threadProcess(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                BookMarkManager.getBookMarkManager().saveDatabase();
+                BookMarkManager.getInstance().saveDatabase();
                 return null;
             }
 
@@ -120,22 +94,22 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     void changeToSearchWord(MouseEvent event) throws IOException {
-        sideBarController.getSearchController().changeToSearchWord(event);
+        ScreenManager.getInstance().setScreen("SearchWord");
     }
 
     @FXML
     void changeToBookmark(MouseEvent event) throws IOException {
-        sideBarController.changeToBookmark(event);
+        ScreenManager.getInstance().setScreen("BookMark");
     }
 
     @FXML
     void changeToAddword(MouseEvent event) throws IOException {
-        sideBarController.getBookMarkController().changeToAddWord(event);
+        ScreenManager.getInstance().setScreen("AddWord");
     }
 
     @FXML
     void changeToSearchText(MouseEvent event) throws IOException {
-        sideBarController.getSearchController().changeToTranslateText(event);
+        ScreenManager.getInstance().setScreen("TranslateText");
     }
 
     @FXML
@@ -144,37 +118,33 @@ public class HomeController extends Controller implements Initializable {
     }
 
     @Override
-    public void loadPage(Parent parent) throws IOException {
-        sideBarController.loadPage(parent);
+    public void init() {
+        sideBarController = (SideBarController) ScreenManager.getInstance().getController("SideBar");
     }
 
     public void updateHistoryList() throws IOException {
         historyListView.getItems().clear();
-        historyListView.getItems().addAll(HistoryManager.getHistoryManager().getWordSpelling());
+        historyListView.getItems().addAll(HistoryManager.getInstance().getWordSpelling());
     }
 
     public void updateBookmarkList() throws IOException {
         bookmarkListView.getItems().clear();
-        bookmarkListView.getItems().addAll(BookMarkManager.getBookMarkManager().getWordSpelling());
+        bookmarkListView.getItems().addAll(BookMarkManager.getInstance().getWordSpelling());
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
-            logInParent = loader.load();
-            logInController = loader.getController();
-            logInController.init(this);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
         historyListView = new ListView<>();
+        bookmarkListView = new ListView<>();
+        try {
+            updateHistoryList();
+            updateBookmarkList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         historyScrollPane.setContent(historyListView);
 
-        bookmarkListView = new ListView<>();
         bookmarkScrollPane.setContent(bookmarkListView);
 
 

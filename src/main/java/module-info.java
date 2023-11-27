@@ -12,7 +12,6 @@ module dictionaryapplication.dictionaryapplication {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
-    requires async.http.client;
     requires voicerss.tts;
 //    requires AudioPlayer;
     requires java.desktop;
@@ -20,6 +19,8 @@ module dictionaryapplication.dictionaryapplication {
     requires java.instrument;
     requires atlantafx.base;
     requires bcrypt;
+    requires com.google.gson;
+    requires java.net.http;
 
     opens controller to javafx.fxml;
     exports controller;

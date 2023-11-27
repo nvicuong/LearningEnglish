@@ -2,12 +2,10 @@ package model;
 
 import controller.LogInController;
 import database.UserDB;
-import help.Help;
-import javafx.concurrent.Task;
 
 import javax.swing.plaf.PanelUI;
 import java.io.*;
-import java.util.*;
+import java.util.Scanner;
 
 public class BookMarkManager extends Manager {
 
@@ -16,7 +14,9 @@ public class BookMarkManager extends Manager {
 
     private final String PATH = "src/main/resources/data/export.dat";
 
-    public static BookMarkManager getBookMarkManager() throws IOException {
+    private final String PATH1 = "src/main/resources/data/import.dat";
+
+    public static BookMarkManager getInstance() throws IOException {
         if (bookMarkManager == null) {
             bookMarkManager = new BookMarkManager();
         }
@@ -27,6 +27,13 @@ public class BookMarkManager extends Manager {
         super();
         read(BOOKMARK_PATH);
         updateWordSpelling();
+    }
+
+    public static BookMarkManager getBookMarkManager() throws IOException {
+        if (bookMarkManager == null) {
+            bookMarkManager = new BookMarkManager();
+        }
+        return bookMarkManager;
     }
 
     @Override
@@ -46,7 +53,7 @@ public class BookMarkManager extends Manager {
     }
 
     public void removeWord(Word word) throws IOException {
-        BookMarkManager.getBookMarkManager().getWordList().removeIf(word1 -> {
+        BookMarkManager.getInstance().getWordList().removeIf(word1 -> {
             return word1.equals(word);
         });
     }
@@ -66,7 +73,7 @@ public class BookMarkManager extends Manager {
     }
 
     public void importFile() throws IOException {
-        File file = new File(PATH);
+        File file = new File(PATH1);
         if (!file.exists()) {
             file.createNewFile();
         }
